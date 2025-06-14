@@ -20,6 +20,31 @@
             padding: 20px;
         }
 
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .language-selector select {
+            padding: 10px 15px;
+            border: none;
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            min-width: 120px;
+        }
+
+        .language-selector select:hover {
+            background: #f8f9fa;
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -27,6 +52,7 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.1);
             overflow: hidden;
+            margin-top: 60px;
         }
 
         .header {
@@ -92,6 +118,28 @@
             color: #2c3e50;
             border-bottom: 3px solid;
             padding-bottom: 10px;
+        }
+
+        /* Hindi specific styling */
+        .hindi {
+            font-family: 'Noto Sans Devanagari', 'Mangal', sans-serif;
+            line-height: 1.8;
+        }
+
+        .hindi .header h1 {
+            font-size: 2.2rem;
+        }
+
+        .hindi .section h2 {
+            font-size: 1.6rem;
+        }
+
+        .hindi .important-text {
+            font-weight: 700;
+            color: #d63031;
+            background: #fff5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
         }
 
         .basic-concept {
@@ -356,10 +404,41 @@
             transform: rotate(180deg);
         }
 
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-top: 4px solid #3498db;
+        }
+
+        .footer h4 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .footer .author {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.1rem;
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 10px;
                 border-radius: 15px;
+                margin-top: 80px;
+            }
+            
+            .language-selector {
+                top: 10px;
+                right: 10px;
             }
             
             .header {
@@ -389,95 +468,105 @@
     </style>
 </head>
 <body>
+    <div class="language-selector">
+        <select id="languageSelect" onchange="changeLanguage()">
+            <option value="en">🇺🇸 English</option>
+            <option value="hi">🇮🇳 हिंदी</option>
+        </select>
+    </div>
+
     <div class="container">
         <div class="header">
-            <h1>⏰ "Time is NOT Automatically of the Essence"</h1>
-            <p>Understanding This Crucial Property Law Concept in Simple Terms</p>
+            <h1 data-en="⏰ 'Time is NOT Automatically of the Essence'" data-hi="⏰ 'समय अपने आप महत्वपूर्ण नहीं हो जाता'">⏰ "Time is NOT Automatically of the Essence"</h1>
+            <p data-en="Understanding This Crucial Property Law Concept in Simple Terms" data-hi="संपत्ति कानून की इस महत्वपूर्ण बात को आसान भाषा में समझिए">Understanding This Crucial Property Law Concept in Simple Terms</p>
         </div>
         
         <div class="content">
             <!-- Basic Concept Section -->
             <div class="section basic-concept">
-                <h2>🎯 What Does "Time is of the Essence" Actually Mean?</h2>
+                <h2 data-en="🎯 What Does 'Time is of the Essence' Actually Mean?" data-hi="🎯 'समय का महत्वपूर्ण होना' का मतलब क्या है?">🎯 What Does "Time is of the Essence" Actually Mean?</h2>
                 
                 <div class="analogy-box">
-                    <strong>Simple Analogy:</strong> Think of it like a strict school exam. When "time is of the essence," missing the deadline is like showing up late to an exam - you automatically fail, no excuses accepted. But in most property deals, it's more like a flexible project deadline - you might get an extension if you have a good reason.
+                    <strong data-en="Simple Analogy:" data-hi="आसान उदाहरण:">Simple Analogy:</strong> 
+                    <span data-en="Think of it like a strict school exam. When 'time is of the essence,' missing the deadline is like showing up late to an exam - you automatically fail, no excuses accepted. But in most property deals, it's more like a flexible project deadline - you might get an extension if you have a good reason." data-hi="इसे स्कूल की सख्त परीक्षा की तरह समझिए। जब <span class='important-text'>'समय महत्वपूर्ण है'</span> तो समय सीमा चूकना परीक्षा में देर से आने जैसा है - आप अपने आप फेल हो जाते हैं, कोई बहाना नहीं चलता। लेकिन ज्यादातर संपत्ति के सौदों में यह लचीली प्रोजेक्ट की समय सीमा जैसा है - अगर आपके पास अच्छा कारण है तो आपको समय बढ़ाया जा सकता है।">Think of it like a strict school exam. When "time is of the essence," missing the deadline is like showing up late to an exam - you automatically fail, no excuses accepted. But in most property deals, it's more like a flexible project deadline - you might get an extension if you have a good reason.</span>
                 </div>
 
-                <p><strong>"Time is of the essence"</strong> means that meeting deadlines is absolutely critical, and if you miss them, the other party can immediately cancel the contract and walk away - no questions asked, no second chances.</p>
+                <p data-en="'Time is of the essence' means that meeting deadlines is absolutely critical, and if you miss them, the other party can immediately cancel the contract and walk away - no questions asked, no second chances." data-hi="<span class='important-text'>'समय का महत्वपूर्ण होना'</span> का मतलब है कि समय सीमा का पूरा करना बेहद जरूरी है, और अगर आप इसे चूक जाते हैं, तो दूसरा पक्ष तुरंत अनुबंध रद्द कर सकता है और चला जा सकता है - कोई सवाल नहीं, कोई दूसरा मौका नहीं।">"Time is of the essence" means that meeting deadlines is absolutely critical, and if you miss them, the other party can immediately cancel the contract and walk away - no questions asked, no second chances.</p>
 
                 <div class="myth-fact">
                     <div class="myth">
-                        <h4>❌ Common Myth</h4>
-                        <p>"If I write a date in my property agreement, time automatically becomes of the essence."</p>
+                        <h4 data-en="❌ Common Myth" data-hi="❌ आम गलतफहमी">❌ Common Myth</h4>
+                        <p data-en="'If I write a date in my property agreement, time automatically becomes of the essence.'" data-hi="'अगर मैं अपने संपत्ति समझौते में तारीख लिख दूं, तो समय अपने आप महत्वपूर्ण हो जाता है।'">"If I write a date in my property agreement, time automatically becomes of the essence."</p>
                     </div>
                     <div class="fact">
-                        <h4>✅ Legal Reality</h4>
-                        <p>"Just writing a date doesn't make it critical. You need special magic words and circumstances."</p>
+                        <h4 data-en="✅ Legal Reality" data-hi="✅ कानूनी सच्चाई">✅ Legal Reality</h4>
+                        <p data-en="'Just writing a date doesn't make it critical. You need special magic words and circumstances.'" data-hi="'सिर्फ तारीख लिखने से वह महत्वपूर्ण नहीं हो जाती। <span class=\"important-text\">आपको खास जादुई शब्दों और परिस्थितियों की जरूरत होती है।</span>'">"Just writing a date doesn't make it critical. You need special magic words and circumstances."</p>
                     </div>
                 </div>
 
                 <div class="example-box">
-                    <strong>Real Example:</strong> You sign an agreement saying "Property registration must be completed by March 15th." Does this make time of the essence? <strong>NO!</strong> The buyer could still ask for more time, and courts might grant it if they have a reasonable excuse.
+                    <strong data-en="Real Example:" data-hi="वास्तविक उदाहरण:">Real Example:</strong> 
+                    <span data-en="You sign an agreement saying 'Property registration must be completed by March 15th.' Does this make time of the essence? NO! The buyer could still ask for more time, and courts might grant it if they have a reasonable excuse." data-hi="आप एक समझौते पर हस्ताक्षर करते हैं जिसमें लिखा है <span class='important-text'>'संपत्ति का पंजीकरण 15 मार्च तक पूरा होना चाहिए।'</span> क्या इससे समय महत्वपूर्ण हो जाता है? <span class='important-text'>नहीं!</span> खरीदार अभी भी अधिक समय मांग सकता है, और अदालत इसे मंजूर कर सकती है अगर उनके पास उचित कारण है।">You sign an agreement saying "Property registration must be completed by March 15th." Does this make time of the essence? NO! The buyer could still ask for more time, and courts might grant it if they have a reasonable excuse.</span>
                 </div>
             </div>
 
             <!-- Why Not Automatic Section -->
             <div class="section why-not-automatic">
-                <h2>🤔 Why is Time NOT Automatically of the Essence in Property Deals?</h2>
+                <h2 data-en="🤔 Why is Time NOT Automatically of the Essence in Property Deals?" data-hi="🤔 संपत्ति के सौदों में समय अपने आप महत्वपूर्ण क्यों नहीं होता?">🤔 Why is Time NOT Automatically of the Essence in Property Deals?</h2>
 
                 <div class="analogy-box">
-                    <strong>Restaurant Analogy:</strong> When you buy a burger, you expect it immediately - time matters. But when you buy a house, it's like commissioning a custom wedding cake - everyone understands it takes time, and small delays are normal.
+                    <strong data-en="Restaurant Analogy:" data-hi="रेस्टोरेंट का उदाहरण:">Restaurant Analogy:</strong> 
+                    <span data-en="When you buy a burger, you expect it immediately - time matters. But when you buy a house, it's like commissioning a custom wedding cake - everyone understands it takes time, and small delays are normal." data-hi="जब आप बर्गर खरीदते हैं, तो आप इसे तुरंत चाहते हैं - समय मायने रखता है। लेकिन जब आप घर खरीदते हैं, तो यह शादी के केक का ऑर्डर देने जैसा है - सभी समझते हैं कि <span class='important-text'>इसमें समय लगता है, और छोटी देरी सामान्य है।</span>">When you buy a burger, you expect it immediately - time matters. But when you buy a house, it's like commissioning a custom wedding cake - everyone understands it takes time, and small delays are normal.</span>
                 </div>
 
-                <h3>📚 Historical and Legal Reasons:</h3>
+                <h3 data-en="📚 Historical and Legal Reasons:" data-hi="📚 ऐतिहासिक और कानूनी कारण:">📚 Historical and Legal Reasons:</h3>
                 
                 <div class="accordion">
                     <div class="accordion-item">
                         <div class="accordion-header" onclick="toggleAccordion(this)">
-                            1. Property is "Special" in Law
+                            <span data-en="1. Property is 'Special' in Law" data-hi="1. कानून में संपत्ति 'विशेष' है">1. Property is "Special" in Law</span>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="accordion-content">
-                            <p>Courts treat property differently from other goods because:</p>
+                            <p data-en="Courts treat property differently from other goods because:" data-hi="अदालतें संपत्ति को अन्य सामानों से अलग मानती हैं क्योंकि:">Courts treat property differently from other goods because:</p>
                             <ul>
-                                <li><strong>Unique Nature:</strong> No two properties are exactly alike</li>
-                                <li><strong>High Value:</strong> Usually the biggest purchase of someone's life</li>
-                                <li><strong>Emotional Investment:</strong> People form emotional attachments</li>
-                                <li><strong>Life Impact:</strong> Losing a home has severe consequences</li>
+                                <li data-en="Unique Nature: No two properties are exactly alike" data-hi="<span class='important-text'>अनोखी प्रकृति:</span> कोई भी दो संपत्तियां बिल्कुल एक जैसी नहीं होतीं"><strong>Unique Nature:</strong> No two properties are exactly alike</li>
+                                <li data-en="High Value: Usually the biggest purchase of someone's life" data-hi="<span class='important-text'>ऊंची कीमत:</span> आमतौर पर किसी के जीवन की सबसे बड़ी खरीदारी"><strong>High Value:</strong> Usually the biggest purchase of someone's life</li>
+                                <li data-en="Emotional Investment: People form emotional attachments" data-hi="<span class='important-text'>भावनात्मक निवेश:</span> लोग भावनात्मक लगाव बनाते हैं"><strong>Emotional Investment:</strong> People form emotional attachments</li>
+                                <li data-en="Life Impact: Losing a home has severe consequences" data-hi="<span class='important-text'>जीवन पर प्रभाव:</span> घर खोने के गंभीर परिणाम होते हैं"><strong>Life Impact:</strong> Losing a home has severe consequences</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="accordion-item">
                         <div class="accordion-header" onclick="toggleAccordion(this)">
-                            2. Complex Process Recognition
+                            <span data-en="2. Complex Process Recognition" data-hi="2. जटिल प्रक्रिया की पहचान">2. Complex Process Recognition</span>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="accordion-content">
-                            <p>Property transactions involve multiple moving parts:</p>
+                            <p data-en="Property transactions involve multiple moving parts:" data-hi="संपत्ति के लेन-देन में कई चलने वाले हिस्से शामिल होते हैं:">Property transactions involve multiple moving parts:</p>
                             <ul>
-                                <li>Bank loan approvals and disbursements</li>
-                                <li>Legal document verification</li>
-                                <li>Government registration processes</li>
-                                <li>Title searches and clearances</li>
-                                <li>Multiple third-party dependencies</li>
+                                <li data-en="Bank loan approvals and disbursements" data-hi="बैंक ऋण की मंजूरी और वितरण">Bank loan approvals and disbursements</li>
+                                <li data-en="Legal document verification" data-hi="कानूनी दस्तावेजों की जांच">Legal document verification</li>
+                                <li data-en="Government registration processes" data-hi="सरकारी पंजीकरण प्रक्रियाएं">Government registration processes</li>
+                                <li data-en="Title searches and clearances" data-hi="टाइटल खोज और मंजूरी">Title searches and clearances</li>
+                                <li data-en="Multiple third-party dependencies" data-hi="कई तीसरे पक्ष की निर्भरताएं">Multiple third-party dependencies</li>
                             </ul>
-                            <p>Courts understand that delays often happen due to factors beyond the buyer's control.</p>
+                            <p data-en="Courts understand that delays often happen due to factors beyond the buyer's control." data-hi="<span class='important-text'>अदालतें समझती हैं कि देरी अक्सर खरीदार के नियंत्रण से बाहर के कारकों की वजह से होती है।</span>">Courts understand that delays often happen due to factors beyond the buyer's control.</p>
                         </div>
                     </div>
 
                     <div class="accordion-item">
                         <div class="accordion-header" onclick="toggleAccordion(this)">
-                            3. Protection Against Unfairness
+                            <span data-en="3. Protection Against Unfairness" data-hi="3. अन्याय से सुरक्षा">3. Protection Against Unfairness</span>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="accordion-content">
-                            <p>Courts want to prevent situations where:</p>
+                            <p data-en="Courts want to prevent situations where:" data-hi="अदालतें उन स्थितियों को रोकना चाहती हैं जहां:">Courts want to prevent situations where:</p>
                             <ul>
-                                <li>A seller takes advantage of a minor delay to cancel when property prices have risen</li>
-                                <li>Someone loses their life savings due to a technicality</li>
-                                <li>Genuine buyers are punished for circumstances beyond their control</li>
+                                <li data-en="A seller takes advantage of a minor delay to cancel when property prices have risen" data-hi="एक विक्रेता संपत्ति की कीमतें बढ़ने पर छोटी देरी का फायदा उठाकर रद्द कर देता है">A seller takes advantage of a minor delay to cancel when property prices have risen</li>
+                                <li data-en="Someone loses their life savings due to a technicality" data-hi="<span class='important-text'>कोई तकनीकी वजह से अपनी जीवन भर की बचत खो देता है</span>">Someone loses their life savings due to a technicality</li>
+                                <li data-en="Genuine buyers are punished for circumstances beyond their control" data-hi="वास्तविक खरीदारों को उनके नियंत्रण से बाहर की परिस्थितियों के लिए दंडित किया जाता है">Genuine buyers are punished for circumstances beyond their control</li>
                             </ul>
                         </div>
                     </div>
@@ -486,114 +575,148 @@
 
             <!-- Real Examples Section -->
             <div class="section real-examples">
-                <h2>📖 Real-World Examples: When Time is NOT of the Essence</h2>
+                <h2 data-en="📖 Real-World Examples: When Time is NOT of the Essence" data-hi="📖 वास्तविक उदाहरण: जब समय महत्वपूर्ण नहीं होता">📖 Real-World Examples: When Time is NOT of the Essence</h2>
 
                 <div class="example-box">
-                    <h4>Example 1: The Bank Delay Case</h4>
-                    <p><strong>Situation:</strong> Raj agrees to buy Priya's flat with registration by March 31st. His bank approves the loan but disburses money on April 5th due to internal processing delays.</p>
-                    <p><strong>Result:</strong> Court ruled Raj can still buy the property. The delay wasn't his fault, and Priya can't cancel just because of the date.</p>
+                    <h4 data-en="Example 1: The Bank Delay Case" data-hi="उदाहरण 1: बैंक की देरी का मामला">Example 1: The Bank Delay Case</h4>
+                    <p data-en="Situation: Raj agrees to buy Priya's flat with registration by March 31st. His bank approves the loan but disburses money on April 5th due to internal processing delays." data-hi="<span class='important-text'>स्थिति:</span> राज ने प्रिया के फ्लैट को 31 मार्च तक पंजीकरण के साथ खरीदने का समझौता किया। उसके बैंक ने ऋण मंजूर किया लेकिन आंतरिक प्रसंस्करण देरी के कारण 5 अप्रैल को पैसा दिया।"><strong>Situation:</strong> Raj agrees to buy Priya's flat with registration by March 31st. His bank approves the loan but disburses money on April 5th due to internal processing delays.</p>
+                    <p data-en="Result: Court ruled Raj can still buy the property. The delay wasn't his fault, and Priya can't cancel just because of the date." data-hi="<span class='important-text'>परिणाम:</span> अदालत ने फैसला दिया कि राज अभी भी संपत्ति खरीद सकता है। देरी उसकी गलती नहीं थी, और प्रिया सिर्फ तारीख की वजह से रद्द नहीं कर सकती।"><strong>Result:</strong> Court ruled Raj can still buy the property. The delay wasn't his fault, and Priya can't cancel just because of the date.</p>
                 </div>
 
                 <div class="example-box">
-                    <h4>Example 2: The Document Verification Delay</h4>
-                    <p><strong>Situation:</strong> Sita agrees to complete purchase by February 15th. But the sub-registrar's office takes extra time to verify documents due to a missing stamp.</p>
-                    <p><strong>Result:</strong> Buyer gets extra time. Courts understand government offices can be slow.</p>
+                    <h4 data-en="Example 2: The Document Verification Delay" data-hi="उदाहरण 2: दस्तावेज सत्यापन की देरी">Example 2: The Document Verification Delay</h4>
+                    <p data-en="Situation: Sita agrees to complete purchase by February 15th. But the sub-registrar's office takes extra time to verify documents due to a missing stamp." data-hi="<span class='important-text'>स्थिति:</span> सीता ने 15 फरवरी तक खरीदारी पूरी करने का समझौता किया। लेकिन सब-रजिस्ट्रार के कार्यालय ने लापता स्टाम्प के कारण दस्तावेजों की जांच में अतिरिक्त समय लिया।"><strong>Situation:</strong> Sita agrees to complete purchase by February 15th. But the sub-registrar's office takes extra time to verify documents due to a missing stamp.</p>
+                    <p data-en="Result: Buyer gets extra time. Courts understand government offices can be slow." data-hi="<span class='important-text'>परिणाम:</span> खरीदार को अतिरिक्त समय मिलता है। अदालतें समझती हैं कि सरकारी कार्यालय धीमे हो सकते हैं।"><strong>Result:</strong> Buyer gets extra time. Courts understand government offices can be slow.</p>
                 </div>
 
                 <div class="example-box">
-                    <h4>Example 3: The Medical Emergency</h4>
-                    <p><strong>Situation:</strong> Kumar is supposed to complete registration by June 1st but is hospitalized with a heart attack.</p>
-                    <p><strong>Result:</strong> Court grants extension. Genuine emergencies are always considered.</p>
+                    <h4 data-en="Example 3: The Medical Emergency" data-hi="उदाहरण 3: चिकित्सा आपातकाल">Example 3: The Medical Emergency</h4>
+                    <p data-en="Situation: Kumar is supposed to complete registration by June 1st but is hospitalized with a heart attack." data-hi="<span class='important-text'>स्थिति:</span> कुमार को 1 जून तक पंजीकरण पूरा करना था लेकिन दिल के दौरे से अस्पताल में भर्ती हो गया।"><strong>Situation:</strong> Kumar is supposed to complete registration by June 1st but is hospitalized with a heart attack.</p>
+                    <p data-en="Result: Court grants extension. Genuine emergencies are always considered." data-hi="<span class='important-text'>परिणाम:</span> अदालत ने विस्तार दिया। वास्तविक आपातकाल को हमेशा माना जाता है।"><strong>Result:</strong> Court grants extension. Genuine emergencies are always considered.</p>
                 </div>
 
                 <div class="timeline-visual">
                     <div class="timeline-step">
                         <div class="step-number">1</div>
-                        <div>Agreement Signed</div>
+                        <div data-en="Agreement Signed" data-hi="समझौता हस्ताक्षर">Agreement Signed</div>
                     </div>
                     <div class="timeline-step">
                         <div class="step-number">2</div>
-                        <div>Deadline Passes</div>
+                        <div data-en="Deadline Passes" data-hi="समय सीमा बीतना">Deadline Passes</div>
                     </div>
                     <div class="timeline-step">
                         <div class="step-number">3</div>
-                        <div>Buyer Asks Extension</div>
+                        <div data-en="Buyer Asks Extension" data-hi="खरीदार समय बढ़ाने को कहता है">Buyer Asks Extension</div>
                     </div>
                     <div class="timeline-step">
                         <div class="step-number">4</div>
-                        <div>Court Considers Reason</div>
+                        <div data-en="Court Considers Reason" data-hi="अदालत कारण पर विचार करती है">Court Considers Reason</div>
                     </div>
                     <div class="timeline-step">
                         <div class="step-number">5</div>
-                        <div>Fair Decision Made</div>
+                        <div data-en="Fair Decision Made" data-hi="निष्पक्ष फैसला">Fair Decision Made</div>
                     </div>
                 </div>
             </div>
 
             <!-- Court Reasoning Section -->
             <div class="section court-reasoning">
-                <h2>⚖️ How Courts Think About This Issue</h2>
+                <h2 data-en="⚖️ How Courts Think About This Issue" data-hi="⚖️ अदालतें इस मुद्दे के बारे में कैसे सोचती हैं">⚖️ How Courts Think About This Issue</h2>
 
                 <div class="analogy-box">
-                    <strong>Judge's Perspective:</strong> Imagine you're a wise parent mediating between two children. One child says, "But you said 5 PM sharp!" The other says, "I was stuck in traffic!" As a parent, you'd consider if the excuse is genuine and if anyone was really hurt by the delay.
+                    <strong data-en="Judge's Perspective:" data-hi="न्यायाधीश का दृष्टिकोण:">Judge's Perspective:</strong> 
+                    <span data-en="Imagine you're a wise parent mediating between two children. One child says, 'But you said 5 PM sharp!' The other says, 'I was stuck in traffic!' As a parent, you'd consider if the excuse is genuine and if anyone was really hurt by the delay." data-hi="कल्पना करिए कि आप दो बच्चों के बीच मध्यस्थता करने वाले बुद्धिमान माता-पिता हैं। एक बच्चा कहता है, <span class='important-text'>'लेकिन आपने ठीक 5 बजे कहा था!'</span> दूसरा कहता है, 'मैं ट्रैफिक में फंस गया था!' माता-पिता के रूप में, आप यह विचार करेंगे कि क्या बहाना सच्चा है और क्या देरी से किसी को वास्तव में नुकसान हुआ है।">Imagine you're a wise parent mediating between two children. One child says, "But you said 5 PM sharp!" The other says, "I was stuck in traffic!" As a parent, you'd consider if the excuse is genuine and if anyone was really hurt by the delay.</span>
                 </div>
 
-                <h3>🔍 What Courts Look For:</h3>
+                <h3 data-en="🔍 What Courts Look For:" data-hi="🔍 अदालतें क्या देखती हैं:">🔍 What Courts Look For:</h3>
 
                 <table class="comparison-table">
                     <thead>
                         <tr>
-                            <th>Factor</th>
-                            <th>Court's Question</th>
-                            <th>Impact on Decision</th>
+                            <th data-en="Factor" data-hi="कारक">Factor</th>
+                            <th data-en="Court's Question" data-hi="अदालत का सवाल">Court's Question</th>
+                            <th data-en="Impact on Decision" data-hi="निर्णय पर प्रभाव">Impact on Decision</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Reason for Delay</strong></td>
-                            <td>"Why was the buyer late?"</td>
-                            <td>Genuine reasons get sympathy; excuses don't</td>
+                            <td data-en="Reason for Delay" data-hi="देरी का कारण"><strong>Reason for Delay</strong></td>
+                            <td data-en="'Why was the buyer late?'" data-hi="'खरीदार देर क्यों हुआ?'">"Why was the buyer late?"</td>
+                            <td data-en="Genuine reasons get sympathy; excuses don't" data-hi="वास्तविक कारणों को सहानुभूति मिलती है; बहानों को नहीं">Genuine reasons get sympathy; excuses don't</td>
                         </tr>
                         <tr>
-                            <td><strong>Buyer's Efforts</strong></td>
-                            <td>"Did the buyer try their best?"</td>
-                            <td>Active effort shows good faith</td>
+                            <td data-en="Buyer's Efforts" data-hi="खरीदार के प्रयास"><strong>Buyer's Efforts</strong></td>
+                            <td data-en="'Did the buyer try their best?'" data-hi="'क्या खरीदार ने अपनी पूरी कोशिश की?'">"Did the buyer try their best?"</td>
+                            <td data-en="Active effort shows good faith" data-hi="सक्रिय प्रयास अच्छी नीयत दिखाता है">Active effort shows good faith</td>
                         </tr>
                         <tr>
-                            <td><strong>Seller's Loss</strong></td>
-                            <td>"Is the seller actually hurt by the delay?"</td>
-                            <td>No real loss = more likely to grant extension</td>
+                            <td data-en="Seller's Loss" data-hi="विक्रेता का नुकसान"><strong>Seller's Loss</strong></td>
+                            <td data-en="'Is the seller actually hurt by the delay?'" data-hi="'क्या विक्रेता को देरी से वास्तव में नुकसान हुआ है?'">"Is the seller actually hurt by the delay?"</td>
+                            <td data-en="No real loss = more likely to grant extension" data-hi="कोई वास्तविक नुकसान नहीं = विस्तार देने की अधिक संभावना">No real loss = more likely to grant extension</td>
                         </tr>
                         <tr>
-                            <td><strong>Market Changes</strong></td>
-                            <td>"Has the property value changed significantly?"</td>
-                            <td>Big price increases make courts suspicious of seller's motives</td>
+                            <td data-en="Market Changes" data-hi="बाजार में बदलाव"><strong>Market Changes</strong></td>
+                            <td data-en="'Has the property value changed significantly?'" data-hi="'क्या संपत्ति की कीमत में महत्वपूर्ण बदलाव हुआ है?'">"Has the property value changed significantly?"</td>
+                            <td data-en="Big price increases make courts suspicious of seller's motives" data-hi="बड़ी कीमत वृद्धि से अदालतों को विक्रेता की मंशा पर संदेह होता है">Big price increases make courts suspicious of seller's motives</td>
                         </tr>
                         <tr>
-                            <td><strong>Agreement Language</strong></td>
-                            <td>"Did the parties clearly intend strict deadlines?"</td>
-                            <td>Vague language favors flexibility</td>
+                            <td data-en="Agreement Language" data-hi="समझौते की भाषा"><strong>Agreement Language</strong></td>
+                            <td data-en="'Did the parties clearly intend strict deadlines?'" data-hi="'क्या पक्षों ने स्पष्ट रूप से सख्त समय सीमा का इरादा किया था?'">"Did the parties clearly intend strict deadlines?"</td>
+                            <td data-en="Vague language favors flexibility" data-hi="अस्पष्ट भाषा लचीलेपन का समर्थन करती है">Vague language favors flexibility</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <div class="tip-box">
-                    <strong>💡 Key Insight:</strong> Courts act like fair referees. They don't want anyone to lose their home due to technicalities, but they also don't want people to take advantage of the system.
+                    <strong data-en="💡 Key Insight:" data-hi="💡 मुख्य अंतर्दृष्टि:">💡 Key Insight:</strong> 
+                    <span data-en="Courts act like fair referees. They don't want anyone to lose their home due to technicalities, but they also don't want people to take advantage of the system." data-hi="<span class='important-text'>अदालतें निष्पक्ष रेफरी की तरह काम करती हैं।</span> वे नहीं चाहतीं कि कोई तकनीकी वजहों से अपना घर खो दे, लेकिन वे यह भी नहीं चाहतीं कि लोग सिस्टम का फायदा उठाएं।">Courts act like fair referees. They don't want anyone to lose their home due to technicalities, but they also don't want people to take advantage of the system.</span>
                 </div>
             </div>
 
             <!-- Making Time Essence Section -->
             <div class="section making-time-essence">
-                <h2>⚡ How to Actually Make Time "Of the Essence"</h2>
+                <h2 data-en="⚡ How to Actually Make Time 'Of the Essence'" data-hi="⚡ समय को वास्तव में 'महत्वपूर्ण' कैसे बनाएं">⚡ How to Actually Make Time "Of the Essence"</h2>
 
                 <div class="warning-box">
-                    <strong>⚠️ Important:</strong> Even when you use the magic words correctly, courts can still override if they think it's unfair. But your chances of enforcement improve dramatically.
+                    <strong data-en="⚠️ Important:" data-hi="⚠️ महत्वपूर्ण:">⚠️ Important:</strong> 
+                    <span data-en="Even when you use the magic words correctly, courts can still override if they think it's unfair. But your chances of enforcement improve dramatically." data-hi="<span class='important-text'>जब आप जादुई शब्दों का सही उपयोग करते हैं तब भी, अगर अदालतों को लगता है कि यह अनुचित है तो वे इसे खारिज कर सकती हैं।</span> लेकिन आपकी लागू करने की संभावनाएं नाटकीय रूप से बेहतर हो जाती हैं।">Even when you use the magic words correctly, courts can still override if they think it's unfair. But your chances of enforcement improve dramatically.</span>
                 </div>
 
-                <h3>🎯 The Magic Formula:</h3>
+                <h3 data-en="🎯 The Magic Formula:" data-hi="🎯 जादुई फॉर्मूला:">🎯 The Magic Formula:</h3>
 
                 <div class="code-example">
-CORRECT WAY TO MAKE TIME OF THE ESSENCE:
+                    <div data-en="CORRECT WAY TO MAKE TIME OF THE ESSENCE:
+
+'TIME IS HEREBY EXPRESSLY DECLARED TO BE OF THE ESSENCE 
+OF THIS AGREEMENT. If the Buyer fails to complete registration 
+on or before [DATE], this agreement shall automatically 
+terminate without notice, and the Seller may:
+
+1. Retain all advance payments as liquidated damages
+2. Sell the property to any other party
+3. Pursue legal remedies
+
+The Buyer acknowledges that time is critical due to:
+- [Specific business reasons]
+- [Market volatility]
+- [Seller's time-sensitive commitments]
+
+No extension shall be granted under any circumstances.'" data-hi="समय को महत्वपूर्ण बनाने का सही तरीका:
+
+'इस समझौते के लिए समय को स्पष्ट रूप से महत्वपूर्ण घोषित किया जाता है। 
+यदि खरीदार [तारीख] तक या उससे पहले पंजीकरण पूरा करने में विफल रहता है, 
+तो यह समझौता बिना नोटिस के स्वचालित रूप से समाप्त हो जाएगा, और विक्रेता:
+
+1. सभी अग्रिम भुगतान को नुकसान के रूप में रख सकता है
+2. संपत्ति को किसी अन्य पक्ष को बेच सकता है  
+3. कानूनी उपाय कर सकता है
+
+खरीदार स्वीकार करता है कि समय महत्वपूर्ण है क्योंकि:
+- [विशिष्ट व्यावसायिक कारण]
+- [बाजार की अस्थिरता]
+- [विक्रेता की समय-संवेदनशील प्रतिबद्धताएं]
+
+किसी भी परिस्थिति में कोई विस्तार नहीं दिया जाएगा।'">CORRECT WAY TO MAKE TIME OF THE ESSENCE:
 
 "TIME IS HEREBY EXPRESSLY DECLARED TO BE OF THE ESSENCE 
 OF THIS AGREEMENT. If the Buyer fails to complete registration 
@@ -609,92 +732,137 @@ The Buyer acknowledges that time is critical due to:
 - [Market volatility]
 - [Seller's time-sensitive commitments]
 
-No extension shall be granted under any circumstances."
+No extension shall be granted under any circumstances."</div>
                 </div>
 
-                <h3>📋 Essential Elements Checklist:</h3>
+                <h3 data-en="📋 Essential Elements Checklist:" data-hi="📋 आवश्यक तत्वों की जांच सूची:">📋 Essential Elements Checklist:</h3>
                 <ul style="margin-left: 20px;">
-                    <li>✅ <strong>Magic Words:</strong> "Time is of the essence" or similar explicit language</li>
-                    <li>✅ <strong>Clear Consequences:</strong> What happens if deadline is missed</li>
-                    <li>✅ <strong>Business Justification:</strong> Why timing is genuinely critical</li>
-                    <li>✅ <strong>No Extension Clause:</strong> Explicitly state no extensions will be given</li>
-                    <li>✅ <strong>Both Parties' Acknowledgment:</strong> Both must understand and agree</li>
+                    <li data-en="✅ Magic Words: 'Time is of the essence' or similar explicit language" data-hi="✅ <span class='important-text'>जादुई शब्द:</span> 'समय महत्वपूर्ण है' या इसी तरह की स्पष्ट भाषा">✅ <strong>Magic Words:</strong> "Time is of the essence" or similar explicit language</li>
+                    <li data-en="✅ Clear Consequences: What happens if deadline is missed" data-hi="✅ <span class='important-text'>स्पष्ट परिणाम:</span> समय सीमा चूकने पर क्या होगा">✅ <strong>Clear Consequences:</strong> What happens if deadline is missed</li>
+                    <li data-en="✅ Business Justification: Why timing is genuinely critical" data-hi="✅ <span class='important-text'>व्यावसायिक औचित्य:</span> समय वास्तव में क्यों महत्वपूर्ण है">✅ <strong>Business Justification:</strong> Why timing is genuinely critical</li>
+                    <li data-en="✅ No Extension Clause: Explicitly state no extensions will be given" data-hi="✅ <span class='important-text'>कोई विस्तार खंड नहीं:</span> स्पष्ट रूप से बताएं कि कोई विस्तार नहीं दिया जाएगा">✅ <strong>No Extension Clause:</strong> Explicitly state no extensions will be given</li>
+                    <li data-en="✅ Both Parties' Acknowledgment: Both must understand and agree" data-hi="✅ <span class='important-text'>दोनों पक्षों की स्वीकृति:</span> दोनों को समझना और सहमत होना चाहिए">✅ <strong>Both Parties' Acknowledgment:</strong> Both must understand and agree</li>
                 </ul>
 
                 <div class="example-box">
-                    <h4>❌ Wrong Way (Weak Language):</h4>
-                    <p>"Registration should be completed by March 15th."</p>
+                    <h4 data-en="❌ Wrong Way (Weak Language):" data-hi="❌ गलत तरीका (कमजोर भाषा):">❌ Wrong Way (Weak Language):</h4>
+                    <p data-en="'Registration should be completed by March 15th.'" data-hi="'15 मार्च तक पंजीकरण पूरा होना चाहिए।'">"Registration should be completed by March 15th."</p>
                     
-                    <h4>✅ Right Way (Strong Language):</h4>
-                    <p>"Time is expressly of the essence. Registration MUST be completed by March 15th at 5:00 PM. Any delay will result in automatic cancellation with no right to extension."</p>
+                    <h4 data-en="✅ Right Way (Strong Language):" data-hi="✅ सही तरीका (मजबूत भाषा):">✅ Right Way (Strong Language):</h4>
+                    <p data-en="'Time is expressly of the essence. Registration MUST be completed by March 15th at 5:00 PM. Any delay will result in automatic cancellation with no right to extension.'" data-hi="<span class='important-text'>'समय स्पष्ट रूप से महत्वपूर्ण है। पंजीकरण 15 मार्च शाम 5:00 बजे तक पूरा होना चाहिए। किसी भी देरी से स्वचालित रद्दीकरण होगा और विस्तार का कोई अधिकार नहीं होगा।'</span>">"Time is expressly of the essence. Registration MUST be completed by March 15th at 5:00 PM. Any delay will result in automatic cancellation with no right to extension."</p>
                 </div>
             </div>
 
             <!-- Practical Implications Section -->
             <div class="section practical-implications">
-                <h2>🎯 Practical Implications for Buyers and Sellers</h2>
+                <h2 data-en="🎯 Practical Implications for Buyers and Sellers" data-hi="🎯 खरीदारों और विक्रेताओं के लिए व्यावहारिक निहितार्थ">🎯 Practical Implications for Buyers and Sellers</h2>
 
                 <div class="myth-fact">
                     <div style="grid-column: 1/-1; background: #e3f2fd; border: 2px solid #2196F3; color: #0d47a1;">
-                        <h4>💡 The Bottom Line</h4>
-                        <p>In most property agreements, you get a "reasonable" extension if you have a good reason for delay, unless the contract very clearly states otherwise.</p>
+                        <h4 data-en="💡 The Bottom Line" data-hi="💡 मुख्य बात">💡 The Bottom Line</h4>
+                        <p data-en="In most property agreements, you get a 'reasonable' extension if you have a good reason for delay, unless the contract very clearly states otherwise." data-hi="<span class='important-text'>ज्यादातर संपत्ति समझौतों में, अगर आपके पास देरी का अच्छा कारण है तो आपको 'उचित' विस्तार मिलता है, जब तक कि अनुबंध में बहुत स्पष्ट रूप से अन्यथा न कहा गया हो।</span>">In most property agreements, you get a "reasonable" extension if you have a good reason for delay, unless the contract very clearly states otherwise.</p>
                     </div>
                 </div>
 
-                <h3>👨‍💼 For Sellers:</h3>
+                <h3 data-en="👨‍💼 For Sellers:" data-hi="👨‍💼 विक्रेताओं के लिए:">👨‍💼 For Sellers:</h3>
                 <div class="tip-box">
-                    <strong>What This Means:</strong>
+                    <strong data-en="What This Means:" data-hi="इसका मतलब:">What This Means:</strong>
                     <ul>
-                        <li>You can't automatically cancel just because a deadline passes</li>
-                        <li>You need to give "reasonable" extra time if buyer has valid reasons</li>
-                        <li>If you want strict deadlines, you must use very specific legal language</li>
-                        <li>Courts will examine your motives (especially if property prices have risen)</li>
+                        <li data-en="You can't automatically cancel just because a deadline passes" data-hi="आप सिर्फ समय सीमा बीतने के कारण स्वचालित रूप से रद्द नहीं कर सकते">You can't automatically cancel just because a deadline passes</li>
+                        <li data-en="You need to give 'reasonable' extra time if buyer has valid reasons" data-hi="<span class='important-text'>अगर खरीदार के पास वैध कारण हैं तो आपको 'उचित' अतिरिक्त समय देना होगा</span>">You need to give "reasonable" extra time if buyer has valid reasons</li>
+                        <li data-en="If you want strict deadlines, you must use very specific legal language" data-hi="अगर आप सख्त समय सीमा चाहते हैं, तो आपको बहुत विशिष्ट कानूनी भाषा का उपयोग करना होगा">If you want strict deadlines, you must use very specific legal language</li>
+                        <li data-en="Courts will examine your motives (especially if property prices have risen)" data-hi="अदालतें आपकी मंशा की जांच करेंगी (खासकर अगर संपत्ति की कीमतें बढ़ी हैं)">Courts will examine your motives (especially if property prices have risen)</li>
                     </ul>
                 </div>
 
-                <h3>👨‍💼 For Buyers:</h3>
+                <h3 data-en="👨‍💼 For Buyers:" data-hi="👨‍💼 खरीदारों के लिए:">👨‍💼 For Buyers:</h3>
                 <div class="tip-box">
-                    <strong>What This Means:</strong>
+                    <strong data-en="What This Means:" data-hi="इसका मतलब:">What This Means:</strong>
                     <ul>
-                        <li>You usually get reasonable extensions for genuine delays</li>
-                        <li>You must show good faith effort and valid reasons</li>
-                        <li>Don't assume unlimited time - "reasonable" has limits</li>
-                        <li>If agreement says "time is of essence," take it very seriously</li>
+                        <li data-en="You usually get reasonable extensions for genuine delays" data-hi="आपको आमतौर पर वास्तविक देरी के लिए उचित विस्तार मिलता है">You usually get reasonable extensions for genuine delays</li>
+                        <li data-en="You must show good faith effort and valid reasons" data-hi="<span class='important-text'>आपको अच्छी नीयत का प्रयास और वैध कारण दिखाना होगा</span>">You must show good faith effort and valid reasons</li>
+                        <li data-en="Don't assume unlimited time - 'reasonable' has limits" data-hi="असीमित समय न मानें - 'उचित' की सीमाएं हैं">Don't assume unlimited time - "reasonable" has limits</li>
+                        <li data-en="If agreement says 'time is of essence,' take it very seriously" data-hi="अगर समझौते में 'समय महत्वपूर्ण है' कहा गया है, तो इसे बहुत गंभीरता से लें">If agreement says "time is of essence," take it very seriously</li>
                     </ul>
                 </div>
 
-                <h3>🏢 For Real Estate Professionals:</h3>
+                <h3 data-en="🏢 For Real Estate Professionals:" data-hi="🏢 रियल एस्टेट पेशेवरों के लिए:">🏢 For Real Estate Professionals:</h3>
                 <div class="tip-box">
-                    <strong>Best Practices:</strong>
+                    <strong data-en="Best Practices:" data-hi="सर्वोत्तम प्रथाएं:">Best Practices:</strong>
                     <ul>
-                        <li>Educate clients about this concept early in the process</li>
-                        <li>Build realistic timelines with buffer periods</li>
-                        <li>Document all communications about delays</li>
-                        <li>Use clear language about what happens with delays</li>
+                        <li data-en="Educate clients about this concept early in the process" data-hi="प्रक्रिया की शुरुआत में ही ग्राहकों को इस अवधारणा के बारे में शिक्षित करें">Educate clients about this concept early in the process</li>
+                        <li data-en="Build realistic timelines with buffer periods" data-hi="<span class='important-text'>बफर अवधि के साथ यथार्थवादी समयसीमा बनाएं</span>">Build realistic timelines with buffer periods</li>
+                        <li data-en="Document all communications about delays" data-hi="देरी के बारे में सभी संचार का दस्तावेजीकरण करें">Document all communications about delays</li>
+                        <li data-en="Use clear language about what happens with delays" data-hi="देरी के साथ क्या होता है इसके बारे में स्पष्ट भाषा का उपयोग करें">Use clear language about what happens with delays</li>
                     </ul>
                 </div>
 
                 <div class="example-box">
-                    <h4>📊 Timeline Reality Check:</h4>
-                    <p><strong>Typical Agreement Says:</strong> "Registration within 30 days"</p>
-                    <p><strong>Reality:</strong> If buyer is 10 days late due to bank delays, courts will likely allow it</p>
-                    <p><strong>When Courts Say No:</strong> If buyer is 6 months late with no good reason</p>
+                    <h4 data-en="📊 Timeline Reality Check:" data-hi="📊 समयसीमा वास्तविकता जांच:">📊 Timeline Reality Check:</h4>
+                    <p data-en="Typical Agreement Says: 'Registration within 30 days'" data-hi="<span class='important-text'>सामान्य समझौता कहता है:</span> '30 दिनों के भीतर पंजीकरण'"><strong>Typical Agreement Says:</strong> "Registration within 30 days"</p>
+                    <p data-en="Reality: If buyer is 10 days late due to bank delays, courts will likely allow it" data-hi="<span class='important-text'>वास्तविकता:</span> अगर खरीदार बैंक की देरी के कारण 10 दिन देर है, तो अदालतें संभावित रूप से इसकी अनुमति देंगी"><strong>Reality:</strong> If buyer is 10 days late due to bank delays, courts will likely allow it</p>
+                    <p data-en="When Courts Say No: If buyer is 6 months late with no good reason" data-hi="<span class='important-text'>जब अदालतें नहीं कहती हैं:</span> अगर खरीदार बिना किसी अच्छे कारण के 6 महीने देर है"><strong>When Courts Say No:</strong> If buyer is 6 months late with no good reason</p>
                 </div>
             </div>
 
             <!-- Key Takeaway -->
             <div class="key-takeaway">
-                <h3>🎯 The Big Picture</h3>
-                <p>Indian property law prioritizes fairness over technicalities. The system is designed to help genuine transactions succeed while preventing people from taking unfair advantage of minor delays. As a seller, if you want strict deadlines, you need to be very explicit about it. As a buyer, you get reasonable protection, but don't abuse it!</p>
+                <h3 data-en="🎯 The Big Picture" data-hi="🎯 बड़ी तस्वीर">🎯 The Big Picture</h3>
+                <p data-en="Indian property law prioritizes fairness over technicalities. The system is designed to help genuine transactions succeed while preventing people from taking unfair advantage of minor delays. As a seller, if you want strict deadlines, you need to be very explicit about it. As a buyer, you get reasonable protection, but don't abuse it!" data-hi="<span class='important-text'>भारतीय संपत्ति कानून तकनीकताओं पर निष्पक्षता को प्राथमिकता देता है।</span> यह सिस्टम वास्तविक लेन-देन को सफल बनाने में मदद करने के लिए डिज़ाइन किया गया है जबकि लोगों को छोटी देरी का अनुचित फायदा उठाने से रोकता है। एक विक्रेता के रूप में, अगर आप सख्त समय सीमा चाहते हैं, तो आपको इसके बारे में बहुत स्पष्ट होना होगा। एक खरीदार के रूप में, आपको उचित सुरक्षा मिलती है, लेकिन इसका दुरुपयोग न करें!">Indian property law prioritizes fairness over technicalities. The system is designed to help genuine transactions succeed while preventing people from taking unfair advantage of minor delays. As a seller, if you want strict deadlines, you need to be very explicit about it. As a buyer, you get reasonable protection, but don't abuse it!</p>
             </div>
 
             <div class="warning-box">
-                <strong>⚖️ Legal Disclaimer:</strong> This explanation simplifies complex legal concepts for educational purposes. Always consult with a qualified property lawyer for your specific situation, as laws can vary by state and circumstances can affect outcomes.
+                <strong data-en="⚖️ Legal Disclaimer:" data-hi="⚖️ कानूनी अस्वीकरण:">⚖️ Legal Disclaimer:</strong> 
+                <span data-en="This explanation simplifies complex legal concepts for educational purposes. Always consult with a qualified property lawyer for your specific situation, as laws can vary by state and circumstances can affect outcomes." data-hi="यह व्याख्या शैक्षणिक उद्देश्यों के लिए जटिल कानूनी अवधारणाओं को सरल बनाती है। <span class='important-text'>अपनी विशिष्ट स्थिति के लिए हमेशा एक योग्य संपत्ति वकील से सलाह लें,</span> क्योंकि कानून राज्य के अनुसार भिन्न हो सकते हैं और परिस्थितियां परिणामों को प्रभावित कर सकती हैं।">This explanation simplifies complex legal concepts for educational purposes. Always consult with a qualified property lawyer for your specific situation, as laws can vary by state and circumstances can affect outcomes.</span>
             </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <h4 data-en="📋 Document Prepared By" data-hi="📋 दस्तावेज़ तैयार किया गया">📋 Document Prepared By</h4>
+            <p class="author" data-en="Vipul Anand" data-hi="विपुल आनंद">Vipul Anand</p>
+            <p data-en="This document has been prepared in good faith to make the property transaction process smooth and comfortable for both buyers and existing property owners, while keeping legality in its rightful context." data-hi="यह दस्तावेज़ अच्छी नीयत से तैयार किया गया है ताकि संपत्ति लेन-देन की प्रक्रिया खरीदारों और मौजूदा संपत्ति मालिकों दोनों के लिए सुगम और आरामदायक हो, जबकि कानूनी पहलुओं को उनके सही संदर्भ में रखा गया है।">This document has been prepared in good faith to make the property transaction process smooth and comfortable for both buyers and existing property owners, while keeping legality in its rightful context.</p>
+            <p data-en="Buyers are encouraged to have their lawyers review this document and raise any concerns prior to taking any legal steps." data-hi="<span class='important-text'>खरीदारों को प्रोत्साहित किया जाता है कि वे अपने वकीलों से इस दस्तावेज़ की समीक्षा कराएं और कोई भी कानूनी कदम उठाने से पहले किसी भी चिंता को उठाएं।</span>">Buyers are encouraged to have their lawyers review this document and raise any concerns prior to taking any legal steps.</p>
         </div>
     </div>
 
     <script>
+        const translations = {
+            en: {
+                // All existing English content will remain as default
+            },
+            hi: {
+                // Hindi translations are embedded in data-hi attributes
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function changeLanguage() {
+            const selectedLanguage = document.getElementById('languageSelect').value;
+            currentLanguage = selectedLanguage;
+            
+            // Add or remove Hindi class
+            if (selectedLanguage === 'hi') {
+                document.body.classList.add('hindi');
+            } else {
+                document.body.classList.remove('hindi');
+            }
+            
+            // Update all elements with translation data
+            const elementsWithTranslation = document.querySelectorAll('[data-en][data-hi]');
+            
+            elementsWithTranslation.forEach(element => {
+                const translation = element.getAttribute(`data-${selectedLanguage}`);
+                if (translation) {
+                    element.innerHTML = translation;
+                }
+            });
+            
+            // Update page language attribute
+            document.documentElement.lang = selectedLanguage === 'hi' ? 'hi' : 'en';
+        }
+
         function toggleAccordion(header) {
             const content = header.nextElementSibling;
             const icon = header.querySelector('.toggle-icon');
@@ -749,6 +917,12 @@ No extension shall be granted under any circumstances."
                 this.style.transform = 'scale(1)';
             });
         });
+
+        // Load Google Fonts for Hindi
+        const link = document.createElement('link');
+        link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap';
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
     </script>
 </body>
 </html>
