@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Sale Framework - Corrected Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .metric-card.green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .metric-card.orange {
+            background: linear-gradient(135deg, #f46b45 0%, #eea849 100%);
+        }
+        
+        .metric-card.blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .metric-note {
+            font-size: 0.85em;
+            opacity: 0.85;
+        }
+        
+        .correction-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+        
+        .correction-box h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .comparison-item {
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+        
+        .incorrect {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .correct {
+            border-left: 4px solid #28a745;
+        }
+        
+        .comparison-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+        
+        .comparison-value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .impact-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+        
+        .impact-box h3 {
+            color: #155724;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .impact-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .impact-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .impact-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.95em;
+        }
+        
+        .checkmark {
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 Land Sale Framework</h1>
+            <p>After Selling 3 Acres to IK - Corrected Analysis</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2 class="section-title">Capital Secured</h2>
+                <div class="metric-grid">
+                    <div class="metric-card green">
+                        <div class="metric-label">Total Capital</div>
+                        <div class="metric-value">₹2.1 Cr</div>
+                        <div class="metric-note">From 3 acres @ ₹70L</div>
+                    </div>
+                    <div class="metric-card blue">
+                        <div class="metric-label">White Component</div>
+                        <div class="metric-value">₹1.5 Cr</div>
+                        <div class="metric-note">Bankable capital</div>
+                    </div>
+                    <div class="metric-card orange">
+                        <div class="metric-label">Cash Component</div>
+                        <div class="metric-value">₹60L</div>
+                        <div class="metric-note">Liquid reserve</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="correction-box">
+                <h3>📊 Corrected Land Calculations</h3>
+                <div class="comparison">
+                    <div class="comparison-item incorrect">
+                        <div class="comparison-label" style="color: #dc3545;">❌ Previous (Incorrect)</div>
+                        <div class="comparison-value" style="color: #dc3545;">85 kanals</div>
+                        <div class="metric-note">~10.6 acres retained</div>
+                    </div>
+                    <div class="comparison-item correct">
+                        <div class="comparison-label" style="color: #28a745;">✓ Corrected</div>
+                        <div class="comparison-value" style="color: #28a745;">93 kanals</div>
+                        <div class="metric-note">~11.6 acres retained</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 5px;">
+                    <strong>Calculation:</strong><br>
+                    • Total land: 117 kanals (56 + 61)<br>
+                    • Selling: 3 acres = 24 kanals<br>
+                    • <strong>Retained: 93 kanals = ~11.6 acres</strong>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Annual Farm Income (Tax-Free)</h2>
+                <div class="comparison">
+                    <div class="comparison-item incorrect">
+                        <div class="comparison-label" style="color: #dc3545;">❌ Previous (Incorrect)</div>
+                        <div class="comparison-value" style="color: #dc3545;">₹7.44L/year</div>
+                    </div>
+                    <div class="comparison-item correct">
+                        <div class="comparison-label" style="color: #28a745;">✓ Corrected</div>
+                        <div class="comparison-value" style="color: #28a745;">₹8.14L/year</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+                    <strong>Contract Farming Calculation:</strong><br>
+                    • Rate: ₹8,750 per kanal per year<br>
+                    • Land retained: 93 kanals<br>
+                    • <strong>Annual income: 93 × ₹8,750 = ₹8,13,750/year</strong><br>
+                    • <strong>Tax-free agricultural income</strong>
+                </div>
+            </div>
+            
+            <div class="impact-box">
+                <h3>💪 Why This Matters - Stronger Position!</h3>
+                <ul class="impact-list">
+                    <li><strong>8 more kanals retained</strong> than previously calculated</li>
+                    <li><strong>₹70,000 more annual income</strong> (₹8.14L vs ₹7.44L)</li>
+                    <li><strong>Better sustainability</strong> - higher farm income cushion</li>
+                    <li><strong>More land for transformation</strong> - agricultural experiments possible</li>
+                    <li><strong>Stronger operational buffer</strong> - easier to replenish reserves</li>
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h2 class="section-title">Capital Deployment Plan</h2>
+                <div style="background: #f8f9fa; padding: 25px; border-radius: 10px;">
+                    <div style="margin-bottom: 20px;">
+                        <strong style="color: #667eea; font-size: 1.2em;">₹50L - Marriage Buffer</strong>
+                        <p style="margin-top: 5px; color: #6c757d;">Separate FD, ring-fenced for social obligation</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <strong style="color: #667eea; font-size: 1.2em;">₹1 Cr - Long-Term Wealth</strong>
+                        <p style="margin-top: 5px; color: #6c757d;">5-year FD or staged hybrid portfolio deployment</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <strong style="color: #667eea; font-size: 1.2em;">₹60L Cash - Operational Liquidity</strong>
+                        <p style="margin-top: 5px; color: #6c757d;">Direct use for expenses, agricultural investments, emergency buffer</p>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: white; border-radius: 5px; border-left: 4px solid #28a745;">
+                        <strong style="color: #28a745;">System Outcome:</strong><br>
+                        <span class="checkmark">✓</span> Marriage pre-funded (no system disruption)<br>
+                        <span class="checkmark">✓</span> Capital compounding for 5 years<br>
+                        <span class="checkmark">✓</span> ₹8.14L/year sustains minimal lifestyle<br>
+                        <span class="checkmark">✓</span> 93 kanals retained for transformation<br>
+                        <span class="checkmark">✓</span> Peace of mind with character-vetted buyer
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Framework Status:</strong> Corrected & Verified ✓</p>
+            <p style="margin-top: 10px;">93 kanals retained | ₹8.14L annual tax-free income | ₹2.1 Cr capital secured</p>
+            <p style="margin-top: 15px; font-style: italic;">"अच्छा? बुरा? कौन जाने? ब्रह्मांड मार्गदर्शन करेगा। 🙏🏾"</p>
+        </div>
+    </div>
+</body>
+</html>
