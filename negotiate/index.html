@@ -716,6 +716,238 @@
                 background: white;
             }
         }
+        
+        /* Mobile Responsive */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 15px;
+                font-size: 18px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .meeting-info {
+                font-size: 14px;
+            }
+            
+            /* Controls widget - move to top, full width */
+            .controls-widget {
+                position: static;
+                width: 100%;
+                margin-bottom: 20px;
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            
+            .control-group {
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            /* Bayana terms */
+            .bayana-terms {
+                padding: 15px;
+            }
+            
+            .terms-header {
+                font-size: 18px;
+            }
+            
+            .term-row {
+                flex-direction: column;
+                gap: 5px;
+                font-size: 16px;
+            }
+            
+            .term-label, .term-value {
+                text-align: left;
+            }
+            
+            .registry-fields {
+                grid-template-columns: 1fr;
+                padding: 15px;
+            }
+            
+            .time-essence-clause {
+                font-size: 14px;
+            }
+            
+            /* Size selector */
+            .size-selector {
+                padding: 15px;
+            }
+            
+            .selector-header {
+                font-size: 18px;
+            }
+            
+            .size-label {
+                font-size: 18px;
+            }
+            
+            .size-detail {
+                font-size: 14px;
+            }
+            
+            .offer-expiry {
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            /* Comparison table - scroll horizontally */
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .comparison-table thead,
+            .comparison-table tbody,
+            .comparison-table tr {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                font-size: 14px;
+                padding: 8px 4px;
+            }
+            
+            /* Option cards */
+            .option-card {
+                padding: 15px;
+            }
+            
+            .option-header {
+                font-size: 20px;
+            }
+            
+            .detail-row {
+                font-size: 16px;
+                flex-direction: column;
+                gap: 3px;
+            }
+            
+            .detail-label, .detail-value {
+                text-align: left;
+            }
+            
+            .notes-label {
+                font-size: 18px;
+            }
+            
+            textarea {
+                font-size: 16px;
+                min-height: 120px;
+            }
+            
+            button {
+                font-size: 16px;
+                padding: 10px 18px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            /* Export buttons - stack vertically, fixed at bottom */
+            .export-section {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                flex-direction: column;
+                gap: 0;
+                padding: 10px;
+                background: white;
+                border-top: 2px solid #333;
+                box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+            }
+            
+            body.dark-theme .export-section {
+                background: #2a2a2a;
+                border-color: #666;
+            }
+            
+            .export-btn, .send-btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 15px;
+                box-shadow: none;
+            }
+            
+            /* Modal */
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 20px;
+            }
+            
+            .modal-header {
+                font-size: 20px;
+            }
+            
+            .phone-input-row {
+                flex-direction: column;
+            }
+            
+            .browse-contacts-btn {
+                width: 100%;
+            }
+            
+            input[type="tel"] {
+                width: 100%;
+            }
+            
+            .preview-area {
+                font-size: 14px;
+                max-height: 200px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+            
+            /* Toast */
+            .toast {
+                bottom: 140px;
+                right: 10px;
+                left: 10px;
+                font-size: 16px;
+                padding: 15px;
+            }
+            
+            /* Footer padding for fixed buttons */
+            .footer {
+                padding-bottom: 140px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+                font-size: 16px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .option-header {
+                font-size: 18px;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                font-size: 12px;
+                padding: 6px 3px;
+            }
+        }
     </style>
 </head>
 <body>
