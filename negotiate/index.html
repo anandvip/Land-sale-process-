@@ -30,8 +30,142 @@
         
         .meeting-info {
             font-size: 18px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: #666;
+        }
+        
+        .bayana-terms {
+            background: #fff3cd;
+            border: 3px solid #856404;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 3px 3px 0px #856404;
+        }
+        
+        .terms-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #856404;
+            padding-bottom: 8px;
+        }
+        
+        .terms-grid {
+            margin-bottom: 20px;
+        }
+        
+        .term-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .term-label {
+            font-weight: bold;
+        }
+        
+        .term-value {
+            text-align: right;
+        }
+        
+        .registry-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border: 2px solid #856404;
+        }
+        
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .field-group label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .field-group input[type="date"],
+        .field-group input[type="time"] {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            padding: 12px;
+            border: 2px solid #333;
+        }
+        
+        .time-essence-clause {
+            background: white;
+            padding: 15px;
+            border: 2px solid #856404;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        .size-selector {
+            background: white;
+            border: 3px solid #333;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 3px 3px 0px #333;
+        }
+        
+        .selector-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .size-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .size-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #666;
+            cursor: pointer;
+            background: #f9f9f9;
+        }
+        
+        .size-option:hover {
+            background: #e9e9e9;
+            border-color: #333;
+        }
+        
+        .size-option input[type="radio"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .size-label {
+            font-size: 22px;
+            font-weight: bold;
+            flex: 1;
+        }
+        
+        .size-detail {
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .offer-expiry {
+            background: #fff3cd;
+            padding: 15px;
+            border: 2px solid #856404;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
         }
         
         .option-card {
@@ -134,6 +268,8 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
+            display: flex;
+            gap: 15px;
         }
         
         .export-btn {
@@ -147,6 +283,19 @@
         .export-btn:hover {
             background: #218838;
             border-color: #218838;
+        }
+        
+        .send-btn {
+            font-size: 22px;
+            padding: 18px 36px;
+            background: #007bff;
+            border-color: #007bff;
+            box-shadow: 4px 4px 0px #333;
+        }
+        
+        .send-btn:hover {
+            background: #0056b3;
+            border-color: #0056b3;
         }
         
         .saved-indicator {
@@ -182,8 +331,385 @@
             font-weight: bold;
         }
         
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: 3px solid #333;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 5px 5px 0px #333;
+        }
+        
+        .modal-header {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        .preview-area {
+            background: #f9f9f9;
+            border: 2px solid #666;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .phone-input-group {
+            margin-bottom: 20px;
+        }
+        
+        .phone-label {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .phone-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+        
+        input[type="tel"] {
+            flex: 1;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            padding: 15px;
+            border: 2px solid #333;
+        }
+        
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: #000;
+        }
+        
+        .browse-contacts-btn {
+            font-size: 20px;
+            padding: 15px 24px;
+            background: #6c757d;
+            border-color: #6c757d;
+            white-space: nowrap;
+        }
+        
+        .browse-contacts-btn:hover {
+            background: #5a6268;
+            border-color: #5a6268;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .modal-buttons button {
+            flex: 1;
+            font-size: 20px;
+            padding: 15px;
+        }
+        
+        .whatsapp-btn {
+            background: #25D366;
+            border-color: #25D366;
+        }
+        
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            border-color: #128C7E;
+        }
+        
+        .cancel-btn {
+            background: #6c757d;
+            border-color: #6c757d;
+        }
+        
+        .cancel-btn:hover {
+            background: #5a6268;
+            border-color: #5a6268;
+        }
+        
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 0;
+            border: 2px solid #333;
+            box-shadow: 4px 4px 0px #000;
+            font-size: 18px;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast.success {
+            background: #28a745;
+            border-color: #28a745;
+        }
+        
+        .toast.info {
+            background: #17a2b8;
+            border-color: #17a2b8;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            padding: 30px 0 80px 0;
+            margin-top: 50px;
+            border-top: 1px solid #ddd;
+        }
+        
+        /* Controls Widget */
+        .controls-widget {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid #333;
+            padding: 15px;
+            box-shadow: 3px 3px 0px #333;
+            z-index: 999;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            font-size: 16px !important;
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-label {
+            font-size: 14px !important;
+            font-weight: bold;
+        }
+        
+        .font-control {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .font-btn {
+            font-size: 14px !important;
+            padding: 8px 12px;
+            background: #f0f0f0;
+            color: #000;
+            border: 2px solid #333;
+            cursor: pointer;
+            font-weight: bold;
+            min-width: 40px;
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+        
+        .font-btn:hover {
+            background: #e0e0e0;
+            color: #000;
+        }
+        
+        .font-btn:active {
+            background: #d0d0d0;
+        }
+        
+        body.dark-theme .font-btn {
+            background: #444;
+            color: #fff;
+            border-color: #666;
+        }
+        
+        body.dark-theme .font-btn:hover {
+            background: #555;
+            color: #fff;
+        }
+        
+        body.dark-theme .font-btn:active {
+            background: #666;
+        }
+        
+        .theme-toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #e0e0e0;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+        
+        .theme-toggle.dark {
+            background: #555;
+            border-color: #666;
+        }
+        
+        .theme-slider {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            top: 1px;
+            left: 2px;
+            transition: 0.3s;
+            border: 1px solid #000;
+        }
+        
+        .theme-toggle.dark .theme-slider {
+            left: 24px;
+            background: #fff;
+            border-color: #ccc;
+        }
+        
+        /* Dark theme */
+        body.dark-theme {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme h1 {
+            color: #fff;
+            border-color: #666;
+        }
+        
+        body.dark-theme .meeting-info {
+            color: #aaa;
+        }
+        
+        body.dark-theme .footer {
+            color: #888;
+            border-color: #444;
+        }
+        
+        body.dark-theme .bayana-terms {
+            background: #2d2000;
+            border-color: #856404;
+        }
+        
+        body.dark-theme .bayana-terms .term-row {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .bayana-terms .term-row[style*="background"] {
+            background: #856404 !important;
+            color: #fff !important;
+        }
+        
+        body.dark-theme .bayana-terms .term-row[style*="background"] .term-label,
+        body.dark-theme .bayana-terms .term-row[style*="background"] .term-value {
+            color: #fff !important;
+        }
+        
+        body.dark-theme .size-selector,
+        body.dark-theme .option-card,
+        body.dark-theme .comparison-table,
+        body.dark-theme .controls-widget,
+        body.dark-theme .modal-content {
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .option-header,
+        body.dark-theme .terms-header,
+        body.dark-theme .selector-header,
+        body.dark-theme .modal-header {
+            color: #fff;
+            border-color: #666;
+        }
+        
+        body.dark-theme .controls-widget {
+            border-color: #666;
+        }
+        
+        body.dark-theme .control-label {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .comparison-table th {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        body.dark-theme .comparison-table td strong {
+            color: #4fc3f7;
+        }
+        
+        body.dark-theme textarea {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .size-option {
+            background: #333;
+        }
+        
+        body.dark-theme .size-option:hover {
+            background: #444;
+        }
+        
+        body.dark-theme .offer-expiry {
+            background: #856404;
+            border-color: #a0761a;
+            color: #fff;
+        }
+        
+        body.dark-theme .preview-area {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .registry-fields,
+        body.dark-theme .time-essence-clause {
+            background: #333;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme strong {
+            color: #fff;
+        }
+        
+        body.dark-theme .detail-value strong {
+            color: #4fc3f7;
+        }
+        
+        body.dark-theme input[type="date"],
+        body.dark-theme input[type="time"],
+        body.dark-theme input[type="tel"] {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
         @media print {
-            .export-section {
+            .export-section, .toast, .controls-widget {
                 display: none;
             }
             body {
@@ -195,7 +721,92 @@
 <body>
     <h1>LAND SALE OPTIONS - SUKH MEETING</h1>
     <div class="meeting-info">
-        Date: December 12, 2025 | Land: 6 Kanals | Settlement: March 2026
+        Date: December 12, 2025 | Settlement: March 2026
+    </div>
+
+    <!-- CONTROLS WIDGET -->
+    <div class="controls-widget">
+        <div class="control-group">
+            <span class="control-label">Font:</span>
+            <div class="font-control">
+                <button class="font-btn" onclick="adjustFontSize(-2)">A-</button>
+                <button class="font-btn" onclick="adjustFontSize(0)">A</button>
+                <button class="font-btn" onclick="adjustFontSize(2)">A+</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <span class="control-label">Theme:</span>
+            <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                <div class="theme-slider"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BAYANA TERMS SECTION -->
+    <div class="bayana-terms">
+        <div class="terms-header">BAYANA TERMS & CONDITIONS</div>
+        <div class="terms-grid">
+            <div class="term-row">
+                <span class="term-label">ADVANCE PAYMENT (BAYANA):</span>
+                <span class="term-value">40% of total amount</span>
+            </div>
+            <div class="term-row">
+                <span class="term-label">PAYMENT DEADLINE:</span>
+                <span class="term-value">December 31, 2025, 11:59 PM</span>
+            </div>
+            <div class="term-row" style="background: #ffc107; padding: 8px; margin: 8px -8px;">
+                <span class="term-label">REGISTRY PERIOD:</span>
+                <span class="term-value">March 2026</span>
+            </div>
+            <div class="term-row">
+                <span class="term-label">VENUE:</span>
+                <span class="term-value">Sub-Registrar Office, Pehowa Tehsil, District Kurukshetra</span>
+            </div>
+        </div>
+        
+        <div class="registry-fields">
+            <div class="field-group">
+                <label>REGISTRY DATE:</label>
+                <input type="date" id="registryDate" min="2026-03-01" max="2026-03-31" />
+            </div>
+            <div class="field-group">
+                <label>REGISTRY TIME:</label>
+                <input type="time" id="registryTime" value="11:00" />
+            </div>
+        </div>
+        
+        <div class="time-essence-clause">
+            <strong>TIME IS OF ESSENCE CLAUSE:</strong><br>
+            Once registry date/time is mutually agreed and documented:<br>
+            • Both parties bound to appear on exact date and time<br>
+            • Failure by SELLER: Pays DOUBLE bayana to buyer<br>
+            • Failure by BUYER: Forfeits entire bayana (non-refundable)
+        </div>
+    </div>
+
+    <!-- SIZE SELECTOR -->
+    <div class="size-selector">
+        <div class="selector-header">SELECT LAND SIZE:</div>
+        <div class="size-options">
+            <label class="size-option">
+                <input type="radio" name="landSize" value="4" onchange="updateCalculations()" />
+                <span class="size-label">4 Kanals (0.5 acre)</span>
+                <span class="size-detail">Buyer: 4K | Vipul keeps: 52K</span>
+            </label>
+            <label class="size-option">
+                <input type="radio" name="landSize" value="6" checked onchange="updateCalculations()" />
+                <span class="size-label">6 Kanals (0.75 acre)</span>
+                <span class="size-detail">Buyer: 6K | Vipul keeps: 50K</span>
+            </label>
+            <label class="size-option">
+                <input type="radio" name="landSize" value="8" onchange="updateCalculations()" />
+                <span class="size-label">8 Kanals (1.0 acre)</span>
+                <span class="size-detail">Buyer: 8K | Vipul keeps: 48K</span>
+            </label>
+        </div>
+        <div class="offer-expiry">
+            ⚠️ OFFER VALID UNTIL: December 31, 2025 | CURRENT MARKET: ₹70-75 Lakhs/Acre
+        </div>
     </div>
 
     <!-- COMPARISON TABLE -->
@@ -205,39 +816,14 @@
                 <th>Option</th>
                 <th>Per Acre</th>
                 <th>Per Kanal</th>
-                <th>6 Kanals Total</th>
-                <th>vs Market (₹70L)</th>
+                <th>Total</th>
+                <th>Bayana (40%)</th>
+                <th>Balance (60%)</th>
+                <th>vs Market</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td><strong>OPTION 1</strong></td>
-                <td>₹95 Lakhs</td>
-                <td>₹11.875 Lakhs</td>
-                <td><strong>₹71.25 Lakhs</strong></td>
-                <td>+₹19.25L</td>
-            </tr>
-            <tr>
-                <td><strong>OPTION 2</strong></td>
-                <td>₹90 Lakhs</td>
-                <td>₹11.25 Lakhs</td>
-                <td><strong>₹67.50 Lakhs</strong></td>
-                <td>+₹15.00L</td>
-            </tr>
-            <tr>
-                <td><strong>OPTION 3</strong></td>
-                <td>₹80 Lakhs</td>
-                <td>₹10.00 Lakhs</td>
-                <td><strong>₹60.00 Lakhs</strong></td>
-                <td>+₹7.50L</td>
-            </tr>
-            <tr>
-                <td><strong>OPTION 4</strong></td>
-                <td>₹70 Lakhs</td>
-                <td>₹8.75 Lakhs</td>
-                <td><strong>₹52.50 Lakhs</strong></td>
-                <td>₹0</td>
-            </tr>
+        <tbody id="comparisonTableBody">
+            <!-- Populated by JavaScript -->
         </tbody>
     </table>
 
@@ -251,15 +837,27 @@
             </div>
             <div class="detail-row">
                 <span class="detail-label">Rate Per Kanal:</span>
-                <span class="detail-value">₹11.875 Lakhs</span>
+                <span class="detail-value" id="opt1-perKanal">₹11.875 Lakhs</span>
             </div>
             <div class="detail-row">
-                <span class="detail-label">Total for 6 Kanals:</span>
-                <span class="detail-value"><strong>₹71.25 Lakhs</strong></span>
+                <span class="detail-label">Land Size:</span>
+                <span class="detail-value" id="opt1-size">6 Kanals</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Total Amount:</span>
+                <span class="detail-value"><strong id="opt1-total">₹71.25 Lakhs</strong></span>
+            </div>
+            <div class="detail-row" style="border-top: 2px solid #333; padding-top: 8px; margin-top: 8px;">
+                <span class="detail-label">Bayana (40%):</span>
+                <span class="detail-value"><strong id="opt1-bayana">₹28.50 Lakhs</strong></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Balance before Registry (60%):</span>
+                <span class="detail-value" id="opt1-balance">₹42.75 Lakhs</span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Premium over Market:</span>
-                <span class="detail-value">27-36%</span>
+                <span class="detail-value" id="opt1-premium">27-36%</span>
             </div>
         </div>
         
@@ -283,15 +881,27 @@
             </div>
             <div class="detail-row">
                 <span class="detail-label">Rate Per Kanal:</span>
-                <span class="detail-value">₹11.25 Lakhs</span>
+                <span class="detail-value" id="opt2-perKanal">₹11.25 Lakhs</span>
             </div>
             <div class="detail-row">
-                <span class="detail-label">Total for 6 Kanals:</span>
-                <span class="detail-value"><strong>₹67.50 Lakhs</strong></span>
+                <span class="detail-label">Land Size:</span>
+                <span class="detail-value" id="opt2-size">6 Kanals</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Total Amount:</span>
+                <span class="detail-value"><strong id="opt2-total">₹67.50 Lakhs</strong></span>
+            </div>
+            <div class="detail-row" style="border-top: 2px solid #333; padding-top: 8px; margin-top: 8px;">
+                <span class="detail-label">Bayana (40%):</span>
+                <span class="detail-value"><strong id="opt2-bayana">₹27.00 Lakhs</strong></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Balance before Registry (60%):</span>
+                <span class="detail-value" id="opt2-balance">₹40.50 Lakhs</span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Premium over Market:</span>
-                <span class="detail-value">20-29%</span>
+                <span class="detail-value" id="opt2-premium">20-29%</span>
             </div>
         </div>
         
@@ -315,15 +925,27 @@
             </div>
             <div class="detail-row">
                 <span class="detail-label">Rate Per Kanal:</span>
-                <span class="detail-value">₹10.00 Lakhs</span>
+                <span class="detail-value" id="opt3-perKanal">₹10.00 Lakhs</span>
             </div>
             <div class="detail-row">
-                <span class="detail-label">Total for 6 Kanals:</span>
-                <span class="detail-value"><strong>₹60.00 Lakhs</strong></span>
+                <span class="detail-label">Land Size:</span>
+                <span class="detail-value" id="opt3-size">6 Kanals</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Total Amount:</span>
+                <span class="detail-value"><strong id="opt3-total">₹60.00 Lakhs</strong></span>
+            </div>
+            <div class="detail-row" style="border-top: 2px solid #333; padding-top: 8px; margin-top: 8px;">
+                <span class="detail-label">Bayana (40%):</span>
+                <span class="detail-value"><strong id="opt3-bayana">₹24.00 Lakhs</strong></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Balance before Registry (60%):</span>
+                <span class="detail-value" id="opt3-balance">₹36.00 Lakhs</span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Premium over Market:</span>
-                <span class="detail-value">7-14%</span>
+                <span class="detail-value" id="opt3-premium">7-14%</span>
             </div>
         </div>
         
@@ -347,15 +969,27 @@
             </div>
             <div class="detail-row">
                 <span class="detail-label">Rate Per Kanal:</span>
-                <span class="detail-value">₹8.75 Lakhs</span>
+                <span class="detail-value" id="opt4-perKanal">₹8.75 Lakhs</span>
             </div>
             <div class="detail-row">
-                <span class="detail-label">Total for 6 Kanals:</span>
-                <span class="detail-value"><strong>₹52.50 Lakhs</strong></span>
+                <span class="detail-label">Land Size:</span>
+                <span class="detail-value" id="opt4-size">6 Kanals</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Total Amount:</span>
+                <span class="detail-value"><strong id="opt4-total">₹52.50 Lakhs</strong></span>
+            </div>
+            <div class="detail-row" style="border-top: 2px solid #333; padding-top: 8px; margin-top: 8px;">
+                <span class="detail-label">Bayana (40%):</span>
+                <span class="detail-value"><strong id="opt4-bayana">₹21.00 Lakhs</strong></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Balance before Registry (60%):</span>
+                <span class="detail-value" id="opt4-balance">₹31.50 Lakhs</span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Premium over Market:</span>
-                <span class="detail-value">0%</span>
+                <span class="detail-value" id="opt4-premium">0%</span>
             </div>
         </div>
         
@@ -369,51 +1003,277 @@
         </div>
     </div>
 
-    <!-- EXPORT BUTTON -->
+    <!-- FOOTER -->
+    <div class="footer">
+        Prepared by Vipul Anand to reduce negotiation friction. For any clarification call +919896918475
+    </div>
+
+    <!-- EXPORT AND SEND BUTTONS -->
     <div class="export-section">
+        <button class="send-btn" onclick="openSendModal()">SEND RESPONSE</button>
         <button class="export-btn" onclick="exportNotes()">EXPORT ALL</button>
     </div>
 
+    <!-- SEND MODAL -->
+    <div id="sendModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">SEND RESPONSE VIA WHATSAPP</div>
+            
+            <div class="phone-input-group">
+                <label class="phone-label">WhatsApp Number:</label>
+                <div class="phone-input-row">
+                    <input type="tel" id="phoneNumber" placeholder="+91 98765 43210" />
+                    <button class="browse-contacts-btn" onclick="browseContacts()">📱 Browse Contacts</button>
+                </div>
+            </div>
+            
+            <div class="phone-label">Message Preview:</div>
+            <div class="preview-area" id="messagePreview"></div>
+            
+            <div class="modal-buttons">
+                <button class="whatsapp-btn" onclick="sendViaWhatsApp()">Send via WhatsApp</button>
+                <button class="cancel-btn" onclick="closeSendModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast"></div>
+
     <script>
-        // Auto-save notes to localStorage
+        // Constants
         const options = ['option1', 'option2', 'option3', 'option4'];
+        const priceOptions = [
+            { name: 'TARGET PRICE', perAcre: 95, premium: '27-36%' },
+            { name: 'FLOOR PRICE', perAcre: 90, premium: '20-29%' },
+            { name: 'COMPROMISE ZONE', perAcre: 80, premium: '7-14%' },
+            { name: 'MARKET RATE', perAcre: 70, premium: '0%' }
+        ];
         
-        // Load saved notes on page load
+        // Font size control
+        let currentFontSize = 20; // Base font size
+        function adjustFontSize(change) {
+            if (change === 0) {
+                currentFontSize = 20; // Reset to default
+            } else {
+                currentFontSize += change;
+                currentFontSize = Math.max(16, Math.min(28, currentFontSize)); // Limit between 16-28px
+            }
+            
+            // Update all content font sizes
+            document.body.style.fontSize = currentFontSize + 'px';
+            
+            // Update specific elements
+            const ratio = currentFontSize / 20; // Calculate ratio from base size
+            document.querySelectorAll('.detail-row, .term-row, .size-label, .size-detail, textarea, .notes-label, .option-header, .terms-header, .selector-header, .comparison-table td, .comparison-table th, .offer-expiry, .time-essence-clause, .meeting-info, h1').forEach(el => {
+                const baseSize = parseInt(window.getComputedStyle(el).fontSize);
+                if (!el.dataset.originalSize) {
+                    el.dataset.originalSize = baseSize;
+                }
+                const originalSize = parseInt(el.dataset.originalSize);
+                el.style.fontSize = (originalSize * ratio) + 'px';
+            });
+            
+            localStorage.setItem('sukh-font-size', currentFontSize);
+            showToast(`Font size: ${currentFontSize}px`, 'info');
+        }
+        
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            document.getElementById('themeToggle').classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('sukh-theme', isDark ? 'dark' : 'light');
+            showToast(isDark ? 'Dark theme enabled' : 'Light theme enabled', 'info');
+        }
+        
+        // Load saved data on page load
         window.addEventListener('load', () => {
+            // Load theme
+            const savedTheme = localStorage.getItem('sukh-theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('themeToggle').classList.add('dark');
+            }
+            
+            // Load font size
+            const savedFontSize = localStorage.getItem('sukh-font-size');
+            if (savedFontSize) {
+                currentFontSize = parseInt(savedFontSize);
+                adjustFontSize(0); // This will apply the saved size
+                currentFontSize = parseInt(savedFontSize); // Restore the saved value after reset
+                document.body.style.fontSize = currentFontSize + 'px';
+                
+                const ratio = currentFontSize / 20;
+                document.querySelectorAll('.detail-row, .term-row, .size-label, .size-detail, textarea, .notes-label, .option-header, .terms-header, .selector-header, .comparison-table td, .comparison-table th, .offer-expiry, .time-essence-clause, .meeting-info, h1').forEach(el => {
+                    const baseSize = parseInt(window.getComputedStyle(el).fontSize);
+                    el.dataset.originalSize = baseSize;
+                    el.style.fontSize = (baseSize * ratio) + 'px';
+                });
+            } else {
+                // Store original sizes
+                document.querySelectorAll('.detail-row, .term-row, .size-label, .size-detail, textarea, .notes-label, .option-header, .terms-header, .selector-header, .comparison-table td, .comparison-table th, .offer-expiry, .time-essence-clause, .meeting-info, h1').forEach(el => {
+                    el.dataset.originalSize = parseInt(window.getComputedStyle(el).fontSize);
+                });
+            }
+            
+            // Load notes
             options.forEach(option => {
                 const savedNote = localStorage.getItem(`sukh-meeting-${option}`);
                 if (savedNote) {
                     document.getElementById(`notes-${option}`).value = savedNote;
                 }
             });
+            
+            // Load registry details
+            const savedDate = localStorage.getItem('sukh-registry-date');
+            const savedTime = localStorage.getItem('sukh-registry-time');
+            if (savedDate) document.getElementById('registryDate').value = savedDate;
+            if (savedTime) document.getElementById('registryTime').value = savedTime;
+            
+            // Initial calculations
+            updateCalculations();
         });
         
-        // Auto-save as user types
+        // Auto-save notes
         options.forEach(option => {
             const textarea = document.getElementById(`notes-${option}`);
             const savedIndicator = document.getElementById(`saved-${option}`);
             
             textarea.addEventListener('input', () => {
                 localStorage.setItem(`sukh-meeting-${option}`, textarea.value);
-                
-                // Show saved indicator
                 savedIndicator.classList.add('show');
-                setTimeout(() => {
-                    savedIndicator.classList.remove('show');
-                }, 2000);
+                setTimeout(() => savedIndicator.classList.remove('show'), 2000);
             });
         });
         
-        // Clear notes function
+        // Auto-save registry details
+        document.getElementById('registryDate').addEventListener('change', (e) => {
+            localStorage.setItem('sukh-registry-date', e.target.value);
+            showToast('Registry date saved', 'success');
+        });
+        
+        document.getElementById('registryTime').addEventListener('change', (e) => {
+            localStorage.setItem('sukh-registry-time', e.target.value);
+            showToast('Registry time saved', 'success');
+        });
+        
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        // Update calculations when size changes
+        function updateCalculations() {
+            const selectedSize = parseInt(document.querySelector('input[name="landSize"]:checked').value);
+            const vipulKeeps = 56 - selectedSize;
+            
+            showToast(`You selected ${selectedSize} Kanals (Vipul keeps ${vipulKeeps} Kanals)`, 'info');
+            
+            updateComparisonTable(selectedSize);
+            
+            for (let i = 0; i < 4; i++) {
+                updateOptionCard(i + 1, selectedSize, priceOptions[i]);
+            }
+        }
+        
+        // Update comparison table
+        function updateComparisonTable(kanals) {
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = '';
+            
+            priceOptions.forEach((opt, index) => {
+                const perKanal = opt.perAcre / 8;
+                const total = perKanal * kanals;
+                const bayana = total * 0.4;
+                const balance = total * 0.6;
+                const vsMarket = total - (70 / 8 * kanals);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>OPTION ${index + 1}</strong></td>
+                    <td>₹${opt.perAcre} L</td>
+                    <td>₹${perKanal.toFixed(3)} L</td>
+                    <td><strong>₹${total.toFixed(2)} L</strong></td>
+                    <td><strong>₹${bayana.toFixed(2)} L</strong></td>
+                    <td>₹${balance.toFixed(2)} L</td>
+                    <td>${vsMarket > 0 ? '+' : ''}₹${vsMarket.toFixed(2)}L</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Update option card
+        function updateOptionCard(optNum, kanals, priceConfig) {
+            const perKanal = priceConfig.perAcre / 8;
+            const total = perKanal * kanals;
+            const bayana = total * 0.4;
+            const balance = total * 0.6;
+            
+            document.getElementById(`opt${optNum}-perKanal`).textContent = `₹${perKanal.toFixed(3)} Lakhs`;
+            document.getElementById(`opt${optNum}-size`).textContent = `${kanals} Kanals`;
+            document.getElementById(`opt${optNum}-total`).textContent = `₹${total.toFixed(2)} Lakhs`;
+            document.getElementById(`opt${optNum}-bayana`).textContent = `₹${bayana.toFixed(2)} Lakhs`;
+            document.getElementById(`opt${optNum}-balance`).textContent = `₹${balance.toFixed(2)} Lakhs`;
+            document.getElementById(`opt${optNum}-premium`).textContent = priceConfig.premium;
+        }
+        
+        // Clear notes
         function clearNotes(option) {
             if (confirm('Delete notes for this option?')) {
                 document.getElementById(`notes-${option}`).value = '';
                 localStorage.removeItem(`sukh-meeting-${option}`);
-                alert('Notes deleted');
+                showToast('Notes deleted', 'success');
             }
         }
         
-        // Export all notes
+        // Generate message text
+        function generateMessageText(timestamp) {
+            const selectedSize = parseInt(document.querySelector('input[name="landSize"]:checked').value);
+            const vipulKeeps = 56 - selectedSize;
+            const registryDate = document.getElementById('registryDate').value || '[To be decided]';
+            const registryTime = document.getElementById('registryTime').value || '[To be decided]';
+            
+            let text = `SUKH MEETING NOTES - ${timestamp}\n`;
+            text += `===============================================\n\n`;
+            text += `LAND SIZE SELECTED: ${selectedSize} Kanals\n`;
+            text += `(Buyer: ${selectedSize}K | Vipul keeps: ${vipulKeeps}K)\n\n`;
+            text += `REGISTRY PERIOD: March 2026\n`;
+            text += `CURRENT MARKET: ₹70-75 Lakhs/Acre\n\n`;
+            text += `REGISTRY DATE: ${registryDate}\n`;
+            text += `REGISTRY TIME: ${registryTime}\n`;
+            text += `VENUE: Sub-Registrar Office, Pehowa Tehsil, District Kurukshetra\n\n`;
+            text += `BAYANA TERMS:\n`;
+            text += `• Advance: 40% of total amount\n`;
+            text += `• Payment Deadline: December 31, 2025, 11:59 PM\n`;
+            text += `• Failure by SELLER: Pays DOUBLE bayana to buyer\n`;
+            text += `• Failure by BUYER: Forfeits entire bayana\n\n`;
+            text += `===============================================\n\n`;
+            
+            priceOptions.forEach((opt, index) => {
+                const notes = document.getElementById(`notes-option${index + 1}`).value;
+                const perKanal = opt.perAcre / 8;
+                const total = perKanal * selectedSize;
+                const bayana = total * 0.4;
+                const balance = total * 0.6;
+                
+                text += `OPTION ${index + 1}: ${opt.name}\n`;
+                text += `Rate: ₹${opt.perAcre}L/acre | Total: ₹${total.toFixed(2)} Lakhs | Premium: ${opt.premium}\n`;
+                text += `Bayana (40%): ₹${bayana.toFixed(2)}L | Balance (60%): ₹${balance.toFixed(2)}L\n`;
+                text += `-----------------------------------------------\n`;
+                text += `NOTES:\n`;
+                text += notes ? notes : '[No notes recorded]';
+                text += `\n\n===============================================\n\n`;
+            });
+            
+            return text;
+        }
+        
+        // Export notes
         function exportNotes() {
             const timestamp = new Date().toLocaleString('en-IN', { 
                 timeZone: 'Asia/Kolkata',
@@ -424,33 +1284,7 @@
                 minute: '2-digit'
             });
             
-            let exportText = `SUKH MEETING NOTES - ${timestamp}\n`;
-            exportText += `===============================================\n\n`;
-            exportText += `LAND: 6 Kanals\n`;
-            exportText += `SETTLEMENT: March 2026\n`;
-            exportText += `CURRENT MARKET: ₹70-75 Lakhs/Acre\n\n`;
-            exportText += `===============================================\n\n`;
-            
-            const optionData = [
-                { name: 'OPTION 1: TARGET PRICE', rate: '₹95L/acre', total: '₹71.25 Lakhs', premium: '27-36%' },
-                { name: 'OPTION 2: FLOOR PRICE', rate: '₹90L/acre', total: '₹67.50 Lakhs', premium: '20-29%' },
-                { name: 'OPTION 3: COMPROMISE ZONE', rate: '₹80L/acre', total: '₹60.00 Lakhs', premium: '7-14%' },
-                { name: 'OPTION 4: MARKET RATE', rate: '₹70L/acre', total: '₹52.50 Lakhs', premium: '0%' }
-            ];
-            
-            options.forEach((option, index) => {
-                const notes = document.getElementById(`notes-${option}`).value;
-                const data = optionData[index];
-                
-                exportText += `${data.name}\n`;
-                exportText += `Rate: ${data.rate} | Total: ${data.total} | Premium: ${data.premium}\n`;
-                exportText += `-----------------------------------------------\n`;
-                exportText += `NOTES:\n`;
-                exportText += notes ? notes : '[No notes recorded]';
-                exportText += `\n\n===============================================\n\n`;
-            });
-            
-            // Create download
+            const exportText = generateMessageText(timestamp);
             const blob = new Blob([exportText], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -461,7 +1295,77 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert('Notes exported successfully!');
+            showToast('Notes exported successfully!', 'success');
+        }
+        
+        // Open send modal
+        function openSendModal() {
+            const timestamp = new Date().toLocaleString('en-IN', { 
+                timeZone: 'Asia/Kolkata',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const messageText = generateMessageText(timestamp);
+            document.getElementById('messagePreview').textContent = messageText;
+            document.getElementById('sendModal').style.display = 'block';
+        }
+        
+        // Close send modal
+        function closeSendModal() {
+            document.getElementById('sendModal').style.display = 'none';
+        }
+        
+        // Browse contacts
+        async function browseContacts() {
+            if ('contacts' in navigator && 'ContactsManager' in window) {
+                try {
+                    const props = ['tel'];
+                    const opts = { multiple: false };
+                    const contacts = await navigator.contacts.select(props, opts);
+                    
+                    if (contacts.length > 0 && contacts[0].tel && contacts[0].tel.length > 0) {
+                        let phoneNumber = contacts[0].tel[0];
+                        phoneNumber = phoneNumber.replace(/\s+/g, '').replace(/[^0-9+]/g, '');
+                        document.getElementById('phoneNumber').value = phoneNumber;
+                        showToast('Contact selected', 'success');
+                    }
+                } catch (error) {
+                    showToast('Could not access contacts. Please enter manually.', 'info');
+                }
+            } else {
+                showToast('Contact picker not supported. Please enter manually.', 'info');
+            }
+        }
+        
+        // Send via WhatsApp
+        function sendViaWhatsApp() {
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            
+            if (!phoneNumber) {
+                showToast('Please enter a phone number', 'info');
+                return;
+            }
+            
+            const cleanPhone = phoneNumber.replace(/\s+/g, '').replace(/[^0-9+]/g, '');
+            const messageText = document.getElementById('messagePreview').textContent;
+            const encodedMessage = encodeURIComponent(messageText);
+            const whatsappURL = `https://wa.me/${cleanPhone}?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+            showToast('Opening WhatsApp...', 'success');
+            setTimeout(() => closeSendModal(), 1000);
+        }
+        
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('sendModal');
+            if (event.target == modal) {
+                closeSendModal();
+            }
         }
     </script>
 </body>
