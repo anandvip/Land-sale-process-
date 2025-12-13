@@ -661,6 +661,65 @@
             color: var(--sage);
         }
         
+        .log-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--sand);
+            flex-wrap: wrap;
+        }
+        
+        .log-action-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--earth-light);
+            background: white;
+            color: var(--earth-dark);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .log-action-btn:hover {
+            background: var(--sage);
+            color: white;
+            border-color: var(--sage);
+            transform: translateY(-2px);
+        }
+        
+        .log-action-btn.primary {
+            background: var(--terracotta);
+            color: white;
+            border-color: var(--terracotta);
+        }
+        
+        .log-action-btn.primary:hover {
+            background: #a04020;
+            border-color: #a04020;
+        }
+        
+        .scenario-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--sage);
+            margin-bottom: 0.5rem;
+        }
+        
+        .scenario-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.75rem;
+            border: 2px solid var(--sand);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
         .log-details {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -763,14 +822,53 @@
                 background: white;
             }
             
-            .language-toggle, .tab-nav, .action-buttons {
-                display: none;
+            .language-toggle, .tab-nav, .action-buttons, .log-actions {
+                display: none !important;
             }
             
             .calculator-container, .results-section, .log-entry {
                 box-shadow: none;
                 border: 1px solid #ccc;
+                page-break-inside: avoid;
             }
+            
+            .print-only {
+                display: block !important;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .log-entry {
+                page-break-after: always;
+            }
+            
+            h1, h2, h3 {
+                color: #000 !important;
+            }
+        }
+        
+        .print-only {
+            display: none;
+        }
+        
+        .print-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #000;
+        }
+        
+        .print-header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .print-header p {
+            color: #666;
+            font-size: 1rem;
         }
         
         /* Modal Styles */
@@ -1153,22 +1251,29 @@
                 
                 <!-- Cost Breakdown -->
                 <div class="breakdown-section">
-                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Cost Breakdown</h3>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Cost Breakdown</h3>
+                    <div style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 1rem;">L = Lakhs | Cr = Crores</div>
                     <div class="breakdown-row">
                         <span class="breakdown-label">Total Enumerated Needs</span>
-                        <span class="breakdown-value">₹<span id="breakdownNeed">92</span> Lakhs</span>
+                        <span class="breakdown-value" id="breakdownNeed">₹92 L</span>
                     </div>
                     <div class="breakdown-row">
                         <span class="breakdown-label">Buffer (<span id="breakdownBufferPercent">15</span>%)</span>
-                        <span class="breakdown-value">₹<span id="breakdownBuffer">13.8</span> Lakhs</span>
+                        <span class="breakdown-value" id="breakdownBuffer">₹13.8 L</span>
                     </div>
                     <div class="breakdown-row">
                         <span class="breakdown-label">Transaction Costs</span>
-                        <span class="breakdown-value">₹<span id="breakdownCosts">3</span> Lakhs</span>
+                        <span class="breakdown-value" id="breakdownCosts">₹3 L</span>
                     </div>
                     <div class="breakdown-row">
                         <span class="breakdown-label">Total Required</span>
-                        <span class="breakdown-value">₹<span id="breakdownTotal">108.8</span> Lakhs</span>
+                        <span class="breakdown-value" id="breakdownTotal">₹108.8 L</span>
+                    </div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.3); font-size: 0.95rem; opacity: 0.9;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>In Rupees (Indian notation):</strong> 
+                            <span id="totalRequiredRupees" style="font-family: monospace; font-size: 1.1rem;">₹1,08,80,000</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -1225,6 +1330,18 @@
                 <!-- Consciousness Check -->
                 <div class="consciousness-check">
                     <h3 data-en="Before You Decide: Consciousness Check" data-hi="निर्णय लेने से पहले: चेतना जांच">Before You Decide: Consciousness Check</h3>
+                    
+                    <!-- Scenario Naming -->
+                    <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--sand);">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--earth-dark);">
+                            <span data-en="Name this scenario (for family review)" data-hi="इस परिदृश्य का नाम दें (पारिवारिक समीक्षा के लिए)">Name this scenario (for family review)</span>
+                        </label>
+                        <input type="text" id="scenarioName" class="scenario-input" placeholder="e.g., Initial Analysis, After Family Review, CA Suggested, Final Version" value="Scenario 1">
+                        <div style="font-size: 0.9rem; color: var(--earth-light); margin-top: 0.5rem;">
+                            This helps track different versions when reviewing with elders, family members, or financial advisors.
+                        </div>
+                    </div>
+                    
                     <p style="color: var(--earth-medium); margin-bottom: 1.5rem;" data-en="Take a moment to reflect on these questions. Your answers matter more than the numbers." data-hi="इन प्रश्नों पर विचार करने के लिए एक क्षण लें। आपके उत्तर संख्याओं से अधिक महत्वपूर्ण हैं।">Take a moment to reflect on these questions. Your answers matter more than the numbers.</p>
                     
                     <div class="check-item" onclick="toggleCheck(this)">
@@ -1368,13 +1485,33 @@
         }
         
         // Helper: Format currency dynamically (Lakhs vs Crores)
-        function formatCurrency(lakhs) {
-            if (lakhs >= 100) {
-                const crores = lakhs / 100;
-                return `₹${crores.toFixed(2)} Crores`;
-            } else {
-                return `₹${lakhs.toFixed(1)} Lakhs`;
+        function formatCurrency(lakhs, showBoth = false) {
+            const crores = lakhs / 100;
+            const formatted = lakhs >= 100 ? 
+                `₹${crores.toFixed(2)} Cr` : 
+                `₹${lakhs.toFixed(1)} L`;
+            
+            if (showBoth && lakhs >= 100) {
+                return `₹${crores.toFixed(2)} Cr (${lakhs.toFixed(1)} Lakhs)`;
             }
+            return formatted;
+        }
+        
+        // Helper: Format number with Indian comma style (x,xx,xxx)
+        function formatIndianNumber(num) {
+            const numStr = Math.round(num * 100000).toString(); // Convert lakhs to rupees
+            let result = '';
+            let count = 0;
+            
+            for (let i = numStr.length - 1; i >= 0; i--) {
+                if (count === 3 || (count > 3 && (count - 3) % 2 === 0)) {
+                    result = ',' + result;
+                }
+                result = numStr[i] + result;
+                count++;
+            }
+            
+            return '₹' + result;
         }
         
         // Helper: Format date nicely
@@ -1522,7 +1659,7 @@
                         <div class="cost-label">Stamp Duty (6% in Haryana)</div>
                         <div class="cost-note">Varies by state - check local rates</div>
                     </div>
-                    <div class="cost-value">₹${stampDuty.toFixed(2)}L</div>
+                    <div class="cost-value">${formatCurrency(stampDuty)}</div>
                 </div>
                 
                 <div class="cost-item">
@@ -1530,7 +1667,7 @@
                         <div class="cost-label">Registration Fee (1%)</div>
                         <div class="cost-note">Standard across most states</div>
                     </div>
-                    <div class="cost-value">₹${registrationFee.toFixed(2)}L</div>
+                    <div class="cost-value">${formatCurrency(registrationFee)}</div>
                 </div>
                 
                 <div class="cost-item">
@@ -1538,7 +1675,7 @@
                         <div class="cost-label">Mutation Charges</div>
                         <div class="cost-note">Transfer of ownership in revenue records</div>
                     </div>
-                    <div class="cost-value">₹${mutationCharges.toFixed(2)}L</div>
+                    <div class="cost-value">${formatCurrency(mutationCharges)}</div>
                 </div>
                 
                 <div class="cost-item">
@@ -1546,7 +1683,7 @@
                         <div class="cost-label">Legal & Documentation Fees</div>
                         <div class="cost-note">Lawyer fees, notary, etc.</div>
                     </div>
-                    <div class="cost-value">₹${legalFees.toFixed(2)}L</div>
+                    <div class="cost-value">${formatCurrency(legalFees)}</div>
                 </div>
                 
                 <div class="cost-item">
@@ -1554,7 +1691,7 @@
                         <div class="cost-label">NOC Charges</div>
                         <div class="cost-note">If required by local authorities</div>
                     </div>
-                    <div class="cost-value">₹${noc.toFixed(2)}L</div>
+                    <div class="cost-value">${formatCurrency(noc)}</div>
                 </div>
                 
                 <div class="cost-item">
@@ -1562,15 +1699,15 @@
                         <div class="cost-label">Brokerage (1%, if applicable)</div>
                         <div class="cost-note">Can be negotiated or avoided</div>
                     </div>
-                    <div class="cost-value">₹${brokerage.toFixed(2)}L</div>
+                    <div class="cost-value">${formatCurrency(brokerage)}</div>
                 </div>
                 
                 <div class="cost-item" style="background: var(--sage); color: white;">
                     <div>
                         <div class="cost-label" style="font-size: 1.1rem;">Estimated Total</div>
-                        <div class="cost-note" style="color: rgba(255,255,255,0.9);">For ${acresSold.toFixed(2)} acres at ₹${currentRate}L/acre</div>
+                        <div class="cost-note" style="color: rgba(255,255,255,0.9);">For ${acresSold.toFixed(2)} acres at ${formatCurrency(currentRate)}/acre</div>
                     </div>
-                    <div class="cost-value" style="color: white; font-size: 1.3rem;">₹${total.toFixed(2)}L</div>
+                    <div class="cost-value" style="color: white; font-size: 1.3rem;">${formatCurrency(total)}<br><span style="font-size: 0.8rem; opacity: 0.9;">${formatIndianNumber(total)}</span></div>
                 </div>
             `;
             
@@ -1740,12 +1877,19 @@
                     monthsRemaining
                 };
                 
-                // Update breakdown section
-                document.getElementById('breakdownNeed').textContent = totalNeed.toFixed(1);
+                // Update breakdown section with proper formatting
+                document.getElementById('breakdownNeed').innerHTML = formatCurrency(totalNeed);
                 document.getElementById('breakdownBufferPercent').textContent = bufferPercent;
-                document.getElementById('breakdownBuffer').textContent = buffer.toFixed(1);
-                document.getElementById('breakdownCosts').textContent = transactionCosts.toFixed(1);
-                document.getElementById('breakdownTotal').textContent = totalRequired.toFixed(1);
+                document.getElementById('breakdownBuffer').innerHTML = formatCurrency(buffer);
+                document.getElementById('breakdownCosts').innerHTML = formatCurrency(transactionCosts);
+                document.getElementById('breakdownTotal').innerHTML = formatCurrency(totalRequired);
+                
+                // Show Indian number format
+                document.getElementById('totalRequiredRupees').textContent = formatIndianNumber(totalRequired);
+                
+                // Update per-kanal rates with proper formatting  
+                document.getElementById('currentRateKanals').innerHTML = `= ${formatCurrency(currentRate / 8)} per kanal`;
+                document.getElementById('projectedRateKanals').innerHTML = `= ${formatCurrency(projectedRate / 8)} per kanal`;
                 
                 // Update result cards with acres
                 document.getElementById('acresNow').textContent = acresNow.toFixed(2);
@@ -1774,15 +1918,15 @@
                 
                 // Provide contextual guidance
                 if (appreciation > 20 && totalNeed > 0 && landSaved > 0) {
-                    showToast(`Strong appreciation (${appreciation.toFixed(1)}%). Waiting ${monthsRemaining} months could save ${Math.abs(landSaved).toFixed(2)} acres (${acresToKanals(Math.abs(landSaved)).toFixed(1)} kanals) - that's ${(Math.abs(landSaved)/totalLand*100).toFixed(1)}% of your ancestral land.`, 'Strategic Insight');
+                    showToast(`Strong appreciation (${appreciation.toFixed(1)}%). Waiting ${monthsRemaining} months could save ${Math.abs(landSaved).toFixed(2)} acres (${acresToKanals(Math.abs(landSaved)).toFixed(1)} kanals) - that's ${(Math.abs(landSaved)/totalLand*100).toFixed(1)}% of your ancestral land, worth ${formatCurrency(Math.abs(landSaved) * projectedRate)} at future rates.`, 'Strategic Insight');
                 } else if (appreciation < 0) {
-                    showToast(`Warning: Projected rate is LOWER than current rate. Market appears to be declining. Consider selling now or revising projections.`, 'Market Alert', 'error');
+                    showToast(`Warning: Projected rate is LOWER than current rate. Market appears to be declining by ${Math.abs(appreciation).toFixed(1)}%. Consider selling now or revising projections.`, 'Market Alert', 'error');
                 } else if (Math.abs(appreciation) < 5) {
-                    showToast(`Low appreciation (${appreciation.toFixed(1)}%). Waiting period offers minimal benefit. Consider selling now if you need funds.`, 'Timing Insight');
+                    showToast(`Low appreciation (${appreciation.toFixed(1)}%). Waiting period offers minimal benefit. Consider selling now if you need funds urgently.`, 'Timing Insight');
                 } else if (acresNow > totalLand * 0.5) {
-                    showToast(`Warning: You are liquidating ${percentSoldNow.toFixed(1)}% of your land. Consider reducing needs or waiting for better rates to preserve more ancestral holdings.`, 'Preservation Alert', 'error');
+                    showToast(`Warning: You are liquidating ${percentSoldNow.toFixed(1)}% of your land (${acresNow.toFixed(2)} acres = ${acresToKanals(acresNow).toFixed(1)} kanals). Consider reducing needs or waiting for better rates to preserve more ancestral holdings.`, 'Preservation Alert', 'error');
                 } else if (percentSoldNow < 10) {
-                    showToast(`Excellent preservation: You're only selling ${percentSoldNow.toFixed(1)}% of your land while meeting all needs. This honors the legacy.`, 'Preservation Success', 'success');
+                    showToast(`Excellent preservation: You're only selling ${percentSoldNow.toFixed(1)}% of your land (${acresNow.toFixed(2)} acres = ${acresToKanals(acresNow).toFixed(1)} kanals) while meeting all needs of ${formatCurrency(totalRequired)}. This honors the legacy.`, 'Preservation Success', 'success');
                 }
                 
             } catch (error) {
@@ -1815,7 +1959,11 @@
                 return;
             }
             
+            const scenarioName = document.getElementById('scenarioName').value.trim() || `Scenario ${Date.now()}`;
+            
             const decision = {
+                id: Date.now(), // Unique ID for each decision
+                scenarioName: scenarioName,
                 timestamp: new Date().toISOString(),
                 date: new Date().toLocaleString('en-IN', { 
                     year: 'numeric', 
@@ -1825,7 +1973,8 @@
                     minute: '2-digit'
                 }),
                 ...calculationResults,
-                needs: []
+                needs: [],
+                shareholders: JSON.parse(JSON.stringify(shareholders)) // Deep copy
             };
             
             // Capture needs
@@ -1845,7 +1994,16 @@
             // Save to localStorage
             localStorage.setItem('landLiquidationLogs', JSON.stringify(logs));
             
-            showToast('Decision analysis saved successfully. View it in the Decision Log tab.', 'Saved', 'success');
+            // Auto-increment scenario name for next save
+            const match = scenarioName.match(/(\d+)$/);
+            if (match) {
+                const num = parseInt(match[1]) + 1;
+                document.getElementById('scenarioName').value = scenarioName.replace(/\d+$/, num);
+            } else {
+                document.getElementById('scenarioName').value = scenarioName + ' v2';
+            }
+            
+            showToast(`"${scenarioName}" saved successfully. View it in the Decision Log tab or print for family review.`, 'Saved', 'success');
             
             // Load logs if on logs tab
             if (document.getElementById('logs').classList.contains('active')) {
@@ -1853,6 +2011,219 @@
             }
         }
         
+        // Load Decision into Calculator
+        function loadFromLog(logId) {
+            const logs = JSON.parse(localStorage.getItem('landLiquidationLogs') || '[]');
+            const log = logs.find(l => l.id === logId);
+            
+            if (!log) {
+                showToast('Could not find this scenario.', 'Error', 'error');
+                return;
+            }
+            
+            // Restore basic inputs
+            document.getElementById('totalLand').value = log.totalLand || 14;
+            document.getElementById('currentRate').value = log.currentRate || 70;
+            document.getElementById('projectedRate').value = log.projectedRate || 90;
+            document.getElementById('bufferPercent').value = log.bufferPercent || 15;
+            document.getElementById('transactionCosts').value = log.transactionCosts || 3;
+            
+            // Restore target date if exists
+            if (log.targetDate) {
+                document.getElementById('targetDate').value = log.targetDate;
+            }
+            
+            // Restore shareholders if exists
+            if (log.shareholders && log.shareholders.length > 0) {
+                shareholders = JSON.parse(JSON.stringify(log.shareholders)); // Deep copy
+                updateShareholderSummary();
+            }
+            
+            // Restore needs
+            const needsTable = document.getElementById('needsTable');
+            needsTable.innerHTML = '';
+            
+            if (log.needs && log.needs.length > 0) {
+                log.needs.forEach(need => {
+                    const newRow = document.createElement('div');
+                    newRow.className = 'need-row';
+                    newRow.innerHTML = `
+                        <input type="text" placeholder="Need description" value="${need.description}">
+                        <input type="number" placeholder="Amount (₹ Lakhs)" value="${need.amount}" oninput="calculate()">
+                        <button class="remove-btn" onclick="removeNeed(this)">×</button>
+                    `;
+                    needsTable.appendChild(newRow);
+                });
+            }
+            
+            // Set scenario name for editing
+            document.getElementById('scenarioName').value = log.scenarioName + ' (Modified)';
+            
+            // Recalculate
+            calculate();
+            
+            // Switch to calculator tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-btn')[1].classList.add('active'); // Calculator is 2nd tab
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+            document.getElementById('calculator').classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            showToast(`Loaded "${log.scenarioName}" into calculator. Adjust as needed and save as new version.`, 'Scenario Loaded', 'success');
+        }
+        
+        // Print Individual Log
+        function printLog(logId) {
+            const logs = JSON.parse(localStorage.getItem('landLiquidationLogs') || '[]');
+            const log = logs.find(l => l.id === logId);
+            
+            if (!log) {
+                showToast('Could not find this scenario.', 'Error', 'error');
+                return;
+            }
+            
+            // Create print window with formatted content
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${log.scenarioName} - Land Liquidation Analysis</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: 'DM Sans', sans-serif; padding: 2rem; color: #2C1810; line-height: 1.6; }
+                        h1 { font-family: 'Crimson Pro', serif; font-size: 2rem; margin-bottom: 0.5rem; }
+                        h2 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; margin: 2rem 0 1rem; color: #5C4033; }
+                        .header { text-align: center; border-bottom: 3px solid #7A9D7A; padding-bottom: 1rem; margin-bottom: 2rem; }
+                        .subtitle { color: #5C4033; font-size: 0.95rem; }
+                        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0; }
+                        .item { padding: 1rem; background: #F5F0E8; border-left: 3px solid #7A9D7A; border-radius: 4px; }
+                        .label { font-size: 0.85rem; color: #8B7355; margin-bottom: 0.25rem; }
+                        .value { font-weight: 700; font-size: 1.1rem; color: #2C1810; }
+                        .breakdown { margin: 2rem 0; padding: 1.5rem; background: #F5F0E8; border-radius: 8px; }
+                        .breakdown-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #E8DCC8; }
+                        .breakdown-row:last-child { border-bottom: 2px solid #7A9D7A; font-weight: 700; padding-top: 1rem; margin-top: 0.5rem; }
+                        .needs-table { margin: 1rem 0; }
+                        .needs-row { display: flex; justify-content: space-between; padding: 0.75rem; background: #F5F0E8; margin: 0.5rem 0; border-radius: 4px; }
+                        .footer { margin-top: 3rem; padding-top: 1rem; border-top: 2px solid #E8DCC8; font-size: 0.9rem; color: #8B7355; text-align: center; }
+                        @media print { body { padding: 1rem; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Land Liquidation Analysis</h1>
+                        <p class="subtitle">Ancestral Legacy Stewardship Tool</p>
+                    </div>
+                    
+                    <h2>${log.scenarioName}</h2>
+                    <p style="color: #5C4033; margin-bottom: 2rem;">Generated on: ${log.date}</p>
+                    
+                    <div class="breakdown">
+                        <h3 style="margin-bottom: 1rem; color: #2C1810;">Cost Breakdown</h3>
+                        <div class="breakdown-row">
+                            <span>Total Enumerated Needs</span>
+                            <span>${formatCurrency(log.totalNeed)}</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Buffer (${log.bufferPercent}%)</span>
+                            <span>${formatCurrency(log.totalNeed * log.bufferPercent / 100)}</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Transaction Costs</span>
+                            <span>${formatCurrency(log.transactionCosts)}</span>
+                        </div>
+                        <div class="breakdown-row">
+                            <span>Total Required</span>
+                            <span>${formatCurrency(log.totalRequired)}</span>
+                        </div>
+                    </div>
+                    
+                    <h2>Strategic Analysis</h2>
+                    <div class="grid">
+                        <div class="item">
+                            <div class="label">Sell Now (Current Rate)</div>
+                            <div class="value">${log.acresNow.toFixed(2)} acres</div>
+                            <div class="label" style="margin-top: 0.25rem;">${acresToKanals(log.acresNow).toFixed(1)} kanals</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Wait Until Target Date</div>
+                            <div class="value">${log.acresLater.toFixed(2)} acres</div>
+                            <div class="label" style="margin-top: 0.25rem;">${acresToKanals(log.acresLater).toFixed(1)} kanals</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Land Preserved (Now)</div>
+                            <div class="value">${log.preservedNow.toFixed(2)} acres</div>
+                            <div class="label" style="margin-top: 0.25rem;">${acresToKanals(log.preservedNow).toFixed(1)} kanals</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Land Preserved (Wait)</div>
+                            <div class="value">${log.preservedLater.toFixed(2)} acres</div>
+                            <div class="label" style="margin-top: 0.25rem;">${acresToKanals(log.preservedLater).toFixed(1)} kanals</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Land Saved by Waiting</div>
+                            <div class="value">${Math.abs(log.landSaved).toFixed(2)} acres</div>
+                            <div class="label" style="margin-top: 0.25rem;">${acresToKanals(Math.abs(log.landSaved)).toFixed(1)} kanals</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Market Appreciation</div>
+                            <div class="value">${log.appreciation.toFixed(1)}%</div>
+                            <div class="label" style="margin-top: 0.25rem;">over waiting period</div>
+                        </div>
+                    </div>
+                    
+                    ${log.needs && log.needs.length > 0 ? `
+                        <h2>Needs Breakdown</h2>
+                        <div class="needs-table">
+                            ${log.needs.map(need => `
+                                <div class="needs-row">
+                                    <span>${need.description}</span>
+                                    <span style="font-weight: 700;">${formatCurrency(need.amount)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    ${log.shareholders && log.shareholders.length > 1 ? `
+                        <h2>Family Ownership Structure</h2>
+                        <div class="needs-table">
+                            ${log.shareholders.map(s => `
+                                <div class="needs-row">
+                                    <span>${s.name} (${s.relationship})</span>
+                                    <span style="font-weight: 700;">${s.share.toFixed(2)} acres (${acresToKanals(s.share).toFixed(1)} kanals)</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <div class="footer">
+                        <p>For family review and financial advisory consultation</p>
+                        <p style="margin-top: 0.5rem;">Ancestral Legacy Stewardship Tool • ${new Date().getFullYear()}</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            
+            // Wait for content to load, then print
+            setTimeout(() => {
+                printWindow.print();
+            }, 250);
+        }
+        
+        // Delete Log
+        function deleteLog(logId) {
+            if (confirm('Are you sure you want to delete this scenario? This cannot be undone.')) {
+                const logs = JSON.parse(localStorage.getItem('landLiquidationLogs') || '[]');
+                const filtered = logs.filter(l => l.id !== logId);
+                localStorage.setItem('landLiquidationLogs', JSON.stringify(filtered));
+                loadLogs();
+                showToast('Scenario deleted successfully.', 'Deleted', 'success');
+            }
+        }
         // Load Logs
         function loadLogs() {
             const logs = JSON.parse(localStorage.getItem('landLiquidationLogs') || '[]');
@@ -1862,7 +2233,7 @@
                 container.innerHTML = `
                     <div style="text-align: center; padding: 4rem; color: var(--earth-light);">
                         <h3 style="font-family: 'Crimson Pro', serif; font-size: 2rem; margin-bottom: 1rem;">No decisions saved yet</h3>
-                        <p>Use the calculator to analyze your land liquidation strategy, then save your decisions here for future reference.</p>
+                        <p>Use the calculator to analyze your land liquidation strategy, then save your decisions here for future reference and family review.</p>
                     </div>
                 `;
                 return;
@@ -1871,29 +2242,32 @@
             container.innerHTML = logs.map(log => `
                 <div class="log-entry">
                     <div class="log-header">
-                        <div class="log-date">${log.date}</div>
+                        <div>
+                            <div class="scenario-name">${log.scenarioName || 'Unnamed Scenario'}</div>
+                            <div class="log-date">${log.date}</div>
+                        </div>
                         <div class="log-status status-saved">Saved</div>
                     </div>
                     
                     <div class="log-details">
                         <div class="log-detail">
                             <div class="log-detail-label">Total Need</div>
-                            <div class="log-detail-value">₹${log.totalNeed.toFixed(1)}L</div>
+                            <div class="log-detail-value">${formatCurrency(log.totalNeed)}</div>
                         </div>
                         <div class="log-detail">
                             <div class="log-detail-label">Current Rate</div>
-                            <div class="log-detail-value">₹${log.currentRate}L/acre</div>
+                            <div class="log-detail-value">${formatCurrency(log.currentRate)}/acre</div>
                         </div>
                         <div class="log-detail">
                             <div class="log-detail-label">Acres to Sell (Now)</div>
-                            <div class="log-detail-value">${log.acresNow.toFixed(2)} acres</div>
+                            <div class="log-detail-value">${log.acresNow.toFixed(2)} acres<br><span style="font-size: 0.85rem; opacity: 0.7;">${acresToKanals(log.acresNow).toFixed(1)} kanals</span></div>
                         </div>
                         <div class="log-detail">
                             <div class="log-detail-label">Acres to Sell (Wait)</div>
-                            <div class="log-detail-value">${log.acresLater.toFixed(2)} acres</div>
+                            <div class="log-detail-value">${log.acresLater.toFixed(2)} acres<br><span style="font-size: 0.85rem; opacity: 0.7;">${acresToKanals(log.acresLater).toFixed(1)} kanals</span></div>
                         </div>
                         <div class="log-detail">
-                            <div class="log-detail-label">Land Preserved (Now)</div>
+                            <div class="log-detail-label">Land Preserved</div>
                             <div class="log-detail-value">${log.preservedNow.toFixed(2)} acres</div>
                         </div>
                         <div class="log-detail">
@@ -1908,11 +2282,23 @@
                             ${log.needs.map(need => `
                                 <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; color: var(--earth-medium);">
                                     <span>${need.description}</span>
-                                    <span style="font-weight: 600;">₹${need.amount}L</span>
+                                    <span style="font-weight: 600;">${formatCurrency(need.amount)}</span>
                                 </div>
                             `).join('')}
                         </div>
                     ` : ''}
+                    
+                    <div class="log-actions">
+                        <button class="log-action-btn primary" onclick="printLog(${log.id})">
+                            🖨️ <span data-en="Print This Scenario" data-hi="इस परिदृश्य को प्रिंट करें">Print This Scenario</span>
+                        </button>
+                        <button class="log-action-btn" onclick="loadFromLog(${log.id})">
+                            📋 <span data-en="Load into Calculator" data-hi="कैलकुलेटर में लोड करें">Load into Calculator</span>
+                        </button>
+                        <button class="log-action-btn" onclick="deleteLog(${log.id})">
+                            🗑️ <span data-en="Delete" data-hi="हटाएं">Delete</span>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
