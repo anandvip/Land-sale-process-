@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Liquidation Calculator | Preserve Ancestral Heritage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --earth-dark: #2C1810;
+            --earth-medium: #5C4033;
+            --earth-light: #8B7355;
+            --terracotta: #C86B3C;
+            --sage: #7A9D7A;
+            --cream: #F5F0E8;
+            --sand: #E8DCC8;
+            --clay: #A0826D;
+            --shadow: rgba(44, 24, 16, 0.15);
+            --overlay: rgba(0, 0, 0, 0.6);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--sand) 100%);
+            color: var(--earth-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Grain texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Header */
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--earth-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--earth-medium);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        /* Language Toggle */
+        .language-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+        
+        .lang-switch {
+            background: white;
+            border: 2px solid var(--earth-light);
+            border-radius: 50px;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--earth-dark);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        
+        .lang-switch:hover {
+            background: var(--terracotta);
+            color: white;
+            border-color: var(--terracotta);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+        
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+        
+        .tab-btn {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 1rem 2.5rem;
+            background: white;
+            border: 3px solid var(--earth-light);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--earth-medium);
+            box-shadow: 0 4px 12px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(120, 157, 122, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .tab-btn:hover::before {
+            left: 100%;
+        }
+        
+        .tab-btn.active {
+            background: var(--sage);
+            color: white;
+            border-color: var(--sage);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        /* Philosophy Section */
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .philosophy-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 24px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--terracotta);
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+        
+        .philosophy-card:nth-child(1) { animation-delay: 0.1s; }
+        .philosophy-card:nth-child(2) { animation-delay: 0.2s; }
+        .philosophy-card:nth-child(3) { animation-delay: 0.3s; }
+        
+        .philosophy-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px var(--shadow);
+        }
+        
+        .philosophy-card h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: var(--earth-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .philosophy-card p {
+            color: var(--earth-medium);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        
+        .principle {
+            background: var(--cream);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--sage);
+        }
+        
+        .principle-title {
+            font-weight: 600;
+            color: var(--earth-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Calculator Section */
+        .calculator-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 12px 40px var(--shadow);
+            margin: 2rem 0;
+        }
+        
+        .input-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--earth-dark);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .help-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: var(--sage);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            cursor: help;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .help-icon:hover {
+            background: var(--terracotta);
+            transform: scale(1.2);
+        }
+        
+        .help-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--earth-dark);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        
+        .help-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--earth-dark);
+        }
+        
+        .help-icon:hover .help-tooltip,
+        .help-icon:focus .help-tooltip {
+            opacity: 1;
+        }
+        
+        input[type="number"], input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--sand);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--cream);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--sage);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(122, 157, 122, 0.1);
+        }
+        
+        .input-suffix {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(50%);
+            color: var(--earth-light);
+            font-weight: 600;
+            pointer-events: none;
+        }
+        
+        /* Needs Table */
+        .needs-table {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .need-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .remove-btn {
+            background: transparent;
+            border: none;
+            color: var(--terracotta);
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+        }
+        
+        .remove-btn:hover {
+            color: #a04020;
+            transform: scale(1.2);
+        }
+        
+        .add-need-btn {
+            background: var(--sage);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .add-need-btn:hover {
+            background: var(--earth-medium);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+        
+        /* Results Section */
+        .results-section {
+            margin-top: 3rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, var(--sage) 0%, var(--earth-light) 100%);
+            border-radius: 16px;
+            color: white;
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .result-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Crimson Pro', serif;
+        }
+        
+        .result-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        
+        .kanal-conversion {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+        
+        .breakdown-section {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .breakdown-row:last-child {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .breakdown-label {
+            opacity: 0.9;
+        }
+        
+        .breakdown-value {
+            font-weight: 600;
+        }
+        
+        .date-info {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.95rem;
+        }
+        
+        .buffer-explanation {
+            background: var(--cream);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+            border-left: 3px solid var(--sage);
+            font-size: 0.95rem;
+            color: var(--earth-medium);
+            line-height: 1.6;
+        }
+        
+        /* Consciousness Check */
+        .consciousness-check {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 3px solid var(--terracotta);
+        }
+        
+        .consciousness-check h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: var(--earth-dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: var(--cream);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: var(--earth-dark);
+        }
+        
+        .check-item:hover {
+            background: var(--sand);
+            transform: translateX(5px);
+        }
+        
+        .check-box {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--sage);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .check-box.checked {
+            background: var(--sage);
+            position: relative;
+        }
+        
+        .check-box.checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1.25rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--terracotta);
+            color: white;
+            box-shadow: 0 6px 20px rgba(200, 107, 60, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: #a04020;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(200, 107, 60, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--earth-dark);
+            border: 2px solid var(--earth-light);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--cream);
+            transform: translateY(-3px);
+        }
+        
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px var(--shadow);
+            border-left: 4px solid var(--sage);
+            max-width: 400px;
+            z-index: 2000;
+            animation: slideInRight 0.4s ease-out;
+            display: none;
+        }
+        
+        .toast.show {
+            display: block;
+        }
+        
+        .toast.error {
+            border-left-color: var(--terracotta);
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--earth-dark);
+        }
+        
+        .toast-message {
+            color: var(--earth-medium);
+            font-size: 0.95rem;
+        }
+        
+        /* Decision Log */
+        .log-container {
+            margin-top: 3rem;
+        }
+        
+        .log-entry {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            border-left: 4px solid var(--clay);
+            transition: all 0.3s ease;
+        }
+        
+        .log-entry:hover {
+            transform: translateX(5px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+        
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .log-date {
+            font-weight: 600;
+            color: var(--earth-dark);
+            font-size: 1.1rem;
+        }
+        
+        .log-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-saved {
+            background: rgba(122, 157, 122, 0.2);
+            color: var(--sage);
+        }
+        
+        .log-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .log-detail {
+            padding: 1rem;
+            background: var(--cream);
+            border-radius: 8px;
+        }
+        
+        .log-detail-label {
+            font-size: 0.85rem;
+            color: var(--earth-light);
+            margin-bottom: 0.25rem;
+        }
+        
+        .log-detail-value {
+            font-weight: 600;
+            color: var(--earth-dark);
+            font-size: 1.1rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tab-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .calculator-container {
+                padding: 1.5rem;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .language-toggle {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .language-toggle, .tab-nav, .action-buttons {
+                display: none;
+            }
+            
+            .calculator-container, .results-section, .log-entry {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px var(--shadow);
+            animation: slideInUp 0.4s ease-out;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--sand);
+        }
+        
+        .modal-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            color: var(--earth-dark);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--earth-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+        
+        .modal-close:hover {
+            color: var(--terracotta);
+            transform: rotate(90deg);
+        }
+        
+        .shareholder-card {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--sage);
+        }
+        
+        .shareholder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .shareholder-number {
+            font-weight: 700;
+            color: var(--sage);
+            font-size: 1.1rem;
+        }
+        
+        .remove-shareholder {
+            background: none;
+            border: none;
+            color: var(--terracotta);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.25rem 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-shareholder:hover {
+            color: #a04020;
+            transform: scale(1.2);
+        }
+        
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .input-row-full {
+            margin-bottom: 1rem;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--sand);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .cost-breakdown-grid {
+            display: grid;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--cream);
+            border-radius: 8px;
+        }
+        
+        .cost-label {
+            font-weight: 500;
+            color: var(--earth-dark);
+        }
+        
+        .cost-value {
+            font-weight: 700;
+            color: var(--sage);
+            font-size: 1.1rem;
+        }
+        
+        .cost-note {
+            font-size: 0.9rem;
+            color: var(--earth-light);
+            font-style: italic;
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <button class="lang-switch" onclick="toggleLanguage()">
+            <span id="langText">हिंदी में देखें</span>
+        </button>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1 data-en="Land Liquidation Calculator" data-hi="भूमि परिसमापन कैलकुलेटर">Land Liquidation Calculator</h1>
+            <p class="subtitle" data-en="Preserve Ancestral Heritage Through Strategic Clarity" data-hi="रणनीतिक स्पष्टता के माध्यम से पैतृक विरासत को संरक्षित करें">Preserve Ancestral Heritage Through Strategic Clarity</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('philosophy')" data-en="Philosophy" data-hi="दर्शन">Philosophy</button>
+            <button class="tab-btn" onclick="switchTab('calculator')" data-en="Calculator" data-hi="कैलकुलेटर">Calculator</button>
+            <button class="tab-btn" onclick="switchTab('logs')" data-en="Decision Log" data-hi="निर्णय लॉग">Decision Log</button>
+        </div>
+
+        <!-- Philosophy Section -->
+        <div id="philosophy" class="content-section active">
+            <div class="philosophy-grid">
+                <div class="philosophy-card">
+                    <h3 data-en="The Core Philosophy" data-hi="मूल दर्शन">The Core Philosophy</h3>
+                    <p data-en="Land is not merely an asset—it is ancestral memory, generational trust, and ecological connection. This tool honors the sacred responsibility of preservation while acknowledging the necessity of strategic liquidation." data-hi="भूमि केवल एक संपत्ति नहीं है—यह पैतृक स्मृति, पीढ़ीगत विश्वास और पारिस्थितिक संबंध है। यह उपकरण संरक्षण की पवित्र जिम्मेदारी का सम्मान करता है जबकि रणनीतिक परिसमापन की आवश्यकता को स्वीकार करता है।">Land is not merely an asset—it is ancestral memory, generational trust, and ecological connection. This tool honors the sacred responsibility of preservation while acknowledging the necessity of strategic liquidation.</p>
+                    
+                    <div class="principle">
+                        <div class="principle-title" data-en="Principle 1: Minimum Necessary Release" data-hi="सिद्धांत 1: न्यूनतम आवश्यक विमोचन">Principle 1: Minimum Necessary Release</div>
+                        <p data-en="Release only what is absolutely required. Calculate with precision, not approximation. Every fraction of an acre preserved is a gift to future generations." data-hi="केवल वही जारी करें जो बिल्कुल आवश्यक है। सटीकता के साथ गणना करें, न कि अनुमान से। संरक्षित की गई प्रत्येक एकड़ की भिन्न भावी पीढ़ियों के लिए एक उपहार है।">Release only what is absolutely required. Calculate with precision, not approximation. Every fraction of an acre preserved is a gift to future generations.</p>
+                    </div>
+                    
+                    <div class="principle">
+                        <div class="principle-title" data-en="Principle 2: Strategic Timing" data-hi="सिद्धांत 2: रणनीतिक समय">Principle 2: Strategic Timing</div>
+                        <p data-en="Market appreciation can save acres. If need is not urgent, patience becomes preservation. A 20% appreciation over 12 months might save 0.3 acres—one-third of a football field." data-hi="बाजार की सराहना एकड़ बचा सकती है। यदि आवश्यकता तत्काल नहीं है, तो धैर्य संरक्षण बन जाता है। 12 महीनों में 20% की सराहना 0.3 एकड़ बचा सकती है—एक फुटबॉल मैदान का एक तिहाई।">Market appreciation can save acres. If need is not urgent, patience becomes preservation. A 20% appreciation over 12 months might save 0.3 acres—one-third of a football field.</p>
+                    </div>
+                </div>
+
+                <div class="philosophy-card">
+                    <h3 data-en="The Algorithm's Wisdom" data-hi="एल्गोरिदम की बुद्धिमत्ता">The Algorithm's Wisdom</h3>
+                    <p data-en="This calculator implements a consciousness-based approach to land liquidation. It guides you through enumeration of needs, buffer calculations, transaction costs, and timing strategy—transforming anxiety into clarity." data-hi="यह कैलकुलेटर भूमि परिसमापन के लिए एक चेतना-आधारित दृष्टिकोण लागू करता है। यह आपको जरूरतों की गणना, बफर गणना, लेनदेन लागत और समय रणनीति के माध्यम से मार्गदर्शन करता है—चिंता को स्पष्टता में बदलता है।">This calculator implements a consciousness-based approach to land liquidation. It guides you through enumeration of needs, buffer calculations, transaction costs, and timing strategy—transforming anxiety into clarity.</p>
+                    
+                    <div class="principle">
+                        <div class="principle-title" data-en="Why Enumerate Needs?" data-hi="आवश्यकताओं की गणना क्यों करें?">Why Enumerate Needs?</div>
+                        <p data-en="Vague needs lead to over-selling. 'I need money' becomes 'I'm selling 5 acres'. Specific needs create boundaries: 'I need ₹92 lakhs for car, house, parents, emergency' becomes 'I'm selling 1.2 acres'." data-hi="अस्पष्ट जरूरतें अधिक बिक्री की ओर ले जाती हैं। 'मुझे पैसे चाहिए' '5 एकड़ बेच रहा हूं' बन जाता है। विशिष्ट जरूरतें सीमाएं बनाती हैं: 'मुझे कार, घर, माता-पिता, आपातकाल के लिए ₹92 लाख चाहिए' '1.2 एकड़ बेच रहा हूं' बन जाता है।">Vague needs lead to over-selling. 'I need money' becomes 'I'm selling 5 acres'. Specific needs create boundaries: 'I need ₹92 lakhs for car, house, parents, emergency' becomes 'I'm selling 1.2 acres'.</p>
+                    </div>
+                    
+                    <div class="principle">
+                        <div class="principle-title" data-en="The Buffer Zone" data-hi="बफर क्षेत्र">The Buffer Zone</div>
+                        <p data-en="Life is uncertain. A 15% buffer protects against unexpected costs without encouraging over-extraction. It's prudence, not greed." data-hi="जीवन अनिश्चित है। 15% बफर अप्रत्याशित लागतों से बचाता है बिना अधिक निष्कर्षण को प्रोत्साहित किए। यह विवेक है, लालच नहीं।">Life is uncertain. A 15% buffer protects against unexpected costs without encouraging over-extraction. It's prudence, not greed.</p>
+                    </div>
+                </div>
+
+                <div class="philosophy-card">
+                    <h3 data-en="The Consciousness Check" data-hi="चेतना जांच">The Consciousness Check</h3>
+                    <p data-en="Before finalizing any decision, this tool asks you to pause and reflect. Are you selling from clarity or from fear? Does this honor your ancestors and future generations? Can you sleep peacefully with this choice?" data-hi="किसी भी निर्णय को अंतिम रूप देने से पहले, यह उपकरण आपको रुकने और प्रतिबिंबित करने के लिए कहता है। क्या आप स्पष्टता से बेच रहे हैं या भय से? क्या यह आपके पूर्वजों और भावी पीढ़ियों का सम्मान करता है? क्या आप इस चयन के साथ शांति से सो सकते हैं?">Before finalizing any decision, this tool asks you to pause and reflect. Are you selling from clarity or from fear? Does this honor your ancestors and future generations? Can you sleep peacefully with this choice?</p>
+                    
+                    <div class="principle">
+                        <div class="principle-title" data-en="Death Meditation Parallel" data-hi="मृत्यु ध्यान समानता">Death Meditation Parallel</div>
+                        <p data-en="Like daily death meditation, this practice is about releasing attachment while maintaining clarity. You release the minimum necessary (acres) while preserving the maximum possible (ancestral land). This is strategic ego death—disciplined non-attachment." data-hi="दैनिक मृत्यु ध्यान की तरह, यह अभ्यास स्पष्टता बनाए रखते हुए लगाव छोड़ने के बारे में है। आप न्यूनतम आवश्यक (एकड़) को छोड़ते हैं जबकि अधिकतम संभव (पैतृक भूमि) को संरक्षित करते हैं। यह रणनीतिक अहंकार मृत्यु है—अनुशासित गैर-लगाव।">Like daily death meditation, this practice is about releasing attachment while maintaining clarity. You release the minimum necessary (acres) while preserving the maximum possible (ancestral land). This is strategic ego death—disciplined non-attachment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator Section -->
+        <div id="calculator" class="content-section">
+            <div class="calculator-container">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 2.5rem; margin-bottom: 2rem;" data-en="Calculate Your Minimum Liquidation" data-hi="अपनी न्यूनतम परिसमापन की गणना करें">Calculate Your Minimum Liquidation</h2>
+                
+                <!-- Family Shareholder Management -->
+                <div style="background: linear-gradient(135deg, var(--sage) 0%, var(--earth-light) 100%); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; color: white;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Family Ownership Structure</div>
+                            <div style="opacity: 0.9; font-size: 0.95rem;" id="shareholderSummary">Single owner • 14 acres total</div>
+                        </div>
+                        <button class="btn btn-secondary" style="background: white; color: var(--earth-dark); padding: 0.75rem 1.5rem; font-size: 0.95rem;" onclick="openShareholderModal()">
+                            <span data-en="Manage Shareholders" data-hi="शेयरधारकों का प्रबंधन करें">Manage Shareholders</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Basic Information -->
+                <div class="input-group">
+                    <label class="input-label">
+                        <span data-en="Total Land Holdings (acres)" data-hi="कुल भूमि होल्डिंग्स (एकड़)">Total Land Holdings (acres)</span>
+                        <span class="help-icon" tabindex="0">
+                            ?
+                            <span class="help-tooltip">Enter your total ancestral land in acres (1 acre = 8 kanals)</span>
+                        </span>
+                    </label>
+                    <input type="number" id="totalLand" value="14" step="0.01" oninput="calculate()">
+                    <div style="font-size: 0.9rem; color: var(--earth-light); margin-top: 0.5rem;" id="totalLandKanals">= 112 kanals</div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <span data-en="Current Market Rate (₹ per acre)" data-hi="वर्तमान बाजार दर (₹ प्रति एकड़)">Current Market Rate (₹ per acre)</span>
+                        <span class="help-icon" tabindex="0">
+                            ?
+                            <span class="help-tooltip">Current verified rate per acre in your area (divide by 8 for per kanal rate)</span>
+                        </span>
+                    </label>
+                    <input type="number" id="currentRate" value="70" step="1" oninput="calculate()">
+                    <span class="input-suffix">Lakhs</span>
+                    <div style="font-size: 0.9rem; color: var(--earth-light); margin-top: 0.5rem;" id="currentRateKanals">= ₹8.75 Lakhs per kanal</div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <span data-en="Projected Rate (by specific date)" data-hi="अनुमानित दर (विशिष्ट तिथि तक)">Projected Rate (by specific date)</span>
+                        <span class="help-icon" tabindex="0">
+                            ?
+                            <span class="help-tooltip">Conservative estimate of land value by the target date you specify</span>
+                        </span>
+                    </label>
+                    <input type="number" id="projectedRate" value="90" step="1" oninput="calculate()">
+                    <span class="input-suffix">Lakhs</span>
+                    <div style="font-size: 0.9rem; color: var(--earth-light); margin-top: 0.5rem;" id="projectedRateKanals">= ₹11.25 Lakhs per kanal</div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <span data-en="Target Date for Projected Rate" data-hi="अनुमानित दर के लिए लक्ष्य तिथि">Target Date for Projected Rate</span>
+                        <span class="help-icon" tabindex="0">
+                            ?
+                            <span class="help-tooltip">When do you expect the market to reach projected rate?</span>
+                        </span>
+                    </label>
+                    <input type="date" id="targetDate" oninput="calculate()">
+                    <div style="font-size: 0.9rem; color: var(--earth-light); margin-top: 0.5rem;" id="daysRemaining"></div>
+                </div>
+                
+                <!-- Needs Enumeration -->
+                <h3 style="font-family: 'Crimson Pro', serif; font-size: 2rem; margin: 3rem 0 1.5rem;" data-en="Enumerate Your Specific Needs" data-hi="अपनी विशिष्ट जरूरतों की गणना करें">Enumerate Your Specific Needs</h3>
+                
+                <div class="needs-table" id="needsTable">
+                    <div class="need-row">
+                        <input type="text" placeholder="Need description (e.g., Car upgrade)" value="Car upgrade">
+                        <input type="number" placeholder="Amount (₹ Lakhs)" value="15" oninput="calculate()">
+                        <button class="remove-btn" onclick="removeNeed(this)">×</button>
+                    </div>
+                    <div class="need-row">
+                        <input type="text" placeholder="Need description" value="Motorcycle">
+                        <input type="number" placeholder="Amount (₹ Lakhs)" value="12" oninput="calculate()">
+                        <button class="remove-btn" onclick="removeNeed(this)">×</button>
+                    </div>
+                    <div class="need-row">
+                        <input type="text" placeholder="Need description" value="House upgrades">
+                        <input type="number" placeholder="Amount (₹ Lakhs)" value="20" oninput="calculate()">
+                        <button class="remove-btn" onclick="removeNeed(this)">×</button>
+                    </div>
+                    <div class="need-row">
+                        <input type="text" placeholder="Need description" value="Parent support">
+                        <input type="number" placeholder="Amount (₹ Lakhs)" value="10" oninput="calculate()">
+                        <button class="remove-btn" onclick="removeNeed(this)">×</button>
+                    </div>
+                    <div class="need-row">
+                        <input type="text" placeholder="Need description" value="Emergency fund">
+                        <input type="number" placeholder="Amount (₹ Lakhs)" value="35" oninput="calculate()">
+                        <button class="remove-btn" onclick="removeNeed(this)">×</button>
+                    </div>
+                </div>
+                
+                <button class="add-need-btn" onclick="addNeed()">
+                    <span data-en="+ Add Another Need" data-hi="+ एक और आवश्यकता जोड़ें">+ Add Another Need</span>
+                </button>
+                
+                <!-- Buffer Settings -->
+                <div class="input-group" style="margin-top: 2rem;">
+                    <label class="input-label">
+                        <span data-en="Buffer Percentage (%)" data-hi="बफर प्रतिशत (%)">Buffer Percentage (%)</span>
+                        <span class="help-icon" tabindex="0">
+                            ?
+                            <span class="help-tooltip">Safety margin for unexpected costs (10-20% recommended)</span>
+                        </span>
+                    </label>
+                    <input type="number" id="bufferPercent" value="15" step="1" min="0" max="50" oninput="calculate()">
+                    <div class="buffer-explanation">
+                        <strong>Why Buffer?</strong> Life is uncertain. A 15% buffer protects against: (1) Price negotiations going below expected rate, (2) Unexpected legal/documentation costs, (3) Market timing delays, (4) Small miscalculations in your needs. This is prudence, not greed—it prevents having to sell MORE land later due to shortage.
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">
+                        <span data-en="Estimated Transaction Costs (₹ Lakhs)" data-hi="अनुमानित लेनदेन लागत (₹ लाख)">Estimated Transaction Costs (₹ Lakhs)</span>
+                        <span class="help-icon" tabindex="0">
+                            ?
+                            <span class="help-tooltip">Registration (~2%), legal fees, stamp duty, brokerage if any</span>
+                        </span>
+                    </label>
+                    <input type="number" id="transactionCosts" value="3" step="0.5" oninput="calculate()">
+                    <div style="margin-top: 0.75rem;">
+                        <a href="#" onclick="event.preventDefault(); openTransactionCostModal();" style="color: var(--sage); font-weight: 600; text-decoration: none; font-size: 0.95rem; border-bottom: 2px solid var(--sage); padding-bottom: 2px; transition: all 0.3s ease;">
+                            📋 View detailed cost breakdown
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h2 style="font-family: 'Crimson Pro', serif; font-size: 2.5rem; margin-bottom: 1rem;" data-en="Your Strategic Analysis" data-hi="आपका रणनीतिक विश्लेषण">Your Strategic Analysis</h2>
+                
+                <!-- Date Info -->
+                <div class="date-info" id="dateInfo">
+                    <strong>Today:</strong> <span id="currentDate"></span> | 
+                    <strong>Target Date:</strong> <span id="displayTargetDate"></span> | 
+                    <strong>Waiting Period:</strong> <span id="waitingPeriod"></span>
+                </div>
+                
+                <!-- Cost Breakdown -->
+                <div class="breakdown-section">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Cost Breakdown</h3>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Total Enumerated Needs</span>
+                        <span class="breakdown-value">₹<span id="breakdownNeed">92</span> Lakhs</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Buffer (<span id="breakdownBufferPercent">15</span>%)</span>
+                        <span class="breakdown-value">₹<span id="breakdownBuffer">13.8</span> Lakhs</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Transaction Costs</span>
+                        <span class="breakdown-value">₹<span id="breakdownCosts">3</span> Lakhs</span>
+                    </div>
+                    <div class="breakdown-row">
+                        <span class="breakdown-label">Total Required</span>
+                        <span class="breakdown-value">₹<span id="breakdownTotal">108.8</span> Lakhs</span>
+                    </div>
+                </div>
+                
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="result-label" data-en="Sell Now (Current Rate)" data-hi="अभी बेचें (वर्तमान दर)">Sell Now (Current Rate)</div>
+                        <div class="result-value"><span id="acresNow">1.55</span> acres</div>
+                        <div class="kanal-conversion">= <span id="kanalsNow">12.4</span> kanals</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-label" data-en="Wait Until Target" data-hi="लक्ष्य तक प्रतीक्षा करें">Wait Until Target</div>
+                        <div class="result-value"><span id="acresLater">1.21</span> acres</div>
+                        <div class="kanal-conversion">= <span id="kanalsLater">9.7</span> kanals</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-label" data-en="Preserved Now" data-hi="अभी संरक्षित">Preserved Now</div>
+                        <div class="result-value"><span id="preservedNow">12.45</span> acres</div>
+                        <div class="kanal-conversion">= <span id="preservedKanalsNow">99.6</span> kanals</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-label" data-en="Preserved Later" data-hi="बाद में संरक्षित">Preserved Later</div>
+                        <div class="result-value"><span id="preservedLater">12.79</span> acres</div>
+                        <div class="kanal-conversion">= <span id="preservedKanalsLater">102.3</span> kanals</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-label" data-en="Land Saved by Waiting" data-hi="प्रतीक्षा से बची भूमि">Land Saved by Waiting</div>
+                        <div class="result-value"><span id="landSaved">0.34</span> acres</div>
+                        <div class="kanal-conversion">= <span id="kanalsSaved">2.7</span> kanals</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-label" data-en="Appreciation" data-hi="प्रशंसा">Appreciation</div>
+                        <div class="result-value"><span id="appreciation">28.6</span>%</div>
+                        <div class="result-subtitle" id="appreciationPeriod">over waiting period</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-label" data-en="% Land Sold (Now)" data-hi="% भूमि बेची गई (अभी)">% Land Sold (Now)</div>
+                        <div class="result-value"><span id="percentSoldNow">11.1</span>%</div>
+                        <div class="result-subtitle" data-en="of total holdings" data-hi="कुल होल्डिंग्स का">of total holdings</div>
+                    </div>
+                    
+                    <div class="result-card">
+                        <div class="result-label" data-en="% Land Sold (Wait)" data-hi="% भूमि बेची गई (प्रतीक्षा)">% Land Sold (Wait)</div>
+                        <div class="result-value"><span id="percentSoldLater">8.6</span>%</div>
+                        <div class="result-subtitle" data-en="of total holdings" data-hi="कुल होल्डिंग्स का">of total holdings</div>
+                    </div>
+                </div>
+                
+                <!-- Consciousness Check -->
+                <div class="consciousness-check">
+                    <h3 data-en="Before You Decide: Consciousness Check" data-hi="निर्णय लेने से पहले: चेतना जांच">Before You Decide: Consciousness Check</h3>
+                    <p style="color: var(--earth-medium); margin-bottom: 1.5rem;" data-en="Take a moment to reflect on these questions. Your answers matter more than the numbers." data-hi="इन प्रश्नों पर विचार करने के लिए एक क्षण लें। आपके उत्तर संख्याओं से अधिक महत्वपूर्ण हैं।">Take a moment to reflect on these questions. Your answers matter more than the numbers.</p>
+                    
+                    <div class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <span data-en="I am selling from clarity, not fear or greed" data-hi="मैं स्पष्टता से बेच रहा हूं, भय या लालच से नहीं">I am selling from clarity, not fear or greed</span>
+                    </div>
+                    
+                    <div class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <span data-en="This honors my ancestors and future generations" data-hi="यह मेरे पूर्वजों और भावी पीढ़ियों का सम्मान करता है">This honors my ancestors and future generations</span>
+                    </div>
+                    
+                    <div class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <span data-en="I am releasing the minimum necessary" data-hi="मैं न्यूनतम आवश्यक जारी कर रहा हूं">I am releasing the minimum necessary</span>
+                    </div>
+                    
+                    <div class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <span data-en="I can sleep peacefully with this decision" data-hi="मैं इस निर्णय के साथ शांति से सो सकता हूं">I can sleep peacefully with this decision</span>
+                    </div>
+                    
+                    <div class="check-item" onclick="toggleCheck(this)">
+                        <div class="check-box"></div>
+                        <span data-en="I am preserving maximum ancestral land" data-hi="मैं अधिकतम पैतृक भूमि का संरक्षण कर रहा हूं">I am preserving maximum ancestral land</span>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="saveDecision()">
+                        <span data-en="Save This Analysis" data-hi="यह विश्लेषण सहेजें">Save This Analysis</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportReport()">
+                        <span data-en="Export Report (PDF)" data-hi="रिपोर्ट निर्यात करें (पीडीएफ)">Export Report (PDF)</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetCalculator()">
+                        <span data-en="Start Fresh" data-hi="नए सिरे से शुरू करें">Start Fresh</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decision Log Section -->
+        <div id="logs" class="content-section">
+            <h2 style="font-family: 'Crimson Pro', serif; font-size: 2.5rem; margin-bottom: 2rem;" data-en="Your Decision History" data-hi="आपका निर्णय इतिहास">Your Decision History</h2>
+            <p style="color: var(--earth-medium); margin-bottom: 2rem;" data-en="Track your analysis over time. See how market conditions and your needs have evolved." data-hi="समय के साथ अपने विश्लेषण को ट्रैक करें। देखें कि बाजार की स्थिति और आपकी जरूरतें कैसे विकसित हुई हैं।">Track your analysis over time. See how market conditions and your needs have evolved.</p>
+            
+            <div class="log-container" id="logContainer">
+                <!-- Logs will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast" id="toast">
+        <div class="toast-title" id="toastTitle">Notification</div>
+        <div class="toast-message" id="toastMessage">This is a message</div>
+    </div>
+    
+    <!-- Family Shareholder Management Modal -->
+    <div class="modal-overlay" id="shareholderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Family Ownership Structure</h2>
+                <button class="modal-close" onclick="closeShareholderModal()">×</button>
+            </div>
+            
+            <p style="color: var(--earth-medium); margin-bottom: 2rem;">Define who owns this ancestral land and who makes decisions about liquidation. This honors the reality of joint family ownership.</p>
+            
+            <div id="shareholdersList">
+                <!-- Shareholders will be added here dynamically -->
+            </div>
+            
+            <button class="add-need-btn" onclick="addShareholder()">+ Add Shareholder</button>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeShareholderModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveShareholders()">Save & Apply</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Transaction Cost Breakdown Modal -->
+    <div class="modal-overlay" id="transactionCostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Transaction Cost Breakdown</h2>
+                <button class="modal-close" onclick="closeTransactionCostModal()">×</button>
+            </div>
+            
+            <p style="color: var(--earth-medium); margin-bottom: 1.5rem;">Typical costs for agricultural land sale in Haryana. Actual costs may vary by location and specific circumstances.</p>
+            
+            <div class="cost-breakdown-grid" id="costBreakdownContent">
+                <!-- Cost breakdown will be populated here -->
+            </div>
+            
+            <div style="background: var(--cream); padding: 1.25rem; border-radius: 8px; border-left: 3px solid var(--terracotta); margin-top: 1.5rem;">
+                <strong style="color: var(--earth-dark);">Important Note:</strong>
+                <p style="color: var(--earth-medium); margin-top: 0.5rem; font-size: 0.95rem; line-height: 1.6;">
+                    These are estimates. Always consult with a local property lawyer and sub-registrar office for exact costs. Agricultural land conversion to residential/commercial incurs additional charges.
+                </p>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeTransactionCostModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let currentLang = 'en';
+        let calculationResults = {};
+        let shareholders = [
+            {
+                name: 'Owner',
+                share: 14,  // in acres
+                relationship: 'Self',
+                isDecisionMaker: true
+            }
+        ];
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default target date to 12 months from now
+            const today = new Date();
+            const oneYearLater = new Date(today);
+            oneYearLater.setFullYear(today.getFullYear() + 1);
+            document.getElementById('targetDate').value = oneYearLater.toISOString().split('T')[0];
+            
+            initializeShareholders();
+            loadLogs();
+            calculate();
+            showToast('Welcome! Start by reviewing the philosophy, then use the calculator.', 'Welcome', 'success');
+        });
+        
+        // Helper: Convert acres to kanals
+        function acresToKanals(acres) {
+            return acres * 8;
+        }
+        
+        // Helper: Format currency dynamically (Lakhs vs Crores)
+        function formatCurrency(lakhs) {
+            if (lakhs >= 100) {
+                const crores = lakhs / 100;
+                return `₹${crores.toFixed(2)} Crores`;
+            } else {
+                return `₹${lakhs.toFixed(1)} Lakhs`;
+            }
+        }
+        
+        // Helper: Format date nicely
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        
+        // Helper: Calculate days between dates
+        function daysBetween(date1, date2) {
+            const oneDay = 24 * 60 * 60 * 1000;
+            return Math.round(Math.abs((date1 - date2) / oneDay));
+        }
+        
+        // Shareholder Management
+        function initializeShareholders() {
+            updateShareholderSummary();
+        }
+        
+        function updateShareholderSummary() {
+            const totalShares = shareholders.reduce((sum, s) => sum + s.share, 0);
+            const shareholderCount = shareholders.length;
+            const decisionMaker = shareholders.find(s => s.isDecisionMaker);
+            
+            let summary = '';
+            if (shareholderCount === 1) {
+                summary = `Single owner • ${totalShares.toFixed(2)} acres (${acresToKanals(totalShares).toFixed(1)} kanals)`;
+            } else {
+                summary = `${shareholderCount} shareholders • ${totalShares.toFixed(2)} acres total • Decision maker: ${decisionMaker ? decisionMaker.name : 'Not set'}`;
+            }
+            
+            document.getElementById('shareholderSummary').textContent = summary;
+            document.getElementById('totalLand').value = totalShares.toFixed(2);
+        }
+        
+        function openShareholderModal() {
+            renderShareholders();
+            document.getElementById('shareholderModal').classList.add('show');
+        }
+        
+        function closeShareholderModal() {
+            document.getElementById('shareholderModal').classList.remove('show');
+        }
+        
+        function renderShareholders() {
+            const container = document.getElementById('shareholdersList');
+            container.innerHTML = shareholders.map((s, index) => `
+                <div class="shareholder-card">
+                    <div class="shareholder-header">
+                        <span class="shareholder-number">Shareholder ${index + 1}</span>
+                        ${shareholders.length > 1 ? `<button class="remove-shareholder" onclick="removeShareholder(${index})">×</button>` : ''}
+                    </div>
+                    
+                    <div class="input-row">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--earth-dark);">Name</label>
+                            <input type="text" value="${s.name}" onchange="updateShareholder(${index}, 'name', this.value)" style="width: 100%; padding: 0.75rem; border: 2px solid var(--sand); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--earth-dark);">Relationship</label>
+                            <input type="text" value="${s.relationship}" onchange="updateShareholder(${index}, 'relationship', this.value)" style="width: 100%; padding: 0.75rem; border: 2px solid var(--sand); border-radius: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--earth-dark);">Share (acres)</label>
+                            <input type="number" step="0.01" value="${s.share}" onchange="updateShareholder(${index}, 'share', parseFloat(this.value))" style="width: 100%; padding: 0.75rem; border: 2px solid var(--sand); border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--earth-dark);">Share (kanals)</label>
+                            <input type="number" step="0.1" value="${acresToKanals(s.share).toFixed(1)}" onchange="updateShareholder(${index}, 'share', parseFloat(this.value) / 8)" style="width: 100%; padding: 0.75rem; border: 2px solid var(--sand); border-radius: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row-full">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" ${s.isDecisionMaker ? 'checked' : ''} onchange="setDecisionMaker(${index})" style="width: 20px; height: 20px;">
+                            <span style="font-weight: 600; color: var(--earth-dark);">This person makes liquidation decisions</span>
+                        </label>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function addShareholder() {
+            shareholders.push({
+                name: 'New Shareholder',
+                share: 0,
+                relationship: 'Family Member',
+                isDecisionMaker: false
+            });
+            renderShareholders();
+        }
+        
+        function removeShareholder(index) {
+            if (shareholders.length > 1) {
+                shareholders.splice(index, 1);
+                // Ensure at least one decision maker
+                if (!shareholders.some(s => s.isDecisionMaker)) {
+                    shareholders[0].isDecisionMaker = true;
+                }
+                renderShareholders();
+            }
+        }
+        
+        function updateShareholder(index, field, value) {
+            shareholders[index][field] = value;
+        }
+        
+        function setDecisionMaker(index) {
+            // Uncheck all others
+            shareholders.forEach((s, i) => {
+                s.isDecisionMaker = (i === index);
+            });
+            renderShareholders();
+        }
+        
+        function saveShareholders() {
+            updateShareholderSummary();
+            calculate();
+            closeShareholderModal();
+            showToast('Family ownership structure updated.', 'Saved', 'success');
+        }
+        
+        // Transaction Cost Breakdown
+        function openTransactionCostModal() {
+            const acresSold = parseFloat(document.getElementById('acresNow').textContent) || 1.5;
+            const currentRate = parseFloat(document.getElementById('currentRate').value) || 70;
+            const saleValue = acresSold * currentRate; // in lakhs
+            
+            // Typical Haryana costs
+            const stampDuty = saleValue * 0.06; // 6% for Haryana agricultural land
+            const registrationFee = saleValue * 0.01; // 1%
+            const mutationCharges = 0.5; // ~50K for most cases
+            const legalFees = 1; // ~1 lakh for documentation
+            const noc = 0.25; // NOC charges
+            const brokerage = saleValue * 0.01; // 1% if using broker
+            
+            const total = stampDuty + registrationFee + mutationCharges + legalFees + noc + brokerage;
+            
+            document.getElementById('costBreakdownContent').innerHTML = `
+                <div class="cost-item">
+                    <div>
+                        <div class="cost-label">Stamp Duty (6% in Haryana)</div>
+                        <div class="cost-note">Varies by state - check local rates</div>
+                    </div>
+                    <div class="cost-value">₹${stampDuty.toFixed(2)}L</div>
+                </div>
+                
+                <div class="cost-item">
+                    <div>
+                        <div class="cost-label">Registration Fee (1%)</div>
+                        <div class="cost-note">Standard across most states</div>
+                    </div>
+                    <div class="cost-value">₹${registrationFee.toFixed(2)}L</div>
+                </div>
+                
+                <div class="cost-item">
+                    <div>
+                        <div class="cost-label">Mutation Charges</div>
+                        <div class="cost-note">Transfer of ownership in revenue records</div>
+                    </div>
+                    <div class="cost-value">₹${mutationCharges.toFixed(2)}L</div>
+                </div>
+                
+                <div class="cost-item">
+                    <div>
+                        <div class="cost-label">Legal & Documentation Fees</div>
+                        <div class="cost-note">Lawyer fees, notary, etc.</div>
+                    </div>
+                    <div class="cost-value">₹${legalFees.toFixed(2)}L</div>
+                </div>
+                
+                <div class="cost-item">
+                    <div>
+                        <div class="cost-label">NOC Charges</div>
+                        <div class="cost-note">If required by local authorities</div>
+                    </div>
+                    <div class="cost-value">₹${noc.toFixed(2)}L</div>
+                </div>
+                
+                <div class="cost-item">
+                    <div>
+                        <div class="cost-label">Brokerage (1%, if applicable)</div>
+                        <div class="cost-note">Can be negotiated or avoided</div>
+                    </div>
+                    <div class="cost-value">₹${brokerage.toFixed(2)}L</div>
+                </div>
+                
+                <div class="cost-item" style="background: var(--sage); color: white;">
+                    <div>
+                        <div class="cost-label" style="font-size: 1.1rem;">Estimated Total</div>
+                        <div class="cost-note" style="color: rgba(255,255,255,0.9);">For ${acresSold.toFixed(2)} acres at ₹${currentRate}L/acre</div>
+                    </div>
+                    <div class="cost-value" style="color: white; font-size: 1.3rem;">₹${total.toFixed(2)}L</div>
+                </div>
+            `;
+            
+            document.getElementById('transactionCostModal').classList.add('show');
+        }
+        
+        function closeTransactionCostModal() {
+            document.getElementById('transactionCostModal').classList.remove('show');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default target date to 12 months from now
+            const today = new Date();
+            const oneYearLater = new Date(today);
+            oneYearLater.setFullYear(today.getFullYear() + 1);
+            document.getElementById('targetDate').value = oneYearLater.toISOString().split('T')[0];
+            
+            loadLogs();
+            calculate();
+            showToast('Welcome! Start by reviewing the philosophy, then use the calculator.', 'Welcome', 'success');
+        });
+        
+        // Language Toggle
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            const elements = document.querySelectorAll('[data-en][data-hi]');
+            
+            elements.forEach(el => {
+                if (el.tagName === 'INPUT') {
+                    el.placeholder = el.getAttribute('data-' + currentLang);
+                } else {
+                    el.textContent = el.getAttribute('data-' + currentLang);
+                }
+            });
+            
+            document.getElementById('langText').textContent = currentLang === 'en' ? 'हिंदी में देखें' : 'View in English';
+        }
+        
+        // Tab Switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update content sections
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            // Load logs if switching to logs tab
+            if (tabName === 'logs') {
+                loadLogs();
+            }
+        }
+        
+        // Needs Management
+        function addNeed() {
+            const needsTable = document.getElementById('needsTable');
+            const newRow = document.createElement('div');
+            newRow.className = 'need-row';
+            newRow.innerHTML = `
+                <input type="text" placeholder="Need description">
+                <input type="number" placeholder="Amount (₹ Lakhs)" oninput="calculate()">
+                <button class="remove-btn" onclick="removeNeed(this)">×</button>
+            `;
+            needsTable.appendChild(newRow);
+            showToast('New need added. Enter description and amount.', 'Need Added');
+        }
+        
+        function removeNeed(button) {
+            const needRows = document.querySelectorAll('.need-row');
+            if (needRows.length > 1) {
+                button.closest('.need-row').remove();
+                calculate();
+                showToast('Need removed from calculation.', 'Updated');
+            } else {
+                showToast('Keep at least one need in the list.', 'Cannot Remove', 'error');
+            }
+        }
+        
+        // Helper: Convert acres to kanals
+        function acresToKanals(acres) {
+            return acres * 8;
+        }
+        
+        // Helper: Format date nicely
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        
+        // Helper: Calculate days between dates
+        function daysBetween(date1, date2) {
+            const oneDay = 24 * 60 * 60 * 1000;
+            return Math.round(Math.abs((date1 - date2) / oneDay));
+        }
+        
+        // Calculate
+        function calculate() {
+            try {
+                // Get basic inputs
+                const totalLand = parseFloat(document.getElementById('totalLand').value) || 0;
+                const currentRate = parseFloat(document.getElementById('currentRate').value) || 0;
+                const projectedRate = parseFloat(document.getElementById('projectedRate').value) || 0;
+                const bufferPercent = parseFloat(document.getElementById('bufferPercent').value) || 0;
+                const transactionCosts = parseFloat(document.getElementById('transactionCosts').value) || 0;
+                const targetDateStr = document.getElementById('targetDate').value;
+                
+                // Update kanal conversions for inputs
+                document.getElementById('totalLandKanals').textContent = `= ${acresToKanals(totalLand).toFixed(1)} kanals`;
+                document.getElementById('currentRateKanals').textContent = `= ₹${(currentRate / 8).toFixed(2)} Lakhs per kanal`;
+                document.getElementById('projectedRateKanals').textContent = `= ₹${(projectedRate / 8).toFixed(2)} Lakhs per kanal`;
+                
+                // Date calculations
+                const today = new Date();
+                const targetDate = new Date(targetDateStr);
+                const daysRemaining = daysBetween(today, targetDate);
+                const monthsRemaining = (daysRemaining / 30.44).toFixed(1);
+                
+                document.getElementById('currentDate').textContent = formatDate(today);
+                document.getElementById('displayTargetDate').textContent = formatDate(targetDate);
+                document.getElementById('waitingPeriod').textContent = `${daysRemaining} days (${monthsRemaining} months)`;
+                document.getElementById('daysRemaining').textContent = `${daysRemaining} days from today`;
+                
+                // Calculate total needs
+                let totalNeed = 0;
+                const needRows = document.querySelectorAll('.need-row');
+                needRows.forEach(row => {
+                    const amount = parseFloat(row.querySelectorAll('input')[1].value) || 0;
+                    totalNeed += amount;
+                });
+                
+                // Calculate buffer and total required
+                const buffer = totalNeed * (bufferPercent / 100);
+                const totalRequired = totalNeed + buffer + transactionCosts;
+                
+                // Calculate acres needed
+                const acresNow = currentRate > 0 ? totalRequired / currentRate : 0;
+                const acresLater = projectedRate > 0 ? totalRequired / projectedRate : 0;
+                
+                // Calculate preserved land
+                const preservedNow = totalLand - acresNow;
+                const preservedLater = totalLand - acresLater;
+                const landSaved = acresNow - acresLater;
+                
+                // Calculate appreciation
+                const appreciation = currentRate > 0 ? ((projectedRate - currentRate) / currentRate * 100) : 0;
+                
+                // Store results
+                calculationResults = {
+                    totalLand,
+                    currentRate,
+                    projectedRate,
+                    totalNeed,
+                    buffer,
+                    transactionCosts,
+                    totalRequired,
+                    acresNow,
+                    acresLater,
+                    preservedNow,
+                    preservedLater,
+                    landSaved,
+                    appreciation,
+                    bufferPercent,
+                    targetDate: targetDateStr,
+                    daysRemaining,
+                    monthsRemaining
+                };
+                
+                // Update breakdown section
+                document.getElementById('breakdownNeed').textContent = totalNeed.toFixed(1);
+                document.getElementById('breakdownBufferPercent').textContent = bufferPercent;
+                document.getElementById('breakdownBuffer').textContent = buffer.toFixed(1);
+                document.getElementById('breakdownCosts').textContent = transactionCosts.toFixed(1);
+                document.getElementById('breakdownTotal').textContent = totalRequired.toFixed(1);
+                
+                // Update result cards with acres
+                document.getElementById('acresNow').textContent = acresNow.toFixed(2);
+                document.getElementById('acresLater').textContent = acresLater.toFixed(2);
+                document.getElementById('preservedNow').textContent = preservedNow.toFixed(2);
+                document.getElementById('preservedLater').textContent = preservedLater.toFixed(2);
+                document.getElementById('landSaved').textContent = Math.abs(landSaved).toFixed(2);
+                document.getElementById('appreciation').textContent = appreciation.toFixed(1);
+                
+                // Update kanal conversions in results
+                document.getElementById('kanalsNow').textContent = acresToKanals(acresNow).toFixed(1);
+                document.getElementById('kanalsLater').textContent = acresToKanals(acresLater).toFixed(1);
+                document.getElementById('preservedKanalsNow').textContent = acresToKanals(preservedNow).toFixed(1);
+                document.getElementById('preservedKanalsLater').textContent = acresToKanals(preservedLater).toFixed(1);
+                document.getElementById('kanalsSaved').textContent = acresToKanals(Math.abs(landSaved)).toFixed(1);
+                
+                // Calculate and update percentages
+                const percentSoldNow = totalLand > 0 ? (acresNow / totalLand * 100) : 0;
+                const percentSoldLater = totalLand > 0 ? (acresLater / totalLand * 100) : 0;
+                
+                document.getElementById('percentSoldNow').textContent = percentSoldNow.toFixed(1);
+                document.getElementById('percentSoldLater').textContent = percentSoldLater.toFixed(1);
+                
+                // Show results
+                document.getElementById('resultsSection').style.display = 'block';
+                
+                // Provide contextual guidance
+                if (appreciation > 20 && totalNeed > 0 && landSaved > 0) {
+                    showToast(`Strong appreciation (${appreciation.toFixed(1)}%). Waiting ${monthsRemaining} months could save ${Math.abs(landSaved).toFixed(2)} acres (${acresToKanals(Math.abs(landSaved)).toFixed(1)} kanals) - that's ${(Math.abs(landSaved)/totalLand*100).toFixed(1)}% of your ancestral land.`, 'Strategic Insight');
+                } else if (appreciation < 0) {
+                    showToast(`Warning: Projected rate is LOWER than current rate. Market appears to be declining. Consider selling now or revising projections.`, 'Market Alert', 'error');
+                } else if (Math.abs(appreciation) < 5) {
+                    showToast(`Low appreciation (${appreciation.toFixed(1)}%). Waiting period offers minimal benefit. Consider selling now if you need funds.`, 'Timing Insight');
+                } else if (acresNow > totalLand * 0.5) {
+                    showToast(`Warning: You are liquidating ${percentSoldNow.toFixed(1)}% of your land. Consider reducing needs or waiting for better rates to preserve more ancestral holdings.`, 'Preservation Alert', 'error');
+                } else if (percentSoldNow < 10) {
+                    showToast(`Excellent preservation: You're only selling ${percentSoldNow.toFixed(1)}% of your land while meeting all needs. This honors the legacy.`, 'Preservation Success', 'success');
+                }
+                
+            } catch (error) {
+                console.error('Calculation error:', error);
+                showToast('Error in calculation. Please check your inputs.', 'Error', 'error');
+            }
+        }
+        
+        // Consciousness Check
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('.check-box');
+            checkbox.classList.toggle('checked');
+            
+            // Check if all boxes are checked
+            const allChecks = document.querySelectorAll('.check-box');
+            const allChecked = Array.from(allChecks).every(box => box.classList.contains('checked'));
+            
+            if (allChecked) {
+                showToast('You have reflected deeply on this decision. You are ready to proceed with clarity.', 'Consciousness Aligned', 'success');
+            }
+        }
+        
+        // Save Decision
+        function saveDecision() {
+            const allChecks = document.querySelectorAll('.check-box');
+            const checkedCount = Array.from(allChecks).filter(box => box.classList.contains('checked')).length;
+            
+            if (checkedCount < allChecks.length) {
+                showToast('Please complete the consciousness check before saving your decision.', 'Reflection Required', 'error');
+                return;
+            }
+            
+            const decision = {
+                timestamp: new Date().toISOString(),
+                date: new Date().toLocaleString('en-IN', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }),
+                ...calculationResults,
+                needs: []
+            };
+            
+            // Capture needs
+            const needRows = document.querySelectorAll('.need-row');
+            needRows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                decision.needs.push({
+                    description: inputs[0].value,
+                    amount: parseFloat(inputs[1].value) || 0
+                });
+            });
+            
+            // Get existing logs
+            const logs = JSON.parse(localStorage.getItem('landLiquidationLogs') || '[]');
+            logs.unshift(decision);
+            
+            // Save to localStorage
+            localStorage.setItem('landLiquidationLogs', JSON.stringify(logs));
+            
+            showToast('Decision analysis saved successfully. View it in the Decision Log tab.', 'Saved', 'success');
+            
+            // Load logs if on logs tab
+            if (document.getElementById('logs').classList.contains('active')) {
+                loadLogs();
+            }
+        }
+        
+        // Load Logs
+        function loadLogs() {
+            const logs = JSON.parse(localStorage.getItem('landLiquidationLogs') || '[]');
+            const container = document.getElementById('logContainer');
+            
+            if (logs.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 4rem; color: var(--earth-light);">
+                        <h3 style="font-family: 'Crimson Pro', serif; font-size: 2rem; margin-bottom: 1rem;">No decisions saved yet</h3>
+                        <p>Use the calculator to analyze your land liquidation strategy, then save your decisions here for future reference.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = logs.map(log => `
+                <div class="log-entry">
+                    <div class="log-header">
+                        <div class="log-date">${log.date}</div>
+                        <div class="log-status status-saved">Saved</div>
+                    </div>
+                    
+                    <div class="log-details">
+                        <div class="log-detail">
+                            <div class="log-detail-label">Total Need</div>
+                            <div class="log-detail-value">₹${log.totalNeed.toFixed(1)}L</div>
+                        </div>
+                        <div class="log-detail">
+                            <div class="log-detail-label">Current Rate</div>
+                            <div class="log-detail-value">₹${log.currentRate}L/acre</div>
+                        </div>
+                        <div class="log-detail">
+                            <div class="log-detail-label">Acres to Sell (Now)</div>
+                            <div class="log-detail-value">${log.acresNow.toFixed(2)} acres</div>
+                        </div>
+                        <div class="log-detail">
+                            <div class="log-detail-label">Acres to Sell (Wait)</div>
+                            <div class="log-detail-value">${log.acresLater.toFixed(2)} acres</div>
+                        </div>
+                        <div class="log-detail">
+                            <div class="log-detail-label">Land Preserved (Now)</div>
+                            <div class="log-detail-value">${log.preservedNow.toFixed(2)} acres</div>
+                        </div>
+                        <div class="log-detail">
+                            <div class="log-detail-label">Appreciation</div>
+                            <div class="log-detail-value">${log.appreciation.toFixed(1)}%</div>
+                        </div>
+                    </div>
+                    
+                    ${log.needs && log.needs.length > 0 ? `
+                        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--sand);">
+                            <div style="font-weight: 600; margin-bottom: 0.75rem; color: var(--earth-dark);">Needs Breakdown:</div>
+                            ${log.needs.map(need => `
+                                <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; color: var(--earth-medium);">
+                                    <span>${need.description}</span>
+                                    <span style="font-weight: 600;">₹${need.amount}L</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // Export Report
+        function exportReport() {
+            showToast('Preparing PDF report... (This feature will open print dialog)', 'Exporting');
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+        
+        // Reset Calculator
+        function resetCalculator() {
+            if (confirm('Are you sure you want to reset all inputs? This will not delete saved logs.')) {
+                document.getElementById('totalLand').value = 14;
+                document.getElementById('currentRate').value = 70;
+                document.getElementById('projectedRate').value = 90;
+                document.getElementById('bufferPercent').value = 15;
+                document.getElementById('transactionCosts').value = 3;
+                
+                // Reset needs
+                const needsTable = document.getElementById('needsTable');
+                needsTable.innerHTML = `
+                    <div class="need-row">
+                        <input type="text" placeholder="Need description" value="">
+                        <input type="number" placeholder="Amount (₹ Lakhs)" value="" oninput="calculate()">
+                        <button class="remove-btn" onclick="removeNeed(this)">×</button>
+                    </div>
+                `;
+                
+                // Uncheck consciousness checks
+                document.querySelectorAll('.check-box').forEach(box => box.classList.remove('checked'));
+                
+                calculate();
+                showToast('Calculator reset. Start with fresh inputs.', 'Reset Complete');
+            }
+        }
+        
+        // Toast Notifications
+        function showToast(message, title = 'Notification', type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            
+            toast.className = 'toast show' + (type === 'error' ? ' error' : '');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
