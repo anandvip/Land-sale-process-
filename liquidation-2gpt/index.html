@@ -1,0 +1,2350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Land Liquidation Calculator | Preserve Ancestral Heritage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --earth-dark: #2C1810;
+      --earth-medium: #5C4033;
+      --earth-light: #8B7355;
+      --terracotta: #C86B3C;
+      --sage: #7A9D7A;
+      --cream: #F5F0E8;
+      --sand: #E8DCC8;
+      --clay: #A0826D;
+      --shadow: rgba(44, 24, 16, 0.15);
+      --overlay: rgba(0, 0, 0, 0.6);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--sand) 100%);
+      color: var(--earth-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 0 2rem;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    h1 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--earth-dark);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--earth-medium);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Language Toggle */
+    .language-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      z-index: 1000;
+      animation: fadeIn 1s ease-out 0.3s backwards;
+    }
+
+    .lang-switch {
+      background: white;
+      border: 2px solid var(--earth-light);
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--earth-dark);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .lang-switch:hover {
+      background: var(--terracotta);
+      color: white;
+      border-color: var(--terracotta);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 0;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 1rem 2.5rem;
+      background: white;
+      border: 3px solid var(--earth-light);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--earth-medium);
+      box-shadow: 0 4px 12px var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(120, 157, 122, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .tab-btn:hover::before { left: 100%; }
+
+    .tab-btn.active {
+      background: var(--sage);
+      color: white;
+      border-color: var(--sage);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    /* Content Sections */
+    .content-section { display: none; animation: fadeIn 0.5s ease-out; }
+    .content-section.active { display: block; }
+
+    /* Philosophy */
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .philosophy-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 24px var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-left: 4px solid var(--terracotta);
+      animation: fadeInUp 0.6s ease-out backwards;
+    }
+
+    .philosophy-card:nth-child(1) { animation-delay: 0.1s; }
+    .philosophy-card:nth-child(2) { animation-delay: 0.2s; }
+    .philosophy-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .philosophy-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+
+    .philosophy-card h3 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.8rem;
+      color: var(--earth-dark);
+      margin-bottom: 1rem;
+    }
+
+    .philosophy-card p {
+      color: var(--earth-medium);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .principle {
+      background: var(--cream);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      border-left: 3px solid var(--sage);
+    }
+
+    .principle-title {
+      font-weight: 600;
+      color: var(--earth-dark);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    /* Calculator */
+    .calculator-container {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 12px 40px var(--shadow);
+      margin: 2rem 0;
+    }
+
+    .section-title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .subsection-title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 2rem;
+      margin: 3rem 0 1.5rem;
+    }
+
+    .ownership-banner {
+      background: linear-gradient(135deg, var(--sage) 0%, var(--earth-light) 100%);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .ownership-banner .title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .ownership-banner .summary {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    .input-group { margin-bottom: 2rem; }
+
+    .input-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: var(--earth-dark);
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .help-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: var(--sage);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      cursor: help;
+      transition: all 0.3s ease;
+      position: relative;
+      user-select: none;
+    }
+
+    .help-icon:hover { background: var(--terracotta); transform: scale(1.2); }
+
+    .help-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--earth-dark);
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .help-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--earth-dark);
+    }
+
+    .help-icon:hover .help-tooltip,
+    .help-icon:focus .help-tooltip { opacity: 1; }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    input[type="number"], input[type="text"], input[type="date"] {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: 2px solid var(--sand);
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.3s ease;
+      background: var(--cream);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--sage);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(122, 157, 122, 0.1);
+    }
+
+    .input-suffix {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--earth-light);
+      font-weight: 700;
+      pointer-events: none;
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      color: var(--earth-light);
+      margin-top: 0.5rem;
+    }
+
+    /* Needs Table */
+    .needs-table {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .need-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr auto;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: var(--terracotta);
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      padding: 0.5rem;
+      line-height: 1;
+    }
+
+    .remove-btn:hover { color: #a04020; transform: scale(1.2); }
+
+    .add-need-btn {
+      background: var(--sage);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    .add-need-btn:hover {
+      background: var(--earth-medium);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    .buffer-explanation {
+      background: var(--cream);
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin-top: 0.75rem;
+      border-left: 3px solid var(--sage);
+      font-size: 0.95rem;
+      color: var(--earth-medium);
+      line-height: 1.6;
+    }
+
+    .link-like {
+      display: inline-block;
+      margin-top: 0.75rem;
+      color: var(--sage);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.95rem;
+      border-bottom: 2px solid var(--sage);
+      padding-bottom: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .link-like:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* Results */
+    .results-section {
+      margin-top: 3rem;
+      padding: 2.5rem;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--earth-light) 100%);
+      border-radius: 16px;
+      color: white;
+      box-shadow: 0 12px 40px var(--shadow);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .result-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .result-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .result-value {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: 'Crimson Pro', serif;
+    }
+
+    .result-subtitle {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-top: 0.5rem;
+    }
+
+    .kanal-conversion {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-top: 0.25rem;
+      font-weight: 600;
+    }
+
+    .breakdown-section {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 12px;
+      margin-top: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      gap: 1rem;
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+      font-weight: 800;
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .date-info {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.95rem;
+    }
+
+    /* Consciousness */
+    .consciousness-check {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 2rem;
+      border: 3px solid var(--terracotta);
+      color: var(--earth-dark);
+    }
+
+    .consciousness-check h3 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .scenario-block {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--sand);
+    }
+
+    .scenario-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--earth-dark);
+    }
+
+    .scenario-input {
+      width: 100%;
+      max-width: 500px;
+      padding: 0.75rem;
+      border: 2px solid var(--sand);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      background: var(--cream);
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      background: var(--cream);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .check-item:hover {
+      background: var(--sand);
+      transform: translateX(5px);
+    }
+
+    .check-box {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--sage);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+
+    .check-box.checked {
+      background: var(--sage);
+      position: relative;
+    }
+
+    .check-box.checked::after {
+      content: '✓';
+      position: absolute;
+      color: white;
+      font-weight: 900;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 1.25rem 2.5rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-primary {
+      background: var(--terracotta);
+      color: white;
+      box-shadow: 0 6px 20px rgba(200, 107, 60, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #a04020;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(200, 107, 60, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--earth-dark);
+      border: 2px solid var(--earth-light);
+    }
+
+    .btn-secondary:hover {
+      background: var(--cream);
+      transform: translateY(-3px);
+    }
+
+    .btn-small {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border-radius: 12px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: white;
+      padding: 1.25rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px var(--shadow);
+      border-left: 4px solid var(--sage);
+      max-width: 420px;
+      z-index: 2000;
+      animation: slideInRight 0.35s ease-out;
+      display: none;
+    }
+
+    .toast.show { display: block; }
+    .toast.error { border-left-color: var(--terracotta); }
+
+    .toast-title {
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--earth-dark);
+    }
+
+    .toast-message {
+      color: var(--earth-medium);
+      font-size: 0.95rem;
+    }
+
+    /* Decision Log */
+    .log-container { margin-top: 3rem; }
+
+    .log-entry {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px var(--shadow);
+      border-left: 4px solid var(--clay);
+      transition: all 0.3s ease;
+    }
+
+    .log-entry:hover {
+      transform: translateX(5px);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .scenario-name {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--sage);
+      margin-bottom: 0.25rem;
+    }
+
+    .log-date {
+      font-weight: 700;
+      color: var(--earth-dark);
+      font-size: 1.05rem;
+    }
+
+    .log-status {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      background: rgba(122, 157, 122, 0.2);
+      color: var(--sage);
+    }
+
+    .log-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .log-detail {
+      padding: 1rem;
+      background: var(--cream);
+      border-radius: 8px;
+    }
+
+    .log-detail-label {
+      font-size: 0.85rem;
+      color: var(--earth-light);
+      margin-bottom: 0.25rem;
+      font-weight: 700;
+    }
+
+    .log-detail-value {
+      font-weight: 900;
+      color: var(--earth-dark);
+      font-size: 1.05rem;
+    }
+
+    .log-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--sand);
+      flex-wrap: wrap;
+    }
+
+    .log-action-btn {
+      padding: 0.75rem 1.25rem;
+      border: 2px solid var(--earth-light);
+      background: white;
+      color: var(--earth-dark);
+      border-radius: 8px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .log-action-btn:hover {
+      background: var(--sage);
+      color: white;
+      border-color: var(--sage);
+      transform: translateY(-2px);
+    }
+
+    .log-action-btn.primary {
+      background: var(--terracotta);
+      color: white;
+      border-color: var(--terracotta);
+    }
+
+    .log-action-btn.primary:hover {
+      background: #a04020;
+      border-color: #a04020;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--overlay);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease-out;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 760px;
+      width: 100%;
+      max-height: 85vh;
+      overflow: auto;
+      box-shadow: 0 20px 60px var(--shadow);
+      animation: slideInUp 0.4s ease-out;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--sand);
+      gap: 1rem;
+    }
+
+    .modal-title {
+      font-family: 'Crimson Pro', serif;
+      font-size: 2rem;
+      color: var(--earth-dark);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--earth-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.25rem 0.5rem;
+      line-height: 1;
+    }
+
+    .modal-close:hover { color: var(--terracotta); transform: rotate(90deg); }
+
+    .modal-footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--sand);
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .shareholder-card {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      border-left: 4px solid var(--sage);
+    }
+
+    .shareholder-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .shareholder-number {
+      font-weight: 900;
+      color: var(--sage);
+      font-size: 1.05rem;
+    }
+
+    .remove-shareholder {
+      background: none;
+      border: none;
+      color: var(--terracotta);
+      cursor: pointer;
+      font-size: 1.5rem;
+      padding: 0.25rem 0.5rem;
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    .remove-shareholder:hover { color: #a04020; transform: scale(1.15); }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .input-row-full { margin-bottom: 1rem; }
+
+    .field-label {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--earth-dark);
+    }
+
+    .cost-breakdown-grid {
+      display: grid;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .cost-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1rem;
+      background: var(--cream);
+      border-radius: 8px;
+      gap: 1rem;
+    }
+
+    .cost-label { font-weight: 700; color: var(--earth-dark); }
+    .cost-note { font-size: 0.9rem; color: var(--earth-light); font-style: italic; margin-top: 0.25rem; }
+    .cost-value { font-weight: 900; color: var(--sage); font-size: 1.1rem; text-align: right; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      .calculator-container { padding: 1.5rem; }
+      .result-grid { grid-template-columns: 1fr; }
+      .action-buttons { flex-direction: column; }
+      .btn { width: 100%; }
+      .language-toggle { top: 1rem; right: 1rem; }
+      .input-row { grid-template-columns: 1fr; }
+    }
+
+    /* Print */
+    @media print {
+      body { background: white; }
+      .language-toggle, .tab-nav, .action-buttons, .log-actions { display: none !important; }
+      .calculator-container, .results-section, .log-entry { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+      h1, h2, h3 { color: #000 !important; }
+    }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+
+<body>
+  <div class="language-toggle">
+    <button class="lang-switch" id="langToggleBtn" type="button"><span id="langText">हिंदी में देखें</span></button>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1 data-en="Land Liquidation Calculator" data-hi="भूमि परिसमापन कैलकुलेटर">Land Liquidation Calculator</h1>
+      <p class="subtitle" data-en="Preserve Ancestral Heritage Through Strategic Clarity" data-hi="रणनीतिक स्पष्टता के माध्यम से पैतृक विरासत को संरक्षित करें">Preserve Ancestral Heritage Through Strategic Clarity</p>
+    </header>
+
+    <nav class="tab-nav" aria-label="Primary">
+      <button class="tab-btn active" type="button" data-tab="philosophy" data-en="Philosophy" data-hi="दर्शन">Philosophy</button>
+      <button class="tab-btn" type="button" data-tab="calculator" data-en="Calculator" data-hi="कैलकुलेटर">Calculator</button>
+      <button class="tab-btn" type="button" data-tab="logs" data-en="Decision Log" data-hi="निर्णय लॉग">Decision Log</button>
+    </nav>
+
+    <!-- Philosophy -->
+    <section id="philosophy" class="content-section active">
+      <div class="philosophy-grid">
+        <article class="philosophy-card">
+          <h3 data-en="The Core Philosophy" data-hi="मूल दर्शन">The Core Philosophy</h3>
+          <p data-en="Land is not merely an asset—it is ancestral memory, generational trust, and ecological connection. This tool honors the sacred responsibility of preservation while acknowledging the necessity of strategic liquidation." data-hi="भूमि केवल एक संपत्ति नहीं है—यह पैतृक स्मृति, पीढ़ीगत विश्वास और पारिस्थितिक संबंध है। यह उपकरण संरक्षण की पवित्र जिम्मेदारी का सम्मान करता है जबकि रणनीतिक परिसमापन की आवश्यकता को स्वीकार करता है।">Land is not merely an asset—it is ancestral memory, generational trust, and ecological connection. This tool honors the sacred responsibility of preservation while acknowledging the necessity of strategic liquidation.</p>
+
+          <div class="principle">
+            <div class="principle-title" data-en="Principle 1: Minimum Necessary Release" data-hi="सिद्धांत 1: न्यूनतम आवश्यक विमोचन">Principle 1: Minimum Necessary Release</div>
+            <p data-en="Release only what is absolutely required. Calculate with precision, not approximation. Every fraction of an acre preserved is a gift to future generations." data-hi="केवल वही जारी करें जो बिल्कुल आवश्यक है। सटीकता के साथ गणना करें, न कि अनुमान से। संरक्षित की गई प्रत्येक एकड़ की भिन्न भावी पीढ़ियों के लिए एक उपहार है।">Release only what is absolutely required. Calculate with precision, not approximation. Every fraction of an acre preserved is a gift to future generations.</p>
+          </div>
+
+          <div class="principle">
+            <div class="principle-title" data-en="Principle 2: Strategic Timing" data-hi="सिद्धांत 2: रणनीतिक समय">Principle 2: Strategic Timing</div>
+            <p data-en="Market appreciation can save acres. If need is not urgent, patience becomes preservation. A 20% appreciation over 12 months might save 0.3 acres—one-third of a football field." data-hi="बाजार की सराहना एकड़ बचा सकती है। यदि आवश्यकता तत्काल नहीं है, तो धैर्य संरक्षण बन जाता है। 12 महीनों में 20% की सराहना 0.3 एकड़ बचा सकती है—एक फुटबॉल मैदान का एक तिहाई।">Market appreciation can save acres. If need is not urgent, patience becomes preservation. A 20% appreciation over 12 months might save 0.3 acres—one-third of a football field.</p>
+          </div>
+        </article>
+
+        <article class="philosophy-card">
+          <h3 data-en="The Algorithm's Wisdom" data-hi="एल्गोरिदम की बुद्धिमत्ता">The Algorithm's Wisdom</h3>
+          <p data-en="This calculator implements a consciousness-based approach to land liquidation. It guides you through enumeration of needs, buffer calculations, transaction costs, and timing strategy—transforming anxiety into clarity." data-hi="यह कैलकुलेटर भूमि परिसमापन के लिए एक चेतना-आधारित दृष्टिकोण लागू करता है। यह आपको जरूरतों की गणना, बफर गणना, लेनदेन लागत और समय रणनीति के माध्यम से मार्गदर्शन करता है—चिंता को स्पष्टता में बदलता है।">This calculator implements a consciousness-based approach to land liquidation. It guides you through enumeration of needs, buffer calculations, transaction costs, and timing strategy—transforming anxiety into clarity.</p>
+
+          <div class="principle">
+            <div class="principle-title" data-en="Why Enumerate Needs?" data-hi="आवश्यकताओं की गणना क्यों करें?">Why Enumerate Needs?</div>
+            <p data-en="Vague needs lead to over-selling. 'I need money' becomes 'I'm selling 5 acres'. Specific needs create boundaries: 'I need ₹92 lakhs for car, house, parents, emergency' becomes 'I'm selling 1.2 acres'." data-hi="अस्पष्ट जरूरतें अधिक बिक्री की ओर ले जाती हैं। 'मुझे पैसे चाहिए' '5 एकड़ बेच रहा हूं' बन जाता है। विशिष्ट जरूरतें सीमाएं बनाती हैं: 'मुझे कार, घर, माता-पिता, आपातकाल के लिए ₹92 लाख चाहिए' '1.2 एकड़ बेच रहा हूं' बन जाता है।">Vague needs lead to over-selling. 'I need money' becomes 'I'm selling 5 acres'. Specific needs create boundaries: 'I need ₹92 lakhs for car, house, parents, emergency' becomes 'I'm selling 1.2 acres'.</p>
+          </div>
+
+          <div class="principle">
+            <div class="principle-title" data-en="The Buffer Zone" data-hi="बफर क्षेत्र">The Buffer Zone</div>
+            <p data-en="Life is uncertain. A 15% buffer protects against unexpected costs without encouraging over-extraction. It's prudence, not greed." data-hi="जीवन अनिश्चित है। 15% बफर अप्रत्याशित लागतों से बचाता है बिना अधिक निष्कर्षण को प्रोत्साहित किए। यह विवेक है, लालच नहीं।">Life is uncertain. A 15% buffer protects against unexpected costs without encouraging over-extraction. It's prudence, not greed.</p>
+          </div>
+        </article>
+
+        <article class="philosophy-card">
+          <h3 data-en="The Consciousness Check" data-hi="चेतना जांच">The Consciousness Check</h3>
+          <p data-en="Before finalizing any decision, this tool asks you to pause and reflect. Are you selling from clarity or from fear? Does this honor your ancestors and future generations? Can you sleep peacefully with this choice?" data-hi="किसी भी निर्णय को अंतिम रूप देने से पहले, यह उपकरण आपको रुकने और प्रतिबिंबित करने के लिए कहता है। क्या आप स्पष्टता से बेच रहे हैं या भय से? क्या यह आपके पूर्वजों और भावी पीढ़ियों का सम्मान करता है? क्या आप इस चयन के साथ शांति से सो सकते हैं?">Before finalizing any decision, this tool asks you to pause and reflect. Are you selling from clarity or from fear? Does this honor your ancestors and future generations? Can you sleep peacefully with this choice?</p>
+
+          <div class="principle">
+            <div class="principle-title" data-en="Death Meditation Parallel" data-hi="मृत्यु ध्यान समानता">Death Meditation Parallel</div>
+            <p data-en="Like daily death meditation, this practice is about releasing attachment while maintaining clarity. You release the minimum necessary (acres) while preserving the maximum possible (ancestral land). This is strategic ego death—disciplined non-attachment." data-hi="दैनिक मृत्यु ध्यान की तरह, यह अभ्यास स्पष्टता बनाए रखते हुए लगाव छोड़ने के बारे में है। आप न्यूनतम आवश्यक (एकड़) को छोड़ते हैं जबकि अधिकतम संभव (पैतृक भूमि) को संरक्षित करते हैं। यह रणनीतिक अहंकार मृत्यु है—अनुशासित गैर-लगाव।">Like daily death meditation, this practice is about releasing attachment while maintaining clarity. You release the minimum necessary (acres) while preserving the maximum possible (ancestral land). This is strategic ego death—disciplined non-attachment.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Calculator -->
+    <section id="calculator" class="content-section">
+      <div class="calculator-container" id="calculatorCard">
+        <h2 class="section-title" data-en="Calculate Your Minimum Liquidation" data-hi="अपनी न्यूनतम परिसमापन की गणना करें">Calculate Your Minimum Liquidation</h2>
+
+        <div class="ownership-banner">
+          <div>
+            <div class="title" data-en="Family Ownership Structure" data-hi="पारिवारिक स्वामित्व संरचना">Family Ownership Structure</div>
+            <div class="summary" id="shareholderSummary">Single owner • 14 acres total</div>
+          </div>
+          <button class="btn btn-secondary btn-small" id="manageShareholdersBtn" type="button">
+            <span data-en="Manage Shareholders" data-hi="शेयरधारकों का प्रबंधन करें">Manage Shareholders</span>
+          </button>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span data-en="Total Land Holdings (acres)" data-hi="कुल भूमि होल्डिंग्स (एकड़)">Total Land Holdings (acres)</span>
+            <span class="help-icon" tabindex="0">?
+              <span class="help-tooltip" data-en="Enter total ancestral land in acres (1 acre = 8 kanals)" data-hi="कुल भूमि एकड़ में (1 एकड़ = 8 कनाल)">Enter total ancestral land in acres (1 acre = 8 kanals)</span>
+            </span>
+          </label>
+          <div class="input-wrap">
+            <input type="number" id="totalLand" value="14" step="0.01" inputmode="decimal" />
+          </div>
+          <div class="hint" id="totalLandKanals">= 112 kanals</div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span data-en="Current Market Rate (₹ per acre)" data-hi="वर्तमान बाजार दर (₹ प्रति एकड़)">Current Market Rate (₹ per acre)</span>
+            <span class="help-icon" tabindex="0">?
+              <span class="help-tooltip" data-en="Current verified rate per acre in your area" data-hi="अपने क्षेत्र में वर्तमान सत्यापित दर">Current verified rate per acre in your area</span>
+            </span>
+          </label>
+          <div class="input-wrap">
+            <input type="number" id="currentRate" value="70" step="1" inputmode="decimal" />
+            <span class="input-suffix" aria-hidden="true">Lakhs</span>
+          </div>
+          <div class="hint" id="currentRateKanals">= ₹8.75 Lakhs per kanal</div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span data-en="Projected Rate (by specific date)" data-hi="अनुमानित दर (विशिष्ट तिथि तक)">Projected Rate (by specific date)</span>
+            <span class="help-icon" tabindex="0">?
+              <span class="help-tooltip" data-en="Conservative estimate of land value by the target date" data-hi="लक्ष्य तिथि तक भूमि का रूढ़िवादी अनुमान">Conservative estimate of land value by the target date</span>
+            </span>
+          </label>
+          <div class="input-wrap">
+            <input type="number" id="projectedRate" value="90" step="1" inputmode="decimal" />
+            <span class="input-suffix" aria-hidden="true">Lakhs</span>
+          </div>
+          <div class="hint" id="projectedRateKanals">= ₹11.25 Lakhs per kanal</div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span data-en="Target Date for Projected Rate" data-hi="अनुमानित दर के लिए लक्ष्य तिथि">Target Date for Projected Rate</span>
+            <span class="help-icon" tabindex="0">?
+              <span class="help-tooltip" data-en="When do you expect the market to reach projected rate?" data-hi="आपको कब तक अनुमानित दर मिलने की उम्मीद है?">When do you expect the market to reach projected rate?</span>
+            </span>
+          </label>
+          <div class="input-wrap">
+            <input type="date" id="targetDate" />
+          </div>
+          <div class="hint" id="daysRemaining"></div>
+        </div>
+
+        <h3 class="subsection-title" data-en="Enumerate Your Specific Needs" data-hi="अपनी विशिष्ट जरूरतों की गणना करें">Enumerate Your Specific Needs</h3>
+
+        <div class="needs-table" id="needsTable" aria-label="Needs list">
+          <!-- Rows injected by JS -->
+        </div>
+
+        <button class="add-need-btn" id="addNeedBtn" type="button">
+          <span data-en="+ Add Another Need" data-hi="+ एक और आवश्यकता जोड़ें">+ Add Another Need</span>
+        </button>
+
+        <div class="input-group" style="margin-top: 2rem;">
+          <label class="input-label">
+            <span data-en="Buffer Percentage (%)" data-hi="बफर प्रतिशत (%)">Buffer Percentage (%)</span>
+            <span class="help-icon" tabindex="0">?
+              <span class="help-tooltip" data-en="Safety margin for unexpected costs (10-20% recommended)" data-hi="अप्रत्याशित खर्चों के लिए सुरक्षा मार्जिन (10-20% अनुशंसित)">Safety margin for unexpected costs (10-20% recommended)</span>
+            </span>
+          </label>
+          <div class="input-wrap">
+            <input type="number" id="bufferPercent" value="15" step="1" min="0" max="50" inputmode="decimal" />
+          </div>
+          <div class="buffer-explanation">
+            <strong data-en="Why Buffer?" data-hi="बफर क्यों?">Why Buffer?</strong>
+            <span data-en=" Life is uncertain. A 15% buffer protects against: (1) price negotiations going below expected rate, (2) unexpected legal/documentation costs, (3) market timing delays, (4) small miscalculations. This is prudence, not greed—it prevents having to sell MORE land later." data-hi=" जीवन अनिश्चित है। 15% बफर बचाता है: (1) भाव-तोल में कम दाम, (2) कानूनी/दस्तावेज़ खर्च, (3) बाज़ार देरी, (4) छोटी गलतियाँ। यह विवेक है—लालच नहीं—ताकि बाद में कमी होने पर और ज़मीन न बेचनी पड़े।"> Life is uncertain. A 15% buffer protects against: (1) price negotiations going below expected rate, (2) unexpected legal/documentation costs, (3) market timing delays, (4) small miscalculations. This is prudence, not greed—it prevents having to sell MORE land later.</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">
+            <span data-en="Estimated Transaction Costs (₹ Lakhs)" data-hi="अनुमानित लेनदेन लागत (₹ लाख)">Estimated Transaction Costs (₹ Lakhs)</span>
+            <span class="help-icon" tabindex="0">?
+              <span class="help-tooltip" data-en="Registration, stamp duty, legal fees, brokerage if any" data-hi="रजिस्ट्रेशन, स्टाम्प ड्यूटी, वकील फीस, दलाली (यदि हो)">Registration, stamp duty, legal fees, brokerage if any</span>
+            </span>
+          </label>
+          <div class="input-wrap">
+            <input type="number" id="transactionCosts" value="3" step="0.5" inputmode="decimal" />
+          </div>
+          <a class="link-like" href="#" id="viewCostBreakdownLink">📋 <span data-en="View detailed cost breakdown" data-hi="विस्तृत लागत विवरण देखें">View detailed cost breakdown</span></a>
+        </div>
+      </div>
+
+      <div class="results-section" id="resultsSection" style="display: none;">
+        <h2 class="section-title" style="margin-bottom: 1rem;" data-en="Your Strategic Analysis" data-hi="आपका रणनीतिक विश्लेषण">Your Strategic Analysis</h2>
+
+        <div class="date-info" id="dateInfo">
+          <strong data-en="Today:" data-hi="आज:">Today:</strong> <span id="currentDate"></span> |
+          <strong data-en="Target Date:" data-hi="लक्ष्य तिथि:">Target Date:</strong> <span id="displayTargetDate"></span> |
+          <strong data-en="Waiting Period:" data-hi="प्रतीक्षा अवधि:">Waiting Period:</strong> <span id="waitingPeriod"></span>
+        </div>
+
+        <div class="breakdown-section">
+          <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Cost Breakdown</h3>
+          <div style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 1rem;">L = Lakhs | Cr = Crores</div>
+
+          <div class="breakdown-row">
+            <span class="breakdown-label" data-en="Total Enumerated Needs" data-hi="कुल गणना की गई जरूरतें">Total Enumerated Needs</span>
+            <span class="breakdown-value" id="breakdownNeed">₹92 L</span>
+          </div>
+
+          <div class="breakdown-row">
+            <span class="breakdown-label"><span data-en="Buffer" data-hi="बफर">Buffer</span> (<span id="breakdownBufferPercent">15</span>%)</span>
+            <span class="breakdown-value" id="breakdownBuffer">₹13.8 L</span>
+          </div>
+
+          <div class="breakdown-row">
+            <span class="breakdown-label" data-en="Transaction Costs" data-hi="लेनदेन लागत">Transaction Costs</span>
+            <span class="breakdown-value" id="breakdownCosts">₹3 L</span>
+          </div>
+
+          <div class="breakdown-row">
+            <span class="breakdown-label" data-en="Total Required" data-hi="कुल आवश्यकता">Total Required</span>
+            <span class="breakdown-value" id="breakdownTotal">₹108.8 L</span>
+          </div>
+
+          <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.3); font-size: 0.95rem; opacity: 0.9;">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+              <strong data-en="In Rupees (Indian notation):" data-hi="रुपयों में (भारतीय प्रारूप):">In Rupees (Indian notation):</strong>
+              <span id="totalRequiredRupees" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 1.05rem;">₹1,08,80,000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-label" data-en="Sell Now (Current Rate)" data-hi="अभी बेचें (वर्तमान दर)">Sell Now (Current Rate)</div>
+            <div class="result-value"><span id="acresNow">1.55</span> acres</div>
+            <div class="kanal-conversion">= <span id="kanalsNow">12.4</span> kanals</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-label" data-en="Wait Until Target" data-hi="लक्ष्य तक प्रतीक्षा करें">Wait Until Target</div>
+            <div class="result-value"><span id="acresLater">1.21</span> acres</div>
+            <div class="kanal-conversion">= <span id="kanalsLater">9.7</span> kanals</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-label" data-en="Preserved Now" data-hi="अभी संरक्षित">Preserved Now</div>
+            <div class="result-value"><span id="preservedNow">12.45</span> acres</div>
+            <div class="kanal-conversion">= <span id="preservedKanalsNow">99.6</span> kanals</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-label" data-en="Preserved Later" data-hi="बाद में संरक्षित">Preserved Later</div>
+            <div class="result-value"><span id="preservedLater">12.79</span> acres</div>
+            <div class="kanal-conversion">= <span id="preservedKanalsLater">102.3</span> kanals</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-label" data-en="Land Saved by Waiting" data-hi="प्रतीक्षा से बची भूमि">Land Saved by Waiting</div>
+            <div class="result-value"><span id="landSaved">0.34</span> acres</div>
+            <div class="kanal-conversion">= <span id="kanalsSaved">2.7</span> kanals</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-label" data-en="Appreciation" data-hi="वृद्धि">Appreciation</div>
+            <div class="result-value"><span id="appreciation">28.6</span>%</div>
+            <div class="result-subtitle" id="appreciationPeriod" data-en="over waiting period" data-hi="प्रतीक्षा अवधि में">over waiting period</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-label" data-en="% Land Sold (Now)" data-hi="% भूमि बेची गई (अभी)">% Land Sold (Now)</div>
+            <div class="result-value"><span id="percentSoldNow">11.1</span>%</div>
+            <div class="result-subtitle" data-en="of total holdings" data-hi="कुल होल्डिंग्स का">of total holdings</div>
+          </div>
+
+          <div class="result-card">
+            <div class="result-label" data-en="% Land Sold (Wait)" data-hi="% भूमि बेची गई (प्रतीक्षा)">% Land Sold (Wait)</div>
+            <div class="result-value"><span id="percentSoldLater">8.6</span>%</div>
+            <div class="result-subtitle" data-en="of total holdings" data-hi="कुल होल्डिंग्स का">of total holdings</div>
+          </div>
+        </div>
+
+        <div class="consciousness-check" id="consciousnessCheck">
+          <h3 data-en="Before You Decide: Consciousness Check" data-hi="निर्णय लेने से पहले: चेतना जांच">Before You Decide: Consciousness Check</h3>
+
+          <div class="scenario-block">
+            <label class="scenario-label" for="scenarioName">
+              <span data-en="Name this scenario (for family review)" data-hi="इस परिदृश्य का नाम दें (पारिवारिक समीक्षा के लिए)">Name this scenario (for family review)</span>
+            </label>
+            <input type="text" id="scenarioName" class="scenario-input" placeholder="e.g., Initial Analysis, After Family Review" value="Scenario 1" />
+            <div class="hint" data-en="This helps track versions when reviewing with elders or advisors." data-hi="यह बुजुर्गों/सलाहकारों के साथ समीक्षा में अलग-अलग संस्करण ट्रैक करने में मदद करता है।">This helps track versions when reviewing with elders or advisors.</div>
+          </div>
+
+          <p style="color: var(--earth-medium); margin-bottom: 1.5rem;" data-en="Take a moment to reflect on these questions. Your answers matter more than the numbers." data-hi="इन प्रश्नों पर विचार करने के लिए एक क्षण लें। आपके उत्तर संख्याओं से अधिक महत्वपूर्ण हैं।">Take a moment to reflect on these questions. Your answers matter more than the numbers.</p>
+
+          <div class="check-item" data-check="1" tabindex="0" role="button" aria-label="Toggle check">
+            <div class="check-box" aria-hidden="true"></div>
+            <span data-en="I am selling from clarity, not fear or greed" data-hi="मैं स्पष्टता से बेच रहा हूं, भय या लालच से नहीं">I am selling from clarity, not fear or greed</span>
+          </div>
+
+          <div class="check-item" data-check="2" tabindex="0" role="button" aria-label="Toggle check">
+            <div class="check-box" aria-hidden="true"></div>
+            <span data-en="This honors my ancestors and future generations" data-hi="यह मेरे पूर्वजों और भावी पीढ़ियों का सम्मान करता है">This honors my ancestors and future generations</span>
+          </div>
+
+          <div class="check-item" data-check="3" tabindex="0" role="button" aria-label="Toggle check">
+            <div class="check-box" aria-hidden="true"></div>
+            <span data-en="I am releasing the minimum necessary" data-hi="मैं न्यूनतम आवश्यक जारी कर रहा हूं">I am releasing the minimum necessary</span>
+          </div>
+
+          <div class="check-item" data-check="4" tabindex="0" role="button" aria-label="Toggle check">
+            <div class="check-box" aria-hidden="true"></div>
+            <span data-en="I can sleep peacefully with this decision" data-hi="मैं इस निर्णय के साथ शांति से सो सकता हूं">I can sleep peacefully with this decision</span>
+          </div>
+
+          <div class="check-item" data-check="5" tabindex="0" role="button" aria-label="Toggle check">
+            <div class="check-box" aria-hidden="true"></div>
+            <span data-en="I am preserving maximum ancestral land" data-hi="मैं अधिकतम पैतृक भूमि का संरक्षण कर रहा हूं">I am preserving maximum ancestral land</span>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="saveBtn" type="button"><span data-en="Save This Analysis" data-hi="यह विश्लेषण सहेजें">Save This Analysis</span></button>
+          <button class="btn btn-secondary" id="exportBtn" type="button"><span data-en="Export Report (Print/PDF)" data-hi="रिपोर्ट निर्यात करें (प्रिंट/पीडीएफ)">Export Report (Print/PDF)</span></button>
+          <button class="btn btn-secondary" id="resetBtn" type="button"><span data-en="Start Fresh" data-hi="नए सिरे से शुरू करें">Start Fresh</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logs -->
+    <section id="logs" class="content-section">
+      <h2 class="section-title" data-en="Your Decision History" data-hi="आपका निर्णय इतिहास">Your Decision History</h2>
+      <p style="color: var(--earth-medium); margin-bottom: 2rem;" data-en="Track your analysis over time. See how market conditions and your needs have evolved." data-hi="समय के साथ अपने विश्लेषण को ट्रैक करें। देखें कि बाजार की स्थिति और आपकी जरूरतें कैसे विकसित हुई हैं।">Track your analysis over time. See how market conditions and your needs have evolved.</p>
+      <div class="log-container" id="logContainer"></div>
+    </section>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="toast-title" id="toastTitle">Notification</div>
+    <div class="toast-message" id="toastMessage">Message</div>
+  </div>
+
+  <!-- Shareholder Modal -->
+  <div class="modal-overlay" id="shareholderModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="shareholderTitle">
+      <div class="modal-header">
+        <h2 class="modal-title" id="shareholderTitle">Family Ownership Structure</h2>
+        <button class="modal-close" type="button" data-close="shareholderModal" aria-label="Close">×</button>
+      </div>
+      <p style="color: var(--earth-medium); margin-bottom: 1.5rem;">Define who owns this ancestral land and who makes decisions about liquidation.</p>
+
+      <div id="shareholdersList"></div>
+      <button class="add-need-btn" id="addShareholderBtn" type="button">+ Add Shareholder</button>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-close="shareholderModal">Cancel</button>
+        <button class="btn btn-primary" id="saveShareholdersBtn" type="button">Save & Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transaction Cost Modal -->
+  <div class="modal-overlay" id="transactionCostModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="costTitle">
+      <div class="modal-header">
+        <h2 class="modal-title" id="costTitle">Transaction Cost Breakdown</h2>
+        <button class="modal-close" type="button" data-close="transactionCostModal" aria-label="Close">×</button>
+      </div>
+      <p style="color: var(--earth-medium); margin-bottom: 1rem;">Typical costs for agricultural land sale in Haryana. Actual costs may vary.</p>
+      <div class="cost-breakdown-grid" id="costBreakdownContent"></div>
+
+      <div style="background: var(--cream); padding: 1.25rem; border-radius: 8px; border-left: 3px solid var(--terracotta); margin-top: 1.25rem;">
+        <strong style="color: var(--earth-dark);">Important Note:</strong>
+        <p style="color: var(--earth-medium); margin-top: 0.5rem; font-size: 0.95rem; line-height: 1.6;">
+          These are estimates. Always confirm with local lawyer and sub-registrar office. Agricultural land conversion to residential/commercial incurs additional charges.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="applyCostBtn" type="button">Apply estimated total to Transaction Costs</button>
+        <button class="btn btn-primary" type="button" data-close="transactionCostModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ===== Constants =====
+      const ACRE_TO_KANAL = 8;
+      const LOG_KEY = 'landLiquidationLogs';
+      const SHARE_KEY = 'landLiquidationShareholders';
+
+      // ===== State =====
+      const state = {
+        lang: 'en',
+        results: null,
+        lastCostEstimateLakhs: null,
+        shareholders: [
+          { name: 'Owner', relationship: 'Self', share: 14, isDecisionMaker: true }
+        ],
+        needs: [
+          { description: 'Car upgrade', amount: 15 },
+          { description: 'Motorcycle', amount: 12 },
+          { description: 'House upgrades', amount: 20 },
+          { description: 'Parent support', amount: 10 },
+          { description: 'Emergency fund', amount: 35 },
+        ],
+      };
+
+      // ===== DOM =====
+      const dom = {
+        langToggleBtn: document.getElementById('langToggleBtn'),
+        langText: document.getElementById('langText'),
+
+        tabButtons: Array.from(document.querySelectorAll('.tab-btn')),
+        sections: Array.from(document.querySelectorAll('.content-section')),
+
+        totalLand: document.getElementById('totalLand'),
+        currentRate: document.getElementById('currentRate'),
+        projectedRate: document.getElementById('projectedRate'),
+        targetDate: document.getElementById('targetDate'),
+        bufferPercent: document.getElementById('bufferPercent'),
+        transactionCosts: document.getElementById('transactionCosts'),
+
+        totalLandKanals: document.getElementById('totalLandKanals'),
+        currentRateKanals: document.getElementById('currentRateKanals'),
+        projectedRateKanals: document.getElementById('projectedRateKanals'),
+        daysRemaining: document.getElementById('daysRemaining'),
+
+        needsTable: document.getElementById('needsTable'),
+        addNeedBtn: document.getElementById('addNeedBtn'),
+
+        resultsSection: document.getElementById('resultsSection'),
+
+        currentDate: document.getElementById('currentDate'),
+        displayTargetDate: document.getElementById('displayTargetDate'),
+        waitingPeriod: document.getElementById('waitingPeriod'),
+
+        breakdownNeed: document.getElementById('breakdownNeed'),
+        breakdownBufferPercent: document.getElementById('breakdownBufferPercent'),
+        breakdownBuffer: document.getElementById('breakdownBuffer'),
+        breakdownCosts: document.getElementById('breakdownCosts'),
+        breakdownTotal: document.getElementById('breakdownTotal'),
+        totalRequiredRupees: document.getElementById('totalRequiredRupees'),
+
+        acresNow: document.getElementById('acresNow'),
+        acresLater: document.getElementById('acresLater'),
+        preservedNow: document.getElementById('preservedNow'),
+        preservedLater: document.getElementById('preservedLater'),
+        landSaved: document.getElementById('landSaved'),
+        appreciation: document.getElementById('appreciation'),
+        percentSoldNow: document.getElementById('percentSoldNow'),
+        percentSoldLater: document.getElementById('percentSoldLater'),
+
+        kanalsNow: document.getElementById('kanalsNow'),
+        kanalsLater: document.getElementById('kanalsLater'),
+        preservedKanalsNow: document.getElementById('preservedKanalsNow'),
+        preservedKanalsLater: document.getElementById('preservedKanalsLater'),
+        kanalsSaved: document.getElementById('kanalsSaved'),
+
+        consciousnessCheck: document.getElementById('consciousnessCheck'),
+        scenarioName: document.getElementById('scenarioName'),
+
+        saveBtn: document.getElementById('saveBtn'),
+        exportBtn: document.getElementById('exportBtn'),
+        resetBtn: document.getElementById('resetBtn'),
+
+        logContainer: document.getElementById('logContainer'),
+
+        toast: document.getElementById('toast'),
+        toastTitle: document.getElementById('toastTitle'),
+        toastMessage: document.getElementById('toastMessage'),
+
+        shareholderSummary: document.getElementById('shareholderSummary'),
+        manageShareholdersBtn: document.getElementById('manageShareholdersBtn'),
+        shareholderModal: document.getElementById('shareholderModal'),
+        shareholdersList: document.getElementById('shareholdersList'),
+        addShareholderBtn: document.getElementById('addShareholderBtn'),
+        saveShareholdersBtn: document.getElementById('saveShareholdersBtn'),
+
+        viewCostBreakdownLink: document.getElementById('viewCostBreakdownLink'),
+        transactionCostModal: document.getElementById('transactionCostModal'),
+        costBreakdownContent: document.getElementById('costBreakdownContent'),
+        applyCostBtn: document.getElementById('applyCostBtn'),
+      };
+
+      // ===== Utils =====
+      function acresToKanals(acres) { return acres * ACRE_TO_KANAL; }
+
+      function safeNumber(v, fallback = 0) {
+        const n = typeof v === 'number' ? v : parseFloat(v);
+        return Number.isFinite(n) ? n : fallback;
+      }
+
+      // Formats lakhs as L / Cr
+      function formatCurrency(lakhs, showBoth = false) {
+        const L = safeNumber(lakhs, 0);
+        const cr = L / 100;
+        const primary = (L >= 100)
+          ? `₹${cr.toFixed(2)} Cr`
+          : `₹${L.toFixed(1)} L`;
+        if (showBoth && L >= 100) return `₹${cr.toFixed(2)} Cr (${L.toFixed(1)} Lakhs)`;
+        return primary;
+      }
+
+      // lakhs -> rupees (Indian grouping)
+      function formatIndianNumber(lakhs) {
+        const rupees = Math.round(safeNumber(lakhs, 0) * 100000);
+        const s = String(Math.abs(rupees));
+        let out = '';
+        let count = 0;
+        for (let i = s.length - 1; i >= 0; i--) {
+          if (count === 3 || (count > 3 && (count - 3) % 2 === 0)) out = ',' + out;
+          out = s[i] + out;
+          count++;
+        }
+        return '₹' + (rupees < 0 ? '-' : '') + out;
+      }
+
+      function isValidDate(d) {
+        return d instanceof Date && !Number.isNaN(d.getTime());
+      }
+
+      function formatDate(d) {
+        const date = (d instanceof Date) ? d : new Date(d);
+        if (!isValidDate(date)) return '—';
+        return date.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function daysBetween(a, b) {
+        const d1 = (a instanceof Date) ? a : new Date(a);
+        const d2 = (b instanceof Date) ? b : new Date(b);
+        if (!isValidDate(d1) || !isValidDate(d2)) return null;
+        const oneDay = 24 * 60 * 60 * 1000;
+        return Math.round(Math.abs((d1 - d2) / oneDay));
+      }
+
+      function setDefaultTargetDateIfEmpty() {
+        if (dom.targetDate.value) return;
+        const today = new Date();
+        const oneYearLater = new Date(today);
+        oneYearLater.setFullYear(today.getFullYear() + 1);
+        dom.targetDate.value = oneYearLater.toISOString().split('T')[0];
+      }
+
+      // ===== Toast =====
+      let toastTimer = null;
+      function showToast(message, title = 'Notification', type = 'success') {
+        dom.toastTitle.textContent = title;
+        dom.toastMessage.textContent = message;
+        dom.toast.className = 'toast show' + (type === 'error' ? ' error' : '');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => dom.toast.classList.remove('show'), 5000);
+      }
+
+      // ===== i18n =====
+      function toggleLanguage() {
+        state.lang = (state.lang === 'en') ? 'hi' : 'en';
+        const elements = document.querySelectorAll('[data-en][data-hi]');
+        elements.forEach(el => {
+          const text = el.getAttribute('data-' + state.lang);
+          if (!text) return;
+          if (el.tagName === 'INPUT') el.placeholder = text;
+          else el.textContent = text;
+        });
+        dom.langText.textContent = state.lang === 'en' ? 'हिंदी में देखें' : 'View in English';
+      }
+
+      // ===== Tabs =====
+      function setTab(tabName) {
+        dom.tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabName));
+        dom.sections.forEach(sec => sec.classList.toggle('active', sec.id === tabName));
+        if (tabName === 'logs') loadLogs();
+      }
+
+      // ===== Needs =====
+      function renderNeeds() {
+        dom.needsTable.innerHTML = '';
+        state.needs.forEach((need, idx) => {
+          const row = document.createElement('div');
+          row.className = 'need-row';
+          row.dataset.index = String(idx);
+          row.innerHTML = `
+            <input type="text" class="need-desc" placeholder="Need description" value="${escapeHtml(need.description || '')}">
+            <input type="number" class="need-amt" placeholder="Amount (₹ Lakhs)" value="${Number.isFinite(need.amount) ? need.amount : ''}" step="0.1" inputmode="decimal">
+            <button class="remove-btn" type="button" data-action="remove-need" aria-label="Remove">×</button>
+          `;
+          dom.needsTable.appendChild(row);
+        });
+      }
+
+      function addNeed() {
+        state.needs.push({ description: '', amount: 0 });
+        renderNeeds();
+        calculate();
+        showToast('New need added. Enter description and amount.', 'Need Added');
+      }
+
+      function removeNeed(index) {
+        if (state.needs.length <= 1) {
+          showToast('Keep at least one need in the list.', 'Cannot Remove', 'error');
+          return;
+        }
+        state.needs.splice(index, 1);
+        renderNeeds();
+        calculate();
+        showToast('Need removed from calculation.', 'Updated');
+      }
+
+      function syncNeedsFromDOM() {
+        const rows = dom.needsTable.querySelectorAll('.need-row');
+        const next = [];
+        rows.forEach(row => {
+          const desc = row.querySelector('.need-desc')?.value ?? '';
+          const amt = safeNumber(row.querySelector('.need-amt')?.value, 0);
+          next.push({ description: desc, amount: amt });
+        });
+        state.needs = next;
+      }
+
+      // ===== Shareholders =====
+      function loadShareholders() {
+        try {
+          const raw = localStorage.getItem(SHARE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length) {
+            state.shareholders = parsed.map(s => ({
+              name: String(s.name || 'Shareholder'),
+              relationship: String(s.relationship || 'Family'),
+              share: safeNumber(s.share, 0),
+              isDecisionMaker: !!s.isDecisionMaker,
+            }));
+            if (!state.shareholders.some(s => s.isDecisionMaker)) state.shareholders[0].isDecisionMaker = true;
+          }
+        } catch { /* ignore */ }
+      }
+
+      function saveShareholdersToStorage() {
+        try { localStorage.setItem(SHARE_KEY, JSON.stringify(state.shareholders)); } catch { /* ignore */ }
+      }
+
+      function updateShareholderSummary() {
+        const totalShares = state.shareholders.reduce((sum, s) => sum + safeNumber(s.share, 0), 0);
+        const count = state.shareholders.length;
+        const decisionMaker = state.shareholders.find(s => s.isDecisionMaker);
+
+        let summary = '';
+        if (count === 1) {
+          summary = `Single owner • ${totalShares.toFixed(2)} acres (${acresToKanals(totalShares).toFixed(1)} kanals)`;
+        } else {
+          summary = `${count} shareholders • ${totalShares.toFixed(2)} acres total • Decision maker: ${decisionMaker ? decisionMaker.name : 'Not set'}`;
+        }
+        dom.shareholderSummary.textContent = summary;
+
+        // Keep totalLand consistent with ownership structure
+        dom.totalLand.value = totalShares.toFixed(2);
+      }
+
+      function openModal(modalEl) {
+        modalEl.classList.add('show');
+        modalEl.setAttribute('aria-hidden', 'false');
+        // basic focus move
+        const focusable = modalEl.querySelector('button, input, [tabindex="0"]');
+        if (focusable) focusable.focus();
+      }
+
+      function closeModal(modalEl) {
+        modalEl.classList.remove('show');
+        modalEl.setAttribute('aria-hidden', 'true');
+      }
+
+      function renderShareholders() {
+        dom.shareholdersList.innerHTML = '';
+        state.shareholders.forEach((s, idx) => {
+          const card = document.createElement('div');
+          card.className = 'shareholder-card';
+          card.dataset.index = String(idx);
+          card.innerHTML = `
+            <div class="shareholder-header">
+              <span class="shareholder-number">Shareholder ${idx + 1}</span>
+              ${state.shareholders.length > 1 ? `<button class="remove-shareholder" type="button" data-action="remove-shareholder" aria-label="Remove">×</button>` : ''}
+            </div>
+
+            <div class="input-row">
+              <div>
+                <label class="field-label">Name</label>
+                <input type="text" class="sh-name" value="${escapeHtml(s.name)}" />
+              </div>
+              <div>
+                <label class="field-label">Relationship</label>
+                <input type="text" class="sh-rel" value="${escapeHtml(s.relationship)}" />
+              </div>
+            </div>
+
+            <div class="input-row">
+              <div>
+                <label class="field-label">Share (acres)</label>
+                <input type="number" step="0.01" class="sh-share-acres" value="${safeNumber(s.share, 0)}" inputmode="decimal" />
+              </div>
+              <div>
+                <label class="field-label">Share (kanals)</label>
+                <input type="number" step="0.1" class="sh-share-kanals" value="${acresToKanals(safeNumber(s.share, 0)).toFixed(1)}" inputmode="decimal" />
+              </div>
+            </div>
+
+            <div class="input-row-full">
+              <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-weight:800; color: var(--earth-dark);">
+                <input type="radio" name="decisionMaker" class="sh-dm" ${s.isDecisionMaker ? 'checked' : ''} />
+                This person makes liquidation decisions
+              </label>
+            </div>
+          `;
+          dom.shareholdersList.appendChild(card);
+        });
+      }
+
+      function addShareholder() {
+        state.shareholders.push({ name: 'New Shareholder', relationship: 'Family Member', share: 0, isDecisionMaker: false });
+        renderShareholders();
+      }
+
+      function removeShareholder(index) {
+        if (state.shareholders.length <= 1) return;
+        state.shareholders.splice(index, 1);
+        if (!state.shareholders.some(s => s.isDecisionMaker)) state.shareholders[0].isDecisionMaker = true;
+        renderShareholders();
+      }
+
+      function syncShareholdersFromDOM() {
+        const cards = dom.shareholdersList.querySelectorAll('.shareholder-card');
+        const next = [];
+        cards.forEach((card, idx) => {
+          const name = card.querySelector('.sh-name')?.value ?? 'Shareholder';
+          const rel = card.querySelector('.sh-rel')?.value ?? 'Family';
+
+          const acresVal = card.querySelector('.sh-share-acres')?.value;
+          const kanalsVal = card.querySelector('.sh-share-kanals')?.value;
+
+          // If user typed in kanals, prefer it when the acres field was untouched/empty.
+          // Simpler: if kanals input is focused/changed, acres will still be updated via input handler.
+          const share = safeNumber(acresVal, 0);
+
+          const isDM = !!card.querySelector('.sh-dm')?.checked;
+          next.push({ name, relationship: rel, share, isDecisionMaker: isDM });
+        });
+
+        // Ensure only one decision maker
+        const dmIndex = next.findIndex(s => s.isDecisionMaker);
+        next.forEach((s, i) => (s.isDecisionMaker = i === (dmIndex >= 0 ? dmIndex : 0)));
+
+        state.shareholders = next;
+      }
+
+      // ===== Transaction Cost Breakdown =====
+      function openTransactionCostModal() {
+        // Ensure results exist
+        if (!state.results) calculate();
+        const acresSold = safeNumber(state.results?.acresNow, 1.5);
+        const currentRate = safeNumber(dom.currentRate.value, 70);
+        const saleValueLakhs = acresSold * currentRate;
+
+        // Typical Haryana costs (estimates)
+        const stampDuty = saleValueLakhs * 0.06;
+        const registrationFee = saleValueLakhs * 0.01;
+        const mutationCharges = 0.5;
+        const legalFees = 1;
+        const noc = 0.25;
+        const brokerage = saleValueLakhs * 0.01;
+
+        const total = stampDuty + registrationFee + mutationCharges + legalFees + noc + brokerage;
+        state.lastCostEstimateLakhs = total;
+
+        dom.costBreakdownContent.innerHTML = `
+          ${costItemHtml('Stamp Duty (6% in Haryana)', 'Varies by state - check local rates', stampDuty)}
+          ${costItemHtml('Registration Fee (1%)', 'Standard across most states', registrationFee)}
+          ${costItemHtml('Mutation Charges', 'Transfer in revenue records', mutationCharges)}
+          ${costItemHtml('Legal & Documentation Fees', 'Lawyer, notary, drafting', legalFees)}
+          ${costItemHtml('NOC Charges', 'If required by local authorities', noc)}
+          ${costItemHtml('Brokerage (1%, if applicable)', 'Can be negotiated/avoided', brokerage)}
+          <div class="cost-item" style="background: var(--sage); color: white;">
+            <div>
+              <div class="cost-label" style="color:white; font-size:1.1rem;">Estimated Total</div>
+              <div class="cost-note" style="color: rgba(255,255,255,0.9);">For ${acresSold.toFixed(2)} acres at ${formatCurrency(currentRate)}/acre</div>
+            </div>
+            <div class="cost-value" style="color:white; font-size: 1.25rem;">${formatCurrency(total)}<br><span style="font-size:0.85rem; opacity:0.9;">${formatIndianNumber(total)}</span></div>
+          </div>
+        `;
+
+        openModal(dom.transactionCostModal);
+      }
+
+      function costItemHtml(label, note, valueLakhs) {
+        return `
+          <div class="cost-item">
+            <div>
+              <div class="cost-label">${escapeHtml(label)}</div>
+              <div class="cost-note">${escapeHtml(note)}</div>
+            </div>
+            <div class="cost-value">${formatCurrency(valueLakhs)}</div>
+          </div>
+        `;
+      }
+
+      function applyEstimatedCosts() {
+        if (!Number.isFinite(state.lastCostEstimateLakhs)) {
+          showToast('No estimate available yet. Open the breakdown first.', 'No Estimate', 'error');
+          return;
+        }
+        dom.transactionCosts.value = state.lastCostEstimateLakhs.toFixed(2);
+        calculate();
+        showToast('Applied estimated transaction costs into the calculator.', 'Applied', 'success');
+      }
+
+      // ===== Calculation =====
+      function calculate() {
+        try {
+          syncNeedsFromDOM();
+
+          const totalLand = safeNumber(dom.totalLand.value, 0);
+          const currentRate = safeNumber(dom.currentRate.value, 0);
+          const projectedRate = safeNumber(dom.projectedRate.value, 0);
+          const bufferPercent = safeNumber(dom.bufferPercent.value, 0);
+          const transactionCosts = safeNumber(dom.transactionCosts.value, 0);
+
+          // Input-side conversions
+          dom.totalLandKanals.textContent = `= ${acresToKanals(totalLand).toFixed(1)} kanals`;
+          dom.currentRateKanals.textContent = `= ₹${(currentRate / ACRE_TO_KANAL).toFixed(2)} Lakhs per kanal`;
+          dom.projectedRateKanals.textContent = `= ₹${(projectedRate / ACRE_TO_KANAL).toFixed(2)} Lakhs per kanal`;
+
+          // Date
+          const today = new Date();
+          const targetStr = dom.targetDate.value;
+          const target = new Date(targetStr);
+          const dayCount = daysBetween(today, target);
+
+          dom.currentDate.textContent = formatDate(today);
+          dom.displayTargetDate.textContent = formatDate(target);
+
+          if (dayCount === null) {
+            dom.waitingPeriod.textContent = '—';
+            dom.daysRemaining.textContent = '';
+          } else {
+            const monthsRemaining = (dayCount / 30.44);
+            dom.waitingPeriod.textContent = `${dayCount} days (${monthsRemaining.toFixed(1)} months)`;
+            dom.daysRemaining.textContent = `${dayCount} days from today`;
+          }
+
+          // Needs
+          const totalNeed = state.needs.reduce((sum, n) => sum + safeNumber(n.amount, 0), 0);
+          const buffer = totalNeed * (bufferPercent / 100);
+          const totalRequired = totalNeed + buffer + transactionCosts;
+
+          const acresNow = currentRate > 0 ? (totalRequired / currentRate) : 0;
+          const acresLater = projectedRate > 0 ? (totalRequired / projectedRate) : 0;
+
+          const preservedNow = totalLand - acresNow;
+          const preservedLater = totalLand - acresLater;
+          const landSaved = acresNow - acresLater;
+
+          const appreciation = currentRate > 0 ? ((projectedRate - currentRate) / currentRate * 100) : 0;
+
+          const percentSoldNow = totalLand > 0 ? (acresNow / totalLand * 100) : 0;
+          const percentSoldLater = totalLand > 0 ? (acresLater / totalLand * 100) : 0;
+
+          state.results = {
+            totalLand,
+            currentRate,
+            projectedRate,
+            totalNeed,
+            buffer,
+            transactionCosts,
+            totalRequired,
+            acresNow,
+            acresLater,
+            preservedNow,
+            preservedLater,
+            landSaved,
+            appreciation,
+            bufferPercent,
+            targetDate: dom.targetDate.value,
+            daysRemaining: dayCount,
+          };
+
+          // Breakdown
+          dom.breakdownNeed.textContent = formatCurrency(totalNeed);
+          dom.breakdownBufferPercent.textContent = String(bufferPercent);
+          dom.breakdownBuffer.textContent = formatCurrency(buffer);
+          dom.breakdownCosts.textContent = formatCurrency(transactionCosts);
+          dom.breakdownTotal.textContent = formatCurrency(totalRequired);
+          dom.totalRequiredRupees.textContent = formatIndianNumber(totalRequired);
+
+          // Results cards
+          dom.acresNow.textContent = acresNow.toFixed(2);
+          dom.acresLater.textContent = acresLater.toFixed(2);
+          dom.preservedNow.textContent = preservedNow.toFixed(2);
+          dom.preservedLater.textContent = preservedLater.toFixed(2);
+          dom.landSaved.textContent = Math.abs(landSaved).toFixed(2);
+          dom.appreciation.textContent = appreciation.toFixed(1);
+
+          dom.kanalsNow.textContent = acresToKanals(acresNow).toFixed(1);
+          dom.kanalsLater.textContent = acresToKanals(acresLater).toFixed(1);
+          dom.preservedKanalsNow.textContent = acresToKanals(preservedNow).toFixed(1);
+          dom.preservedKanalsLater.textContent = acresToKanals(preservedLater).toFixed(1);
+          dom.kanalsSaved.textContent = acresToKanals(Math.abs(landSaved)).toFixed(1);
+
+          dom.percentSoldNow.textContent = percentSoldNow.toFixed(1);
+          dom.percentSoldLater.textContent = percentSoldLater.toFixed(1);
+
+          // Show results
+          dom.resultsSection.style.display = 'block';
+
+          // Guidance (light-touch)
+          if (projectedRate > 0 && currentRate > 0 && appreciation < 0) {
+            showToast(`Projected rate is LOWER than current rate (down ${Math.abs(appreciation).toFixed(1)}%). Consider selling now or revising projections.`, 'Market Alert', 'error');
+          } else if (percentSoldNow > 50 && totalLand > 0) {
+            showToast(`Warning: You are liquidating ${percentSoldNow.toFixed(1)}% of your land (${acresNow.toFixed(2)} acres). Consider reducing needs or waiting for better rates.`, 'Preservation Alert', 'error');
+          }
+
+        } catch (err) {
+          console.error(err);
+          showToast('Error in calculation. Please check your inputs.', 'Error', 'error');
+        }
+      }
+
+      // ===== Consciousness Check =====
+      function toggleCheck(itemEl) {
+        const box = itemEl.querySelector('.check-box');
+        if (!box) return;
+        box.classList.toggle('checked');
+
+        const allBoxes = Array.from(dom.consciousnessCheck.querySelectorAll('.check-box'));
+        const allChecked = allBoxes.length > 0 && allBoxes.every(b => b.classList.contains('checked'));
+        if (allChecked) {
+          showToast('You have reflected deeply. You are ready to proceed with clarity.', 'Consciousness Aligned', 'success');
+        }
+      }
+
+      function allChecksCompleted() {
+        const allBoxes = Array.from(dom.consciousnessCheck.querySelectorAll('.check-box'));
+        const checked = allBoxes.filter(b => b.classList.contains('checked')).length;
+        return allBoxes.length > 0 && checked === allBoxes.length;
+      }
+
+      // ===== Logs =====
+      function getLogs() {
+        try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); }
+        catch { return []; }
+      }
+
+      function setLogs(logs) {
+        try { localStorage.setItem(LOG_KEY, JSON.stringify(logs)); }
+        catch { /* ignore */ }
+      }
+
+      function saveDecision() {
+        if (!allChecksCompleted()) {
+          showToast('Please complete the consciousness check before saving.', 'Reflection Required', 'error');
+          return;
+        }
+        if (!state.results) calculate();
+
+        const scenarioName = (dom.scenarioName.value || '').trim() || `Scenario ${Date.now()}`;
+        const now = new Date();
+
+        const decision = {
+          id: Date.now(),
+          scenarioName,
+          timestamp: now.toISOString(),
+          date: now.toLocaleString('en-IN', {
+            year: 'numeric', month: 'long', day: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+          }),
+          ...state.results,
+          needs: state.needs.map(n => ({ description: n.description, amount: safeNumber(n.amount, 0) })),
+          shareholders: state.shareholders.map(s => ({ ...s })),
+        };
+
+        const logs = getLogs();
+        logs.unshift(decision);
+        setLogs(logs);
+
+        // Auto-increment scenario name
+        const m = scenarioName.match(/(\d+)$/);
+        if (m) {
+          const num = parseInt(m[1], 10) + 1;
+          dom.scenarioName.value = scenarioName.replace(/\d+$/, String(num));
+        } else {
+          dom.scenarioName.value = scenarioName + ' v2';
+        }
+
+        showToast(`"${scenarioName}" saved successfully. View it in Decision Log or print for family review.`, 'Saved', 'success');
+      }
+
+      function loadLogs() {
+        const logs = getLogs();
+        if (!logs.length) {
+          dom.logContainer.innerHTML = `
+            <div style="text-align:center; padding: 4rem; color: var(--earth-light);">
+              <h3 style="font-family: 'Crimson Pro', serif; font-size: 2rem; margin-bottom: 1rem;">No decisions saved yet</h3>
+              <p>Use the calculator to analyze your land liquidation strategy, then save decisions here for future reference and family review.</p>
+            </div>
+          `;
+          return;
+        }
+
+        dom.logContainer.innerHTML = logs.map(log => `
+          <div class="log-entry" data-log-id="${log.id}">
+            <div class="log-header">
+              <div>
+                <div class="scenario-name">${escapeHtml(log.scenarioName || 'Unnamed Scenario')}</div>
+                <div class="log-date">${escapeHtml(log.date || '')}</div>
+              </div>
+              <div class="log-status">Saved</div>
+            </div>
+
+            <div class="log-details">
+              <div class="log-detail">
+                <div class="log-detail-label">Total Need</div>
+                <div class="log-detail-value">${formatCurrency(log.totalNeed)}</div>
+              </div>
+              <div class="log-detail">
+                <div class="log-detail-label">Current Rate</div>
+                <div class="log-detail-value">${formatCurrency(log.currentRate)}/acre</div>
+              </div>
+              <div class="log-detail">
+                <div class="log-detail-label">Acres to Sell (Now)</div>
+                <div class="log-detail-value">${safeNumber(log.acresNow, 0).toFixed(2)} acres<br><span style="font-size:0.85rem; opacity:0.75;">${acresToKanals(safeNumber(log.acresNow, 0)).toFixed(1)} kanals</span></div>
+              </div>
+              <div class="log-detail">
+                <div class="log-detail-label">Acres to Sell (Wait)</div>
+                <div class="log-detail-value">${safeNumber(log.acresLater, 0).toFixed(2)} acres<br><span style="font-size:0.85rem; opacity:0.75;">${acresToKanals(safeNumber(log.acresLater, 0)).toFixed(1)} kanals</span></div>
+              </div>
+              <div class="log-detail">
+                <div class="log-detail-label">Land Preserved</div>
+                <div class="log-detail-value">${safeNumber(log.preservedNow, 0).toFixed(2)} acres</div>
+              </div>
+              <div class="log-detail">
+                <div class="log-detail-label">Appreciation</div>
+                <div class="log-detail-value">${safeNumber(log.appreciation, 0).toFixed(1)}%</div>
+              </div>
+            </div>
+
+            ${Array.isArray(log.needs) && log.needs.length ? `
+              <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--sand);">
+                <div style="font-weight: 900; margin-bottom: 0.75rem; color: var(--earth-dark);">Needs Breakdown:</div>
+                ${log.needs.map(need => `
+                  <div style="display:flex; justify-content:space-between; padding: 0.5rem 0; color: var(--earth-medium); gap: 1rem;">
+                    <span>${escapeHtml(need.description || '')}</span>
+                    <span style="font-weight:900;">${formatCurrency(need.amount)}</span>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+
+            <div class="log-actions">
+              <button class="log-action-btn primary" type="button" data-action="print">🖨️ <span>Print This Scenario</span></button>
+              <button class="log-action-btn" type="button" data-action="load">📋 <span>Load into Calculator</span></button>
+              <button class="log-action-btn" type="button" data-action="delete">🗑️ <span>Delete</span></button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function loadFromLog(logId) {
+        const logs = getLogs();
+        const log = logs.find(l => l.id === logId);
+        if (!log) {
+          showToast('Could not find this scenario.', 'Error', 'error');
+          return;
+        }
+
+        // Restore inputs
+        dom.totalLand.value = safeNumber(log.totalLand, 14).toFixed(2);
+        dom.currentRate.value = safeNumber(log.currentRate, 70);
+        dom.projectedRate.value = safeNumber(log.projectedRate, 90);
+        dom.bufferPercent.value = safeNumber(log.bufferPercent, 15);
+        dom.transactionCosts.value = safeNumber(log.transactionCosts, 3);
+        if (log.targetDate) dom.targetDate.value = String(log.targetDate);
+
+        // Restore shareholders
+        if (Array.isArray(log.shareholders) && log.shareholders.length) {
+          state.shareholders = log.shareholders.map(s => ({
+            name: String(s.name || 'Shareholder'),
+            relationship: String(s.relationship || 'Family'),
+            share: safeNumber(s.share, 0),
+            isDecisionMaker: !!s.isDecisionMaker,
+          }));
+          if (!state.shareholders.some(s => s.isDecisionMaker)) state.shareholders[0].isDecisionMaker = true;
+          saveShareholdersToStorage();
+          updateShareholderSummary();
+        }
+
+        // Restore needs
+        if (Array.isArray(log.needs) && log.needs.length) {
+          state.needs = log.needs.map(n => ({ description: String(n.description || ''), amount: safeNumber(n.amount, 0) }));
+        }
+        renderNeeds();
+
+        dom.scenarioName.value = (log.scenarioName || 'Scenario') + ' (Modified)';
+
+        // Reset checks
+        dom.consciousnessCheck.querySelectorAll('.check-box').forEach(b => b.classList.remove('checked'));
+
+        calculate();
+        setTab('calculator');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast(`Loaded "${log.scenarioName}" into calculator. Adjust and save as new version.`, 'Scenario Loaded', 'success');
+      }
+
+      function deleteLog(logId) {
+        const ok = confirm('Are you sure you want to delete this scenario? This cannot be undone.');
+        if (!ok) return;
+        const logs = getLogs().filter(l => l.id !== logId);
+        setLogs(logs);
+        loadLogs();
+        showToast('Scenario deleted successfully.', 'Deleted', 'success');
+      }
+
+      function printLog(logId) {
+        const logs = getLogs();
+        const log = logs.find(l => l.id === logId);
+        if (!log) {
+          showToast('Could not find this scenario.', 'Error', 'error');
+          return;
+        }
+
+        const win = window.open('', '_blank');
+        if (!win) {
+          showToast('Popup blocked. Please allow popups for printing.', 'Popup Blocked', 'error');
+          return;
+        }
+
+        win.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="UTF-8">
+            <title>${escapeHtml(log.scenarioName || 'Scenario')} - Land Liquidation Analysis</title>
+            <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+            <style>
+              *{margin:0;padding:0;box-sizing:border-box}
+              body{font-family:'DM Sans',sans-serif;padding:2rem;color:#2C1810;line-height:1.6}
+              h1{font-family:'Crimson Pro',serif;font-size:2rem;margin-bottom:.5rem}
+              h2{font-family:'Crimson Pro',serif;font-size:1.5rem;margin:2rem 0 1rem;color:#5C4033}
+              .header{text-align:center;border-bottom:3px solid #7A9D7A;padding-bottom:1rem;margin-bottom:2rem}
+              .subtitle{color:#5C4033;font-size:.95rem}
+              .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin:1rem 0}
+              .item{padding:1rem;background:#F5F0E8;border-left:3px solid #7A9D7A;border-radius:4px}
+              .label{font-size:.85rem;color:#8B7355;margin-bottom:.25rem}
+              .value{font-weight:800;font-size:1.1rem;color:#2C1810}
+              .breakdown{margin:2rem 0;padding:1.5rem;background:#F5F0E8;border-radius:8px}
+              .breakdown-row{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid #E8DCC8;gap:1rem}
+              .breakdown-row:last-child{border-bottom:2px solid #7A9D7A;font-weight:900;padding-top:1rem;margin-top:.5rem}
+              .rows{margin:1rem 0}
+              .row{display:flex;justify-content:space-between;padding:.75rem;background:#F5F0E8;margin:.5rem 0;border-radius:4px;gap:1rem}
+              .footer{margin-top:3rem;padding-top:1rem;border-top:2px solid #E8DCC8;font-size:.9rem;color:#8B7355;text-align:center}
+              @media print{body{padding:1rem}}
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <h1>Land Liquidation Analysis</h1>
+              <p class="subtitle">Ancestral Legacy Stewardship Tool</p>
+            </div>
+
+            <h2>${escapeHtml(log.scenarioName || 'Scenario')}</h2>
+            <p style="color:#5C4033;margin-bottom:2rem">Generated on: ${escapeHtml(log.date || '')}</p>
+
+            <div class="breakdown">
+              <h3 style="margin-bottom:1rem;color:#2C1810">Cost Breakdown</h3>
+              <div class="breakdown-row"><span>Total Enumerated Needs</span><span>${formatCurrency(log.totalNeed)}</span></div>
+              <div class="breakdown-row"><span>Buffer (${safeNumber(log.bufferPercent, 0)}%)</span><span>${formatCurrency(safeNumber(log.totalNeed,0) * safeNumber(log.bufferPercent,0) / 100)}</span></div>
+              <div class="breakdown-row"><span>Transaction Costs</span><span>${formatCurrency(log.transactionCosts)}</span></div>
+              <div class="breakdown-row"><span>Total Required</span><span>${formatCurrency(log.totalRequired)}</span></div>
+            </div>
+
+            <h2>Strategic Analysis</h2>
+            <div class="grid">
+              <div class="item"><div class="label">Sell Now (Current Rate)</div><div class="value">${safeNumber(log.acresNow,0).toFixed(2)} acres</div><div class="label" style="margin-top:.25rem">${acresToKanals(safeNumber(log.acresNow,0)).toFixed(1)} kanals</div></div>
+              <div class="item"><div class="label">Wait Until Target Date</div><div class="value">${safeNumber(log.acresLater,0).toFixed(2)} acres</div><div class="label" style="margin-top:.25rem">${acresToKanals(safeNumber(log.acresLater,0)).toFixed(1)} kanals</div></div>
+              <div class="item"><div class="label">Land Preserved (Now)</div><div class="value">${safeNumber(log.preservedNow,0).toFixed(2)} acres</div><div class="label" style="margin-top:.25rem">${acresToKanals(safeNumber(log.preservedNow,0)).toFixed(1)} kanals</div></div>
+              <div class="item"><div class="label">Land Preserved (Wait)</div><div class="value">${safeNumber(log.preservedLater,0).toFixed(2)} acres</div><div class="label" style="margin-top:.25rem">${acresToKanals(safeNumber(log.preservedLater,0)).toFixed(1)} kanals</div></div>
+              <div class="item"><div class="label">Land Saved by Waiting</div><div class="value">${Math.abs(safeNumber(log.landSaved,0)).toFixed(2)} acres</div><div class="label" style="margin-top:.25rem">${acresToKanals(Math.abs(safeNumber(log.landSaved,0))).toFixed(1)} kanals</div></div>
+              <div class="item"><div class="label">Market Appreciation</div><div class="value">${safeNumber(log.appreciation,0).toFixed(1)}%</div><div class="label" style="margin-top:.25rem">over waiting period</div></div>
+            </div>
+
+            ${Array.isArray(log.needs) && log.needs.length ? `
+              <h2>Needs Breakdown</h2>
+              <div class="rows">
+                ${log.needs.map(n => `<div class="row"><span>${escapeHtml(n.description || '')}</span><span style="font-weight:900">${formatCurrency(n.amount)}</span></div>`).join('')}
+              </div>
+            ` : ''}
+
+            ${Array.isArray(log.shareholders) && log.shareholders.length > 1 ? `
+              <h2>Family Ownership Structure</h2>
+              <div class="rows">
+                ${log.shareholders.map(s => `<div class="row"><span>${escapeHtml(s.name || '')} (${escapeHtml(s.relationship || '')})</span><span style="font-weight:900">${safeNumber(s.share,0).toFixed(2)} acres (${acresToKanals(safeNumber(s.share,0)).toFixed(1)} kanals)</span></div>`).join('')}
+              </div>
+            ` : ''}
+
+            <div class="footer">
+              <p>For family review and financial advisory consultation</p>
+              <p style="margin-top:.5rem">Ancestral Legacy Stewardship Tool • ${new Date().getFullYear()}</p>
+            </div>
+          </body>
+          </html>
+        `);
+
+        win.document.close();
+        setTimeout(() => win.print(), 250);
+      }
+
+      // ===== Reset / Export =====
+      function exportReport() {
+        showToast('Opening print dialog (you can save as PDF).', 'Exporting');
+        setTimeout(() => window.print(), 300);
+      }
+
+      function resetCalculator() {
+        const ok = confirm('Reset all inputs? This will not delete saved logs.');
+        if (!ok) return;
+
+        // Reset core inputs
+        state.shareholders = [{ name: 'Owner', relationship: 'Self', share: 14, isDecisionMaker: true }];
+        saveShareholdersToStorage();
+        updateShareholderSummary();
+
+        dom.currentRate.value = 70;
+        dom.projectedRate.value = 90;
+        dom.bufferPercent.value = 15;
+        dom.transactionCosts.value = 3;
+        setDefaultTargetDateIfEmpty();
+
+        // Reset needs
+        state.needs = [{ description: '', amount: 0 }];
+        renderNeeds();
+
+        // Reset checks
+        dom.consciousnessCheck.querySelectorAll('.check-box').forEach(b => b.classList.remove('checked'));
+
+        calculate();
+        showToast('Calculator reset. Start with fresh inputs.', 'Reset Complete');
+      }
+
+      // ===== Escaping =====
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      // ===== Event wiring =====
+      function wireEvents() {
+        // language
+        dom.langToggleBtn.addEventListener('click', toggleLanguage);
+
+        // tabs
+        dom.tabButtons.forEach(btn => {
+          btn.addEventListener('click', () => setTab(btn.dataset.tab));
+        });
+
+        // calculator inputs -> calculate
+        [dom.totalLand, dom.currentRate, dom.projectedRate, dom.targetDate, dom.bufferPercent, dom.transactionCosts]
+          .forEach(el => el.addEventListener('input', calculate));
+
+        // needs
+        dom.addNeedBtn.addEventListener('click', addNeed);
+        dom.needsTable.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-action="remove-need"]');
+          if (!btn) return;
+          const row = btn.closest('.need-row');
+          const idx = safeNumber(row?.dataset.index, -1);
+          if (idx >= 0) removeNeed(idx);
+        });
+        dom.needsTable.addEventListener('input', () => calculate());
+
+        // consciousness
+        dom.consciousnessCheck.addEventListener('click', (e) => {
+          const item = e.target.closest('.check-item');
+          if (!item) return;
+          toggleCheck(item);
+        });
+        dom.consciousnessCheck.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          const item = e.target.closest('.check-item');
+          if (!item) return;
+          e.preventDefault();
+          toggleCheck(item);
+        });
+
+        // save/export/reset
+        dom.saveBtn.addEventListener('click', saveDecision);
+        dom.exportBtn.addEventListener('click', exportReport);
+        dom.resetBtn.addEventListener('click', resetCalculator);
+
+        // logs actions
+        dom.logContainer.addEventListener('click', (e) => {
+          const entry = e.target.closest('.log-entry');
+          if (!entry) return;
+          const id = safeNumber(entry.dataset.logId, null);
+          if (!id) return;
+
+          const actionBtn = e.target.closest('[data-action]');
+          if (!actionBtn) return;
+
+          const action = actionBtn.dataset.action;
+          if (action === 'print') printLog(id);
+          if (action === 'load') loadFromLog(id);
+          if (action === 'delete') deleteLog(id);
+        });
+
+        // shareholders modal
+        dom.manageShareholdersBtn.addEventListener('click', () => {
+          renderShareholders();
+          openModal(dom.shareholderModal);
+        });
+
+        dom.addShareholderBtn.addEventListener('click', addShareholder);
+
+        dom.shareholdersList.addEventListener('click', (e) => {
+          const removeBtn = e.target.closest('[data-action="remove-shareholder"]');
+          if (!removeBtn) return;
+          const card = removeBtn.closest('.shareholder-card');
+          const idx = safeNumber(card?.dataset.index, -1);
+          if (idx >= 0) removeShareholder(idx);
+        });
+
+        // Keep acres/kanals synced in the modal
+        dom.shareholdersList.addEventListener('input', (e) => {
+          const card = e.target.closest('.shareholder-card');
+          if (!card) return;
+          const acresInput = card.querySelector('.sh-share-acres');
+          const kanalsInput = card.querySelector('.sh-share-kanals');
+          if (!acresInput || !kanalsInput) return;
+
+          if (e.target.classList.contains('sh-share-acres')) {
+            const acres = safeNumber(acresInput.value, 0);
+            kanalsInput.value = acresToKanals(acres).toFixed(1);
+          }
+
+          if (e.target.classList.contains('sh-share-kanals')) {
+            const kanals = safeNumber(kanalsInput.value, 0);
+            acresInput.value = (kanals / ACRE_TO_KANAL).toFixed(2);
+          }
+        });
+
+        dom.saveShareholdersBtn.addEventListener('click', () => {
+          syncShareholdersFromDOM();
+          saveShareholdersToStorage();
+          updateShareholderSummary();
+          calculate();
+          closeModal(dom.shareholderModal);
+          showToast('Family ownership structure updated.', 'Saved', 'success');
+        });
+
+        // Cost modal
+        dom.viewCostBreakdownLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          openTransactionCostModal();
+        });
+        dom.applyCostBtn.addEventListener('click', applyEstimatedCosts);
+
+        // modal close buttons + overlay click
+        document.addEventListener('click', (e) => {
+          const closeBtn = e.target.closest('[data-close]');
+          if (closeBtn) {
+            const id = closeBtn.getAttribute('data-close');
+            const modalEl = document.getElementById(id);
+            if (modalEl) closeModal(modalEl);
+            return;
+          }
+
+          // click on overlay to close
+          const overlay = e.target.classList.contains('modal-overlay') ? e.target : null;
+          if (overlay && overlay.classList.contains('show')) closeModal(overlay);
+        });
+
+        // ESC closes modals
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Escape') return;
+          [dom.shareholderModal, dom.transactionCostModal].forEach(m => {
+            if (m.classList.contains('show')) closeModal(m);
+          });
+        });
+      }
+
+      // ===== Init =====
+      function init() {
+        setDefaultTargetDateIfEmpty();
+
+        loadShareholders();
+        updateShareholderSummary();
+
+        renderNeeds();
+        loadLogs();
+        calculate();
+
+        wireEvents();
+        showToast('Welcome! Review the philosophy, then use the calculator.', 'Welcome', 'success');
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
